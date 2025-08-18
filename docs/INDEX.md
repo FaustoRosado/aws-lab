@@ -20,6 +20,9 @@ Choose your path based on what you want to learn:
 
 ### **🏗️ Terraform Infrastructure as Code**
 - **[Terraform Guide](../terraform/README.md)** - Complete beginner's guide to Terraform
+- **[Main.tf Guide](../terraform/main.tf.README.md)** - Understanding the infrastructure conductor
+- **[Variables.tf Guide](../terraform/variables.tf.README.md)** - Configuration control center
+- **[Outputs.tf Guide](../terraform/outputs.tf.README.md)** - Information highway and data flow
 - **[VPC Module Guide](../terraform/modules/vpc/README.md)** - Understanding networking
 - **[EC2 Module Guide](../terraform/modules/ec2/README.md)** - Understanding virtual servers
 - **[Security Groups Guide](../terraform/modules/security_groups/README.md)** - Understanding firewalls
@@ -40,6 +43,9 @@ Choose your path based on what you want to learn:
 
 ### **🏗️ Infrastructure & Terraform**
 - **[Main Terraform Guide](../terraform/README.md)** - Complete Terraform tutorial
+- **[Main.tf Guide](../terraform/main.tf.README.md)** - Infrastructure conductor and orchestration
+- **[Variables.tf Guide](../terraform/variables.tf.README.md)** - Configuration management
+- **[Outputs.tf Guide](../terraform/outputs.tf.README.md)** - Data flow and module communication
 - **[VPC Module](../terraform/modules/vpc/README.md)** - Network foundation
 - **[EC2 Module](../terraform/modules/ec2/README.md)** - Virtual servers
 - **[Security Groups Module](../terraform/modules/security_groups/README.md)** - Firewall rules
