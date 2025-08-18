@@ -1,378 +1,186 @@
-# 📚 AWS Security Lab - Complete Documentation Index
+# �� AWS Security Lab - Documentation Index
 
-Welcome to the comprehensive documentation for the AWS Security Lab! This index will help you navigate through all the available guides and find exactly what you need.
+## 🎯 **Quick Navigation**
 
-## 🎯 Quick Start Paths
+Choose your path based on what you want to learn:
 
-### 🚀 **I'm New to AWS - Start Here**
-1. **`ELEMENTARY_AWS_CONNECTION.md`** - Complete beginner's guide to AWS
-2. **`CROSS_PLATFORM_SETUP.md`** - Install tools on your computer
-3. **`QUICK_START.md`** - Get the lab running in 5 minutes
-4. **`SETUP_GUIDE.md`** - Detailed setup instructions
-
-### 🔧 **I Know AWS - Get Started Fast**
-1. **`QUICK_START.md`** - Rapid deployment guide
-2. **`SETUP_GUIDE.md`** - Complete setup instructions
-3. **`LAB_CHECKLIST.md`** - Track your progress
-4. **`SECURITY_AND_CREDENTIALS.md`** - Security best practices
-
-### 📖 **I Want to Understand Everything**
-1. **`README.md`** - Project overview and architecture
-2. **`PROJECT_STRUCTURE.md`** - Why files are organized this way
-3. **`MODULE_DOCUMENTATION.md`** - Deep dive into each component
-4. **`SCRIPT_DEEP_DIVE.md`** - How the automation works
+- **🚀 New to AWS?** → Start with [AWS Credentials Setup](#aws-credentials-setup)
+- **🏗️ New to Terraform?** → Start with [Terraform Guide](#terraform-guide)
+- **🔒 Want to run the lab?** → Go to [Setup Guide](#setup-guide)
+- **📖 Need comprehensive docs?** → Browse [All Documentation](#all-documentation)
 
 ---
 
-## 📋 Complete Documentation List
+## 🌟 **Getting Started (Beginner-Friendly)**
 
-### 🔐 **AWS Setup & Configuration**
-| Document | Purpose | Skill Level |
-|----------|---------|-------------|
-| **`ELEMENTARY_AWS_CONNECTION.md`** | Complete AWS account setup for beginners | 🟢 Beginner |
-| **`AWS_CREDENTIALS_SETUP.md`** | Professional AWS credentials management | 🟡 Intermediate |
-| **`CROSS_PLATFORM_SETUP.md`** | Tool installation for Windows & Mac | 🟢 Beginner |
-| **`SECURITY_AND_CREDENTIALS.md`** | Security best practices & credential management | 🟢 Beginner |
-| **`env.template.README.md`** | Complete environment template guide | 🟢 Beginner |
-| **`scripts/README.md`** | Setup credentials scripts guide | 🟢 Beginner |
+### **🔑 AWS Credentials Setup**
+- **[AWS Credentials Walkthrough](SECURITY_AND_CREDENTIALS.md)** - Complete guide to setting up AWS access
+- **[Environment Template Guide](env.template.README.md)** - How to use the env.template file
+- **[Credential Scripts Guide](scripts/README.md)** - Automated credential setup and validation
 
-### 🚀 **Getting Started**
-| Document | Purpose | Skill Level |
-|----------|---------|-------------|
-| **`QUICK_START.md`** | 5-minute lab deployment | 🟢 Beginner |
-| **`SETUP_GUIDE.md`** | Comprehensive setup instructions | 🟡 Intermediate |
-| **`LAB_CHECKLIST.md`** | Step-by-step completion tracking | 🟢 Beginner |
+### **🏗️ Terraform Infrastructure as Code**
+- **[Terraform Guide](../terraform/README.md)** - Complete beginner's guide to Terraform
+- **[VPC Module Guide](../terraform/modules/vpc/README.md)** - Understanding networking
+- **[EC2 Module Guide](../terraform/modules/ec2/README.md)** - Understanding virtual servers
+- **[Security Groups Guide](../terraform/modules/security_groups/README.md)** - Understanding firewalls
 
-### 🏗️ **Understanding the Lab**
-| Document | Purpose | Skill Level |
-|----------|---------|-------------|
-| **`README.md`** | Project overview and architecture | 🟢 Beginner |
-| **`PROJECT_STRUCTURE.md`** | File organization explanation | 🟡 Intermediate |
-| **`MODULE_DOCUMENTATION.md`** | Detailed Terraform module analysis | 🔴 Advanced |
-
-### 🔧 **Technical Deep Dives**
-| Document | Purpose | Skill Level |
-|----------|---------|-------------|
-| **`SCRIPT_DEEP_DIVE.md`** | PowerShell script analysis | 🟡 Intermediate |
-| **`MODULE_DOCUMENTATION.md`** | Infrastructure component details | 🔴 Advanced |
+### **🚀 Lab Setup & Execution**
+- **[Setup Guide](SETUP_GUIDE.md)** - Step-by-step lab setup instructions
+- **[Quick Start](../QUICK_START.md)** - Get up and running fast
+- **[Lab Checklist](LAB_CHECKLIST.md)** - Track your progress through the lab
 
 ---
 
-## 🎯 **Choose Your Learning Path**
+## 📚 **All Documentation**
 
-### 🟢 **Beginner Path** (0-6 months AWS experience)
-**Goal**: Get the lab running and understand basic concepts
+### **🔐 Security & Credentials**
+- **[Security and Credentials Guide](SECURITY_AND_CREDENTIALS.md)** - Comprehensive AWS security setup
+- **[Environment Template](env.template.README.md)** - Safe credential management
+- **[Credential Scripts](scripts/README.md)** - Automated setup tools
 
-1. **Start Here**: `ELEMENTARY_AWS_CONNECTION.md`
-   - Create AWS account
-   - Set up credentials
-   - Install tools
+### **🏗️ Infrastructure & Terraform**
+- **[Main Terraform Guide](../terraform/README.md)** - Complete Terraform tutorial
+- **[VPC Module](../terraform/modules/vpc/README.md)** - Network foundation
+- **[EC2 Module](../terraform/modules/ec2/README.md)** - Virtual servers
+- **[Security Groups Module](../terraform/modules/security_groups/README.md)** - Firewall rules
+- **[Project Structure](PROJECT_STRUCTURE.md)** - How the project is organized
 
-2. **Get Running**: `QUICK_START.md`
-   - Deploy infrastructure
-   - Run basic tests
-   - See results
-
-3. **Learn More**: `SETUP_GUIDE.md`
-   - Understand what you're doing
-   - Learn AWS concepts
-   - Practice commands
-
-4. **Track Progress**: `LAB_CHECKLIST.md`
-   - Complete all steps
-   - Document learning
-   - Build confidence
-
-### 🟡 **Intermediate Path** (6 months - 2 years AWS experience)
-**Goal**: Understand the lab architecture and customize it
-
-1. **Quick Setup**: `QUICK_START.md`
-   - Rapid deployment
-   - Verify functionality
-   - Test features
-
-2. **Understand Structure**: `PROJECT_STRUCTURE.md`
-   - Why files are organized this way
-   - How components work together
-   - Best practices used
-
-3. **Deep Dive**: `SCRIPT_DEEP_DIVE.md`
-   - How automation works
-   - Script functions and logic
-   - Customization opportunities
-
-4. **Extend & Customize**: `MODULE_DOCUMENTATION.md`
-   - Modify Terraform modules
-   - Add new security controls
-   - Integrate with existing infrastructure
-
-### 🔴 **Advanced Path** (2+ years AWS experience)
-**Goal**: Use the lab as a foundation for advanced security research
-
-1. **Architecture Review**: `README.md` + `PROJECT_STRUCTURE.md`
-   - Understand design decisions
-   - Identify improvement opportunities
-   - Plan customizations
-
-2. **Technical Analysis**: `MODULE_DOCUMENTATION.md`
-   - Review security controls
-   - Analyze best practices
-   - Identify gaps
-
-3. **Automation Enhancement**: `SCRIPT_DEEP_DIVE.md`
-   - Extend functionality
-   - Add monitoring
-   - Integrate with security tools
-
-4. **Production Adaptation**: Custom development
-   - Scale for enterprise use
-   - Add compliance controls
-   - Integrate with SIEM/SOAR
+### **🚀 Lab Execution**
+- **[Setup Guide](SETUP_GUIDE.md)** - Complete lab setup
+- **[Quick Start](../QUICK_START.md)** - Fast deployment
+- **[Lab Checklist](LAB_CHECKLIST.md)** - Progress tracking
+- **[Module Documentation](MODULE_DOCUMENTATION.md)** - Deep dive into each component
 
 ---
 
-## 📖 **Document Descriptions**
+## 🎯 **Learning Paths**
 
-### 🔐 **AWS Setup Documents**
+### **🌱 Complete Beginner Path**
+1. **[AWS Credentials Setup](SECURITY_AND_CREDENTIALS.md)** - Get AWS access
+2. **[Terraform Guide](../terraform/README.md)** - Learn infrastructure as code
+3. **[Setup Guide](SETUP_GUIDE.md)** - Deploy your first lab
+4. **[Lab Checklist](LAB_CHECKLIST.md)** - Complete the security scenarios
 
-#### `ELEMENTARY_AWS_CONNECTION.md`
-- **Perfect for**: Complete AWS beginners
-- **What it covers**: Step-by-step AWS account creation
-- **Time to complete**: 30-45 minutes
-- **Prerequisites**: None
-- **Outcome**: Working AWS account with proper permissions
+### **🚀 Developer Path**
+1. **[Quick Start](../QUICK_START.md)** - Deploy quickly
+2. **[Module Documentation](MODULE_DOCUMENTATION.md)** - Understand the architecture
+3. **[Project Structure](PROJECT_STRUCTURE.md)** - Learn the codebase
+4. **[Customize and Extend](../terraform/README.md)** - Modify the infrastructure
 
-#### `AWS_CREDENTIALS_SETUP.md`
-- **Perfect for**: Users who want professional-grade setup
-- **What it covers**: IAM best practices, security considerations
-- **Time to complete**: 20-30 minutes
-- **Prerequisites**: Basic AWS knowledge
-- **Outcome**: Secure, maintainable AWS configuration
-
-#### `CROSS_PLATFORM_SETUP.md`
-- **Perfect for**: Windows and Mac users
-- **What it covers**: Tool installation for both platforms
-- **Time to complete**: 15-30 minutes
-- **Prerequisites**: None
-- **Outcome**: Working development environment
-
-### 🚀 **Getting Started Documents**
-
-#### `QUICK_START.md`
-- **Perfect for**: Users who want to see results fast
-- **What it covers**: Essential commands and deployment
-- **Time to complete**: 5-10 minutes
-- **Prerequisites**: AWS setup complete
-- **Outcome**: Running security lab
-
-#### `SETUP_GUIDE.md`
-- **Perfect for**: Users who want to understand the process
-- **What it covers**: Detailed setup with explanations
-- **Time to complete**: 30-60 minutes
-- **Prerequisites**: AWS setup complete
-- **Outcome**: Deep understanding of lab setup
-
-#### `LAB_CHECKLIST.md`
-- **Perfect for**: Users who want to track progress
-- **What it covers**: Step-by-step completion tracking
-- **Time to complete**: Ongoing throughout lab
-- **Prerequisites**: None
-- **Outcome**: Organized learning experience
-
-### 🏗️ **Understanding Documents**
-
-#### `README.md`
-- **Perfect for**: Users who want project overview
-- **What it covers**: Lab objectives, architecture, features
-- **Time to complete**: 10-15 minutes
-- **Prerequisites**: None
-- **Outcome**: Clear understanding of lab purpose
-
-#### `PROJECT_STRUCTURE.md`
-- **Perfect for**: Users who want to understand organization
-- **What it covers**: File structure, design decisions, best practices
-- **Time to complete**: 15-20 minutes
-- **Prerequisites**: Basic programming knowledge
-- **Outcome**: Understanding of project organization
-
-#### `MODULE_DOCUMENTATION.md`
-- **Perfect for**: Users who want technical details
-- **What it covers**: Terraform modules, security controls, configuration
-- **Time to complete**: 45-90 minutes
-- **Prerequisites**: Terraform knowledge
-- **Outcome**: Deep technical understanding
-
-### 🔧 **Technical Documents**
-
-#### `SCRIPT_DEEP_DIVE.md`
-- **Perfect for**: Users who want to understand automation
-- **What it covers**: PowerShell scripts, functions, workflows
-- **Time to complete**: 30-45 minutes
-- **Prerequisites**: Basic scripting knowledge
-- **Outcome**: Understanding of lab automation
+### **🔒 Security Professional Path**
+1. **[Setup Guide](SETUP_GUIDE.md)** - Deploy the lab
+2. **[Lab Checklist](LAB_CHECKLIST.md)** - Run security scenarios
+3. **[Module Deep Dives](../terraform/modules/)** - Understand each component
+4. **[Extend with New Services](../terraform/README.md)** - Add more security tools
 
 ---
 
-## 🔍 **Find What You Need**
+## ⏱️ **Time-Based Recommendations**
 
-### **By Topic**
-- **AWS Setup**: `ELEMENTARY_AWS_CONNECTION.md`, `AWS_CREDENTIALS_SETUP.md`
-- **Tool Installation**: `CROSS_PLATFORM_SETUP.md`
-- **Quick Deployment**: `QUICK_START.md`
-- **Detailed Setup**: `SETUP_GUIDE.md`
-- **Progress Tracking**: `LAB_CHECKLIST.md`
-- **Project Overview**: `README.md`
-- **File Organization**: `PROJECT_STRUCTURE.md`
-- **Technical Details**: `MODULE_DOCUMENTATION.md`
-- **Automation**: `SCRIPT_DEEP_DIVE.md`
+### **🕐 15 Minutes**
+- **[Quick Start](../QUICK_START.md)** - Deploy the lab quickly
+- **[AWS Credentials Setup](SECURITY_AND_CREDENTIALS.md)** - Basic AWS setup
 
-### **By Skill Level**
-- **🟢 Beginner**: `ELEMENTARY_AWS_CONNECTION.md`, `QUICK_START.md`, `LAB_CHECKLIST.md`
-- **🟡 Intermediate**: `CROSS_PLATFORM_SETUP.md`, `SETUP_GUIDE.md`, `PROJECT_STRUCTURE.md`
-- **🔴 Advanced**: `MODULE_DOCUMENTATION.md`, `SCRIPT_DEEP_DIVE.md`
+### **🕐 1 Hour**
+- **[Setup Guide](SETUP_GUIDE.md)** - Complete lab setup
+- **[Terraform Guide](../terraform/README.md)** - Learn the basics
 
-### **By Time Available**
-- **5 minutes**: `QUICK_START.md`
-- **15 minutes**: `README.md`, `LAB_CHECKLIST.md`
-- **30 minutes**: `ELEMENTARY_AWS_CONNECTION.md`, `CROSS_PLATFORM_SETUP.md`
-- **1 hour**: `SETUP_GUIDE.md`, `PROJECT_STRUCTURE.md`
-- **2+ hours**: `MODULE_DOCUMENTATION.md`, `SCRIPT_DEEP_DIVE.md`
+### **🕐 2-4 Hours**
+- **[Lab Checklist](LAB_CHECKLIST.md)** - Complete all scenarios
+- **[Module Documentation](MODULE_DOCUMENTATION.md)** - Deep dive into components
+
+### **🕐 1 Day**
+- **[Complete Learning Path](#complete-beginner-path)** - Master everything
+- **[Customize and Extend](../terraform/README.md)** - Build your own variations
 
 ---
 
-## 🚀 **Recommended Reading Order**
+## 🔍 **Search by Topic**
 
-### **First Time Users**
-1. `README.md` - Understand what you're building
-2. `ELEMENTARY_AWS_CONNECTION.md` - Set up AWS account
-3. `CROSS_PLATFORM_SETUP.md` - Install tools
-4. `QUICK_START.md` - Get lab running
-5. `LAB_CHECKLIST.md` - Complete all steps
-6. `SETUP_GUIDE.md` - Understand what you did
+### **🔑 Authentication & Security**
+- AWS IAM setup
+- Access key management
+- Security best practices
+- Environment variables
 
-### **Experienced Users**
-1. `README.md` - Review lab objectives
-2. `QUICK_START.md` - Rapid deployment
-3. `PROJECT_STRUCTURE.md` - Understand organization
-4. `MODULE_DOCUMENTATION.md` - Review security controls
-5. `SCRIPT_DEEP_DIVE.md` - Understand automation
+### **🏗️ Infrastructure**
+- Terraform basics
+- AWS VPC setup
+- EC2 instances
+- Security groups
+- S3 buckets
 
-### **Educators & Trainers**
-1. `README.md` - Lab overview
-2. `PROJECT_STRUCTURE.md` - Teaching approach
-3. `MODULE_DOCUMENTATION.md` - Learning objectives
-4. `LAB_CHECKLIST.md` - Assessment criteria
-5. All other documents for comprehensive understanding
+### **🔒 Security Services**
+- GuardDuty configuration
+- Security Hub setup
+- CloudWatch monitoring
+- Threat detection
 
----
-
-## 🆘 **Getting Help**
-
-### **Documentation Issues**
-- Check this index for the right document
-- Review document prerequisites
-- Follow step-by-step instructions
-
-### **Technical Issues**
-- Use `LAB_CHECKLIST.md` for troubleshooting
-- Check platform-specific guides
-- Review error messages carefully
-
-### **AWS Issues**
-- Use `ELEMENTARY_AWS_CONNECTION.md` for setup problems
-- Check AWS documentation
-- Use AWS support (if available)
-
-### **Lab Issues**
-- Use `QUICK_START.md` for basic problems
-- Check `SETUP_GUIDE.md` for detailed troubleshooting
-- Review `MODULE_DOCUMENTATION.md` for technical issues
+### **📚 Learning & Documentation**
+- Step-by-step guides
+- Module explanations
+- Best practices
+- Troubleshooting
 
 ---
 
-## 📝 **Contributing to Documentation**
+## 🆘 **Need Help?**
 
-### **Found an Error?**
-- Create a GitHub issue
-- Describe the problem clearly
-- Include your platform and error messages
+### **📖 Documentation Issues**
+- Check this index first
+- Look at the specific module READMEs
+- Review the troubleshooting sections
 
-### **Want to Improve?**
-- Fork the repository
-- Make your changes
-- Submit a pull request
+### **🔧 Technical Problems**
+- **[Setup Guide](SETUP_GUIDE.md)** - Common setup issues
+- **[Terraform Guide](../terraform/README.md)** - Infrastructure problems
+- **[Security Guide](SECURITY_AND_CREDENTIALS.md)** - AWS credential issues
 
-### **Need a New Guide?**
-- Check if it exists in this index
-- Request new documentation
-- Consider contributing it yourself
-
----
-
-## 🎯 **Success Metrics**
-
-### **Beginner Success**
-- ✅ AWS account created and configured
-- ✅ Lab deployed and running
-- ✅ Basic security concepts understood
-- ✅ Comfortable with AWS CLI and Terraform
-
-### **Intermediate Success**
-- ✅ Lab customized for your needs
-- ✅ Security controls modified
-- ✅ New scenarios added
-- ✅ Ready for production adaptation
-
-### **Advanced Success**
-- ✅ Lab integrated with existing infrastructure
-- ✅ Advanced security controls implemented
-- ✅ Compliance requirements met
-- ✅ Team trained and operational
+### **💬 Community Support**
+- GitHub Issues - Report bugs or request features
+- GitHub Discussions - Ask questions and share solutions
+- Project README - General project information
 
 ---
 
-## 🚀 **Next Steps**
+## 📈 **Skill Level Indicators**
 
-### **After Reading This Index**
-1. **Choose your path** based on skill level
-2. **Start with the recommended documents**
-3. **Follow the step-by-step instructions**
-4. **Track your progress** with checklists
-5. **Ask for help** when needed
-
-### **After Completing the Lab**
-1. **Document your learnings**
-2. **Share with your team**
-3. **Customize for your environment**
-4. **Contribute improvements**
-5. **Teach others**
+- **🌱 Beginner** - No prior AWS/Terraform experience needed
+- **🚀 Intermediate** - Some AWS or programming experience helpful
+- **🔒 Advanced** - AWS and security background recommended
+- **🏗️ Expert** - Deep infrastructure and security knowledge
 
 ---
 
-## 📚 **Documentation Philosophy**
+## 🎯 **What You'll Learn**
 
-This documentation is designed to be:
+### **🔐 AWS Security**
+- Setting up secure AWS credentials
+- Managing access keys safely
+- Implementing security best practices
+- Using AWS security services
 
-- **🟢 Beginner-Friendly**: Clear, simple language
-- **🟡 Comprehensive**: Covers all aspects thoroughly
-- **🔴 Technical**: Provides deep technical details
-- **🔄 Progressive**: Builds knowledge step by step
-- **🌍 Cross-Platform**: Works on Windows and Mac
-- **🎯 Goal-Oriented**: Focuses on learning outcomes
-- **📖 Self-Contained**: Each document is complete
-- **🔗 Connected**: Documents reference each other
+### **🏗️ Infrastructure as Code**
+- Terraform fundamentals
+- Modular infrastructure design
+- Clean, maintainable code
+- Best practices for IaC
+
+### **🔒 Security Monitoring**
+- Threat detection with GuardDuty
+- Compliance monitoring with Security Hub
+- Logging and alerting with CloudWatch
+- Incident response simulation
+
+### **🚀 DevOps Skills**
+- Automated infrastructure deployment
+- Cross-platform scripting (PowerShell/Bash)
+- Version control with Git
+- CI/CD pipeline concepts
 
 ---
 
-## 🎉 **You're Ready to Start!**
-
-Choose your path, pick your first document, and begin your AWS security learning journey!
-
-**Remember**: Every expert was once a beginner. Take your time, follow the guides, and don't hesitate to ask for help.
-
-Happy learning! 🚀🔒
-
----
-
-*This index was last updated: [Current Date]  
-For the latest version, check the main repository.*
+<div align="center">
+  <p><em>📚 Choose your path and start learning! 🚀</em></p>
+  <p><em>Every expert was once a beginner - start where you are!</em></p>
+</div>
