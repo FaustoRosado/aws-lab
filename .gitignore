@@ -1,0 +1,408 @@
+# 🔐 AWS Security Lab - Git Ignore File
+# This file prevents sensitive information from being committed to GitHub
+
+# =============================================================================
+# 🚨 CRITICAL: AWS Credentials and Configuration
+# =============================================================================
+
+# AWS CLI Configuration
+.aws/
+aws-credentials.txt
+aws-config.txt
+aws-keys.txt
+aws-secrets.txt
+
+# AWS SDK Configuration
+aws-sdk-config.json
+aws-config.json
+
+# =============================================================================
+# 🔑 SSH Keys and Certificates
+# =============================================================================
+
+# SSH Private Keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+
+# Lab-specific SSH keys
+lab-key
+lab-key.pub
+terraform/modules/ec2/ssh/lab-key
+terraform/modules/ec2/ssh/lab-key.pub
+
+# Common SSH key names
+id_rsa
+id_ed25519
+id_ecdsa
+id_dsa
+
+# SSH Directory
+ssh/
+
+# =============================================================================
+# 🌍 Environment Variables and Secrets
+# =============================================================================
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+*.env
+
+# Configuration files with secrets
+config.env
+secrets.env
+credentials.env
+
+# =============================================================================
+# 🏗️ Terraform State and Secrets
+# =============================================================================
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfstate.old
+
+# Terraform working directory
+.terraform/
+.terraform.lock.hcl
+
+# Terraform variable files with secrets
+terraform.tfvars
+*.tfvars
+secrets.tf
+variables.tf.local
+
+# Terraform override files
+*.tfoverride
+override.tf
+
+# =============================================================================
+# 📝 Logs and Temporary Files
+# =============================================================================
+
+# Log files
+*.log
+*.log.*
+debug.log
+error.log
+access.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+
+# =============================================================================
+# 💻 Operating System Files
+# =============================================================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# =============================================================================
+# 🛠️ Development Tools and IDEs
+# =============================================================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# 📦 Package Managers and Dependencies
+# =============================================================================
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+
+# Ruby
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# =============================================================================
+# 🐳 Docker and Containers
+# =============================================================================
+
+# Docker
+Dockerfile.local
+docker-compose.override.yml
+.dockerignore
+
+# =============================================================================
+# ☁️ Cloud Provider Specific
+# =============================================================================
+
+# AWS
+.aws/
+aws-credentials/
+aws-config/
+
+# Azure
+.azure/
+azure-credentials/
+
+# Google Cloud
+.gcloud/
+google-credentials/
+
+# =============================================================================
+# 🔒 Security and Compliance
+# =============================================================================
+
+# Security scan results
+security-scan-results/
+vulnerability-reports/
+compliance-reports/
+
+# Audit logs
+audit-logs/
+access-logs/
+
+# =============================================================================
+# 📊 Data and Database Files
+# =============================================================================
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Data files
+*.csv
+*.xlsx
+*.xls
+data/
+datasets/
+
+# =============================================================================
+# 🧪 Testing and Coverage
+# =============================================================================
+
+# Test coverage
+coverage/
+.nyc_output/
+coverage.xml
+*.lcov
+
+# Test results
+test-results/
+junit.xml
+test-report.xml
+
+# =============================================================================
+# 🚀 Build and Deployment
+# =============================================================================
+
+# Build outputs
+build/
+dist/
+out/
+target/
+
+# Deployment files
+deploy/
+deployment/
+*.deploy
+
+# =============================================================================
+# 📱 Mobile and App Specific
+# =============================================================================
+
+# iOS
+*.xcuserstate
+*.xcworkspace
+xcuserdata/
+
+# Android
+*.apk
+*.aab
+.gradle/
+local.properties
+
+# =============================================================================
+# 🎯 Project Specific Exclusions
+# =============================================================================
+
+# Lab-specific files that shouldn't be committed
+lab-results/
+simulation-outputs/
+attack-logs/
+compromise-evidence/
+
+# Personal notes and configurations
+my-notes.md
+personal-config/
+local-settings/
+
+# =============================================================================
+# 📋 Documentation and Examples
+# =============================================================================
+
+# Example files with real credentials (keep templates)
+*-example.env
+*-template.env
+*-sample.env
+
+# =============================================================================
+# 🔍 Monitoring and Debugging
+# =============================================================================
+
+# Debug files
+debug/
+debug-*.log
+*.debug
+
+# Performance monitoring
+performance-logs/
+metrics/
+monitoring-data/
+
+# =============================================================================
+# 📚 Backup and Archive Files
+# =============================================================================
+
+# Backup files
+*.backup
+*.bak
+*.old
+*.orig
+*.save
+
+# Archive files
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# =============================================================================
+# 🌐 Web and Network
+# =============================================================================
+
+# Web server files
+.htaccess
+web.config
+
+# Network configuration
+network-config/
+vpn-config/
+
+# =============================================================================
+# 📱 Communication and Collaboration
+# =============================================================================
+
+# Chat logs
+*.chat
+chat-logs/
+
+# Meeting notes with sensitive info
+meeting-notes-sensitive/
+private-discussions/
+
+# =============================================================================
+# 🎯 Final Notes
+# =============================================================================
+
+# Remember: When in doubt, DON'T commit it!
+# If you're unsure about a file, add it to .gitignore
+# Better safe than sorry when it comes to security
+
+# Custom exclusions for your specific needs
+# Add any additional files or patterns here:
+# my-custom-file.txt
+# special-config/
+# private-data/
