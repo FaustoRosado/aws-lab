@@ -189,22 +189,75 @@ output = json
 
 ```
 aws-lab/
-├── terraform/                 # Infrastructure as Code
-│   ├── main.tf               # Main Terraform configuration
-│   ├── variables.tf          # Variable definitions
-│   ├── modules/              # Reusable Terraform modules
-│   │   ├── vpc/             # VPC and networking
-│   │   ├── security_groups/ # Security group definitions
-│   │   ├── ec2/             # EC2 instances
-│   │   ├── s3/              # S3 bucket for threat intel
-│   │   ├── guardduty/       # GuardDuty configuration
-│   │   └── security_hub/    # Security Hub setup
-│   └── outputs.tf           # Output values
-├── scripts/                  # Automation scripts
-│   └── setup_lab.ps1        # Main lab setup script
-├── docs/                     # Documentation
-│   └── SETUP_GUIDE.md       # Detailed setup guide
-└── README.md                 # This file
+├── terraform/                           # Infrastructure as Code
+│   ├── main.tf                         # Main Terraform configuration
+│   ├── variables.tf                    # Variable definitions  
+│   ├── outputs.tf                      # Output values
+│   ├── main.tf.README.md               # Infrastructure conductor guide
+│   ├── variables.tf.README.md          # Configuration control center guide
+│   ├── outputs.tf.README.md            # Information highway guide
+│   ├── README.md                        # Complete Terraform beginner's guide
+│   └── modules/                        # Reusable Terraform modules
+│       ├── vpc/                        # VPC and networking
+│       │   ├── main.tf                 # VPC, subnets, route tables
+│       │   ├── variables.tf            # VPC configuration variables
+│       │   ├── outputs.tf              # VPC outputs
+│       │   └── README.md               # VPC module guide
+│       ├── security_groups/            # Security group definitions
+│       │   ├── main.tf                 # Security group rules
+│       │   ├── variables.tf            # Security group variables
+│       │   ├── outputs.tf              # Security group outputs
+│       │   └── README.md               # Security groups guide
+│       ├── ec2/                        # EC2 instances
+│       │   ├── main.tf                 # EC2 instances and key pairs
+│       │   ├── variables.tf            # EC2 configuration variables
+│       │   ├── outputs.tf              # EC2 outputs
+│       │   ├── README.md               # EC2 module guide
+│       │   └── user_data/              # Instance bootstrapping scripts
+│       │       ├── web_server.sh       # Web server setup script
+│       │       └── database_server.sh  # Database server setup script
+│       ├── s3/                         # S3 bucket for threat intel
+│       │   ├── main.tf                 # S3 bucket configuration
+│       │   ├── variables.tf            # S3 configuration variables
+│       │   ├── outputs.tf              # S3 outputs
+│       │   └── sample_data/            # Sample threat intelligence data
+│       │       └── threats/            # Malware indicators and samples
+│       ├── guardduty/                  # GuardDuty configuration
+│       │   ├── main.tf                 # GuardDuty detector setup
+│       │   ├── variables.tf            # GuardDuty configuration variables
+│       │   └── outputs.tf              # GuardDuty outputs
+│       ├── security_hub/               # Security Hub setup
+│       │   ├── main.tf                 # Security Hub configuration
+│       │   ├── variables.tf            # Security Hub variables
+│       │   └── outputs.tf              # Security Hub outputs
+│       ├── cloudwatch/                 # CloudWatch monitoring
+│       │   ├── main.tf                 # CloudWatch logs and dashboards
+│       │   ├── variables.tf            # CloudWatch variables
+│       │   └── outputs.tf              # CloudWatch outputs
+│       └── iam/                        # IAM roles and policies
+│           ├── main.tf                 # IAM roles and instance profiles
+│           ├── variables.tf            # IAM configuration variables
+│           └── outputs.tf              # IAM outputs
+├── scripts/                             # Automation scripts
+│   ├── setup_lab.ps1                   # Main lab setup script (PowerShell)
+│   ├── setup_lab.sh                    # Main lab setup script (Bash)
+│   ├── simulate_compromise.ps1         # Attack simulation script
+│   ├── setup_credentials.ps1           # Windows credential setup
+│   ├── setup_credentials.sh            # Mac/Linux credential setup
+│   └── README.md                       # Scripts usage guide
+├── docs/                                # Comprehensive documentation
+│   ├── INDEX.md                         # Master documentation index
+│   ├── SETUP_GUIDE.md                  # Complete lab setup guide
+│   ├── LAB_CHECKLIST.md                # Lab progress checklist
+│   ├── SECURITY_AND_CREDENTIALS.md     # AWS security setup guide
+│   ├── PROJECT_STRUCTURE.md             # Project organization guide
+│   └── MODULE_DOCUMENTATION.md         # Module deep dive guide
+├── .gitignore                           # Git ignore patterns
+├── env.template                         # Environment variables template
+├── env.template.README.md               # Environment template guide
+├── QUICK_START.md                       # Fast deployment guide
+├── GITHUB_COMMIT_STRATEGY.md           # Structured commit strategy
+└── README.md                            # This main project file
 ```
 
 ## 🔧 Configuration
