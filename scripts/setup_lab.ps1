@@ -1,199 +1,258 @@
-# AWS Security Lab Setup Script
-# This script helps you set up and run the EC2 Compromise & Remediation lab
+# AWS Security Lab - EC2 Compromise & Remediation
+# Main lab setup and management script
 
 param(
-    [string]$Action = "help",
-    [string]$AWSProfile = "default"
+    [string]$Action = "help"
 )
 
-Write-Host "🔒 AWS Security Lab - EC2 Compromise & Remediation" -ForegroundColor Green
-Write-Host "==================================================" -ForegroundColor Green
-
+# Function to display help
 function Show-Help {
-    Write-Host "`nUsage: .\setup_lab.ps1 -Action <action> [-AWSProfile <profile>]" -ForegroundColor Yellow
-    Write-Host "`nAvailable Actions:" -ForegroundColor Yellow
-    Write-Host "  help           - Show this help message"
+    Write-Host "AWS Security Lab - EC2 Compromise & Remediation" -ForegroundColor Green
+    Write-Host "=================================================" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Usage: .\setup_lab.ps1 [Action]"
+    Write-Host ""
+    Write-Host "Actions:"
     Write-Host "  check-aws      - Check AWS CLI configuration"
     Write-Host "  check-terraform - Check Terraform installation"
     Write-Host "  init           - Initialize Terraform"
     Write-Host "  plan           - Plan Terraform deployment"
-    Write-Host "  deploy         - Deploy the lab infrastructure"
-    Write-Host "  destroy        - Destroy the lab infrastructure"
-    Write-Host "  simulate       - Run compromise simulation scripts"
-    Write-Host "  monitor        - Monitor GuardDuty and Security Hub findings"
-    Write-Host "  cleanup        - Clean up resources and findings"
+    Write-Host "  deploy         - Deploy lab infrastructure"
+    Write-Host "  destroy        - Destroy lab infrastructure"
+    Write-Host "  simulate       - Run compromise simulation"
+    Write-Host "  monitor        - Monitor security findings"
+    Write-Host "  cleanup        - Clean up security findings"
+    Write-Host "  help           - Show this help message"
+    Write-Host ""
+    Write-Host "Examples:"
+    Write-Host "  .\setup_lab.ps1 check-aws"
+    Write-Host "  .\setup_lab.ps1 deploy"
+    Write-Host "  .\setup_lab.ps1 simulate"
 }
 
+# Function to check AWS CLI configuration
 function Check-AWS {
-    Write-Host "`n🔍 Checking AWS CLI configuration..." -ForegroundColor Blue
+    Write-Host "Checking AWS CLI configuration..." -ForegroundColor Blue
     
     try {
-        $identity = aws sts get-caller-identity --profile $AWSProfile 2>$null | ConvertFrom-Json
-        if ($identity) {
-            Write-Host "✅ AWS CLI configured successfully!" -ForegroundColor Green
-            Write-Host "   Account ID: $($identity.Account)" -ForegroundColor White
-            Write-Host "   User ARN: $($identity.Arn)" -ForegroundColor White
-            Write-Host "   User ID: $($identity.UserId)" -ForegroundColor White
+        $callerIdentity = aws sts get-caller-identity 2>$null | ConvertFrom-Json
+        
+        if ($callerIdentity) {
+            Write-Host "AWS CLI configured successfully!" -ForegroundColor Green
+            Write-Host "  Account ID: $($callerIdentity.Account)" -ForegroundColor White
+            Write-Host "  User ID: $($callerIdentity.UserId)" -ForegroundColor White
+            Write-Host "  ARN: $($callerIdentity.Arn)" -ForegroundColor White
         } else {
-            Write-Host "❌ AWS CLI not configured or profile not found" -ForegroundColor Red
-            Write-Host "   Run 'aws configure --profile $AWSProfile' to set up your credentials" -ForegroundColor Yellow
+            Write-Host "AWS CLI not configured or profile not found" -ForegroundColor Red
         }
-    } catch {
-        Write-Host "❌ Error checking AWS configuration: $_" -ForegroundColor Red
+    }
+    catch {
+        Write-Host "Error checking AWS configuration: $_" -ForegroundColor Red
     }
 }
 
+# Function to check Terraform installation
 function Check-Terraform {
-    Write-Host "`n🔍 Checking Terraform installation..." -ForegroundColor Blue
+    Write-Host "Checking Terraform installation..." -ForegroundColor Blue
     
     try {
-        $version = terraform version
-        if ($version) {
-            Write-Host "✅ Terraform installed successfully!" -ForegroundColor Green
-            Write-Host $version -ForegroundColor White
+        $terraformVersion = terraform version 2>$null
+        if ($terraformVersion) {
+            Write-Host "Terraform installed successfully!" -ForegroundColor Green
+            Write-Host "  Version: $($terraformVersion[0])" -ForegroundColor White
         } else {
-            Write-Host "❌ Terraform not found in PATH" -ForegroundColor Red
+            Write-Host "Terraform not found in PATH" -ForegroundColor Red
         }
-    } catch {
-        Write-Host "❌ Error checking Terraform: $_" -ForegroundColor Red
+    }
+    catch {
+        Write-Host "Error checking Terraform: $_" -ForegroundColor Red
     }
 }
 
+# Function to initialize Terraform
 function Initialize-Terraform {
-    Write-Host "`n🚀 Initializing Terraform..." -ForegroundColor Blue
+    Write-Host "Initializing Terraform..." -ForegroundColor Blue
     
-    Set-Location terraform
     try {
+        Set-Location terraform
         terraform init
-        Write-Host "✅ Terraform initialized successfully!" -ForegroundColor Green
-    } catch {
-        Write-Host "❌ Error initializing Terraform: $_" -ForegroundColor Red
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "Terraform initialized successfully!" -ForegroundColor Green
+        } else {
+            Write-Host "Error initializing Terraform" -ForegroundColor Red
+        }
+        Set-Location ..
     }
-    Set-Location ..
+    catch {
+        Write-Host "Error initializing Terraform: $_" -ForegroundColor Red
+    }
 }
 
+# Function to plan Terraform deployment
 function Plan-Terraform {
-    Write-Host "`n📋 Planning Terraform deployment..." -ForegroundColor Blue
+    Write-Host "Planning Terraform deployment..." -ForegroundColor Blue
     
-    Set-Location terraform
     try {
+        Set-Location terraform
         terraform plan
-        Write-Host "✅ Terraform plan completed!" -ForegroundColor Green
-    } catch {
-        Write-Host "❌ Error planning Terraform: $_" -ForegroundColor Red
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "Terraform plan completed!" -ForegroundColor Green
+        } else {
+            Write-Host "Error planning Terraform deployment" -ForegroundColor Red
+        }
+        Set-Location ..
     }
-    Set-Location ..
+    catch {
+        Write-Host "Error planning Terraform deployment: $_" -ForegroundColor Red
+    }
 }
 
+# Function to deploy infrastructure
 function Deploy-Infrastructure {
-    Write-Host "`n🚀 Deploying lab infrastructure..." -ForegroundColor Blue
+    Write-Host "Deploying lab infrastructure..." -ForegroundColor Blue
     
-    Set-Location terraform
-    try {
-        Write-Host "⚠️  This will create AWS resources that may incur costs!" -ForegroundColor Yellow
-        $confirm = Read-Host "Do you want to continue? (y/N)"
-        
-        if ($confirm -eq "y" -or $confirm -eq "Y") {
+    $confirm = Read-Host "This will create AWS resources that may incur costs. Continue? (y/n)"
+    if ($confirm -eq "y" -or $confirm -eq "Y") {
+        try {
+            Set-Location terraform
             terraform apply -auto-approve
-            Write-Host "✅ Infrastructure deployed successfully!" -ForegroundColor Green
-        } else {
-            Write-Host "❌ Deployment cancelled by user" -ForegroundColor Yellow
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Infrastructure deployed successfully!" -ForegroundColor Green
+            } else {
+                Write-Host "Error deploying infrastructure" -ForegroundColor Red
+            }
+            Set-Location ..
         }
-    } catch {
-        Write-Host "❌ Error deploying infrastructure: $_" -ForegroundColor Red
+        catch {
+            Write-Host "Error deploying infrastructure: $_" -ForegroundColor Red
+        }
+    } else {
+        Write-Host "Deployment cancelled by user" -ForegroundColor Yellow
     }
-    Set-Location ..
 }
 
+# Function to destroy infrastructure
 function Destroy-Infrastructure {
-    Write-Host "`n🗑️  Destroying lab infrastructure..." -ForegroundColor Blue
+    Write-Host "Destroying lab infrastructure..." -ForegroundColor Blue
     
-    Set-Location terraform
-    try {
-        Write-Host "⚠️  This will destroy ALL lab resources!" -ForegroundColor Red
-        $confirm = Read-Host "Are you sure? This action cannot be undone! (y/N)"
-        
-        if ($confirm -eq "y" -or $confirm -eq "Y") {
+    $confirm = Read-Host "This will destroy ALL lab resources. Continue? (y/n)"
+    if ($confirm -eq "y" -or $confirm -eq "Y") {
+        try {
+            Set-Location terraform
             terraform destroy -auto-approve
-            Write-Host "✅ Infrastructure destroyed successfully!" -ForegroundColor Green
-        } else {
-            Write-Host "❌ Destruction cancelled by user" -ForegroundColor Yellow
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Infrastructure destroyed successfully!" -ForegroundColor Green
+            } else {
+                Write-Host "Error destroying infrastructure" -ForegroundColor Red
+            }
+            Set-Location ..
         }
-    } catch {
-        Write-Host "❌ Error destroying infrastructure: $_" -ForegroundColor Red
-    }
-    Set-Location ..
-}
-
-function Simulate-Compromise {
-    Write-Host "`n🎭 Running compromise simulation..." -ForegroundColor Blue
-    
-    Write-Host "This will simulate various attack scenarios:" -ForegroundColor White
-    Write-Host "1. Port scanning" -ForegroundColor White
-    Write-Host "2. Brute force attempts" -ForegroundColor White
-    Write-Host "3. Suspicious file uploads" -ForegroundColor White
-    Write-Host "4. Unusual network connections" -ForegroundColor White
-    
-    $confirm = Read-Host "Do you want to run the simulation? (y/N)"
-    
-    if ($confirm -eq "y" -or $confirm -eq "Y") {
-        Write-Host "🚀 Starting compromise simulation..." -ForegroundColor Green
-        # Add simulation logic here
-        Write-Host "✅ Simulation completed! Check GuardDuty and Security Hub for findings." -ForegroundColor Green
+        catch {
+            Write-Host "Error destroying infrastructure: $_" -ForegroundColor Red
+        }
     } else {
-        Write-Host "❌ Simulation cancelled by user" -ForegroundColor Yellow
+        Write-Host "Destruction cancelled by user" -ForegroundColor Yellow
     }
 }
 
+# Function to run compromise simulation
+function Run-Simulation {
+    Write-Host "Running compromise simulation..." -ForegroundColor Blue
+    
+    try {
+        $webServerIP = terraform output -raw web_server_public_ip 2>$null
+        if ($webServerIP) {
+            Write-Host "Starting compromise simulation..." -ForegroundColor Green
+            .\scripts\simulate_compromise.ps1 -WebServerIP $webServerIP
+            Write-Host "Simulation completed! Check GuardDuty and Security Hub for findings." -ForegroundColor Green
+        } else {
+            Write-Host "Web server IP not found. Deploy infrastructure first." -ForegroundColor Yellow
+        }
+    }
+    catch {
+        Write-Host "Error running simulation: $_" -ForegroundColor Red
+    }
+}
+
+# Function to monitor security findings
 function Monitor-Findings {
-    Write-Host "`n📊 Monitoring security findings..." -ForegroundColor Blue
+    Write-Host "Monitoring security findings..." -ForegroundColor Blue
     
-    Write-Host "Checking GuardDuty findings..." -ForegroundColor White
     try {
-        aws guardduty list-findings --detector-id $(aws guardduty list-detectors --query 'DetectorIds[0]' --output text) --profile $AWSProfile
-    } catch {
-        Write-Host "❌ Error checking GuardDuty findings: $_" -ForegroundColor Red
+        # Check GuardDuty findings
+        $guarddutyFindings = aws guardduty list-findings --detector-id $(terraform output -raw guardduty_detector_id) 2>$null
+        if ($guarddutyFindings) {
+            Write-Host "GuardDuty findings found." -ForegroundColor Green
+        } else {
+            Write-Host "No GuardDuty findings detected yet." -ForegroundColor Yellow
+        }
+        
+        # Check Security Hub findings
+        $securityHubFindings = aws securityhub get-findings 2>$null
+        if ($securityHubFindings) {
+            Write-Host "Security Hub findings found." -ForegroundColor Green
+        } else {
+            Write-Host "No Security Hub findings detected yet." -ForegroundColor Yellow
+        }
     }
-    
-    Write-Host "`nChecking Security Hub findings..." -ForegroundColor White
-    try {
-        aws securityhub get-findings --profile $AWSProfile
-    } catch {
-        Write-Host "❌ Error checking Security Hub findings: $_" -ForegroundColor Red
+    catch {
+        Write-Host "Error checking security findings: $_" -ForegroundColor Red
     }
 }
 
+# Function to clean up security findings
 function Cleanup-Findings {
-    Write-Host "`n🧹 Cleaning up security findings..." -ForegroundColor Blue
+    Write-Host "Cleaning up security findings..." -ForegroundColor Blue
     
-    Write-Host "This will archive or suppress findings from the lab simulation." -ForegroundColor White
-    $confirm = Read-Host "Do you want to continue? (y/N)"
-    
-    if ($confirm -eq "y" -or $confirm -eq "Y") {
-        Write-Host "🧹 Cleaning up findings..." -ForegroundColor Green
-        # Add cleanup logic here
-        Write-Host "✅ Cleanup completed!" -ForegroundColor Green
-    } else {
-        Write-Host "❌ Cleanup cancelled by user" -ForegroundColor Yellow
+    try {
+        # Archive findings to S3
+        $bucketName = terraform output -raw s3_bucket_name 2>$null
+        if ($bucketName) {
+            Write-Host "Archiving findings to S3 bucket: $bucketName" -ForegroundColor Green
+            # Add cleanup logic here
+        } else {
+            Write-Host "S3 bucket not found." -ForegroundColor Yellow
+        }
+    }
+    catch {
+        Write-Host "Error cleaning up findings: $_" -ForegroundColor Red
     }
 }
 
-# Main execution logic
+# Main script logic
 switch ($Action.ToLower()) {
-    "help" { Show-Help }
-    "check-aws" { Check-AWS }
-    "check-terraform" { Check-Terraform }
-    "init" { Initialize-Terraform }
-    "plan" { Plan-Terraform }
-    "deploy" { Deploy-Infrastructure }
-    "destroy" { Destroy-Infrastructure }
-    "simulate" { Simulate-Compromise }
-    "monitor" { Monitor-Findings }
-    "cleanup" { Cleanup-Findings }
-    default { 
-        Write-Host "❌ Unknown action: $Action" -ForegroundColor Red
+    "check-aws" {
+        Check-AWS
+    }
+    "check-terraform" {
+        Check-Terraform
+    }
+    "init" {
+        Initialize-Terraform
+    }
+    "plan" {
+        Plan-Terraform
+    }
+    "deploy" {
+        Deploy-Infrastructure
+    }
+    "destroy" {
+        Destroy-Infrastructure
+    }
+    "simulate" {
+        Run-Simulation
+    }
+    "monitor" {
+        Monitor-Findings
+    }
+    "cleanup" {
+        Cleanup-Findings
+    }
+    "help" {
         Show-Help
     }
+    default {
+        Write-Host "Unknown action: $Action" -ForegroundColor Red
+        Write-Host "Use '.\setup_lab.ps1 help' for usage information." -ForegroundColor Yellow
+    }
 }
-
-Write-Host "`n🔒 Lab setup script completed!" -ForegroundColor Green

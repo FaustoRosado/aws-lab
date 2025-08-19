@@ -1,8 +1,8 @@
-# 🔒 AWS Security Lab: EC2 Compromise & Remediation
+# AWS Security Lab: EC2 Compromise & Remediation
 
 This lab simulates an EC2 compromise scenario and demonstrates how to detect and remediate security threats using AWS GuardDuty and Security Hub.
 
-## 🎯 Lab Objectives
+## Lab Objectives
 
 - **Infrastructure Setup**: Deploy a vulnerable web application and database server
 - **Threat Simulation**: Simulate various attack scenarios to trigger security alerts
@@ -10,7 +10,7 @@ This lab simulates an EC2 compromise scenario and demonstrates how to detect and
 - **Investigation**: Analyze findings in AWS Security Hub
 - **Remediation**: Implement security controls and clean up compromised resources
 
-## 🏗️ Lab Architecture
+## Lab Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -59,18 +59,18 @@ This lab simulates an EC2 compromise scenario and demonstrates how to detect and
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- ✅ AWS Account with appropriate permissions
-- ✅ AWS CLI v2 installed and configured
-- ✅ Terraform v1.0+ installed
-- ✅ PowerShell 7+ (Windows) or Bash (Linux/Mac)
+- AWS Account with appropriate permissions
+- AWS CLI v2 installed and configured
+- Terraform v1.0+ installed
+- PowerShell 7+ (Windows) or Bash (Linux/Mac)
 
-### 🔐 **Security First!**
+### Security First!
 
-**⚠️ CRITICAL: Never commit AWS credentials to GitHub!**
+**CRITICAL: Never commit AWS credentials to GitHub!**
 
 This lab includes comprehensive security measures:
 - **`.gitignore`** - Excludes all sensitive files
@@ -98,11 +98,6 @@ aws configure
 [default]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
-
-# Edit C:\Users\[YourUsername]\.aws\config
-[default]
-region = us-east-1
-output = json
 ```
 
 ### 2. Verify Setup
@@ -148,7 +143,7 @@ output = json
 .\scripts\setup_lab.ps1 -Action destroy
 ```
 
-## 🔍 Lab Scenarios
+## Lab Scenarios
 
 ### Scenario 1: Web Application Compromise
 - **Target**: Public web server
@@ -168,7 +163,7 @@ output = json
 - **Detection**: GuardDuty network findings
 - **Remediation**: Implement least privilege, network monitoring
 
-## 🛡️ Security Services Used
+## Security Services Used
 
 ### AWS GuardDuty
 - **Threat Detection**: ML-based threat detection
@@ -185,7 +180,7 @@ output = json
 - **Metrics**: Performance and security metrics
 - **Alarms**: Automated alerting
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 aws-lab/
@@ -260,7 +255,7 @@ aws-lab/
 └── README.md                            # This main project file
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 - `AWS_REGION`: AWS region for deployment (default: us-east-1)
@@ -271,7 +266,7 @@ aws-lab/
 - `instance_type`: EC2 instance type (default: t3.micro)
 - `vpc_cidr`: VPC CIDR block (default: 10.0.0.0/16)
 
-## 📊 Monitoring & Alerting
+## Monitoring & Alerting
 
 ### CloudWatch Dashboards
 - **Security Metrics**: Failed login attempts, API call volumes
@@ -283,21 +278,21 @@ aws-lab/
 - **Security Hub Updates**: Compliance and security updates
 - **Infrastructure Changes**: Terraform deployment notifications
 
-## 🚨 Security Considerations
+## Security Considerations
 
 ### Lab Environment
-- ⚠️ **NOT FOR PRODUCTION**: This lab creates intentionally vulnerable resources
-- 🔒 **ISOLATED NETWORK**: Resources are isolated in a dedicated VPC
-- 🧹 **AUTOMATED CLEANUP**: Infrastructure is destroyed after lab completion
+- **NOT FOR PRODUCTION**: This lab creates intentionally vulnerable resources
+- **ISOLATED NETWORK**: Resources are isolated in a dedicated VPC
+- **AUTOMATED CLEANUP**: Infrastructure is destroyed after lab completion
 
 ### Best Practices
-- ✅ Use IAM roles with minimal required permissions
-- ✅ Enable CloudTrail for audit logging
-- ✅ Implement least privilege access
-- ✅ Regular security assessments
-- ✅ Automated security monitoring
+- Use IAM roles with minimal required permissions
+- Enable CloudTrail for audit logging
+- Implement least privilege access
+- Regular security assessments
+- Automated security monitoring
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -334,14 +329,14 @@ terraform version
 3. **Check region**: Verify resources are created in the correct region
 4. **Review documentation**: Check AWS service documentation for limits and requirements
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [AWS GuardDuty Documentation](https://docs.aws.amazon.com/guardduty/)
 - [AWS Security Hub Documentation](https://docs.aws.amazon.com/securityhub/)
 - [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 - [AWS Security Best Practices](https://aws.amazon.com/security/security-learning/)
 
-## 🤝 Contributing
+## Contributing
 
 This lab is designed for educational purposes. Feel free to:
 - Report issues or bugs
@@ -349,10 +344,10 @@ This lab is designed for educational purposes. Feel free to:
 - Add new attack scenarios
 - Enhance monitoring and detection
 
-## 📄 License
+## License
 
 This project is for educational purposes only. Use at your own risk in controlled lab environments.
 
 ---
 
-**⚠️ DISCLAIMER**: This lab creates intentionally vulnerable resources for security training. Never deploy this infrastructure in production environments or on AWS accounts with production workloads.
+**DISCLAIMER**: This lab creates intentionally vulnerable resources for security training. Never deploy this infrastructure in production environments or on AWS accounts with production workloads.

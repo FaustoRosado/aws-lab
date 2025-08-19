@@ -1,68 +1,59 @@
-# 🚀 Quick Start Guide - AWS Security Lab
+# Quick Start Guide - AWS Security Lab
 
-## ⚡ Get Started in 5 Minutes
+Get up and running with the AWS Security Lab in just 5 minutes!
 
-### 1. Configure AWS Credentials
-```powershell
+## Get Started in 5 Minutes
+
+### 1. Prerequisites (2 minutes)
+- AWS Account with appropriate permissions
+- AWS CLI v2 installed and configured
+- Terraform v1.0+ installed
+- PowerShell 7+ (Windows) or Bash (Linux/Mac)
+
+### 2. Configure AWS Credentials (1 minute)
+```bash
+# Windows
 aws configure
-# Enter your AWS Access Key ID
-# Enter your AWS Secret Access Key
-# Enter your preferred region (e.g., us-east-1)
-# Enter output format (json)
+
+# Mac/Linux
+aws configure
 ```
 
-### 2. Verify Setup
-```powershell
-.\scripts\setup_lab.ps1 -Action check-aws
-.\scripts\setup_lab.ps1 -Action check-terraform
+### 3. Deploy Infrastructure (2 minutes)
+```bash
+# Navigate to terraform directory
+cd terraform
+
+# Initialize Terraform
+terraform init
+
+# Deploy infrastructure
+terraform apply -auto-approve
 ```
 
-### 3. Deploy Lab Infrastructure
-```powershell
-.\scripts\setup_lab.ps1 -Action init
-.\scripts\setup_lab.ps1 -Action plan
-.\scripts\setup_lab.ps1 -Action deploy
-```
+That's it! Your lab infrastructure is now running.
 
-### 4. Run Security Lab
-```powershell
-# Get your web server IP from Terraform outputs
-terraform output public_web_public_ip
+## What You'll Learn
 
-# Run compromise simulation
-.\scripts\simulate_compromise.ps1 -WebServerIP <YOUR_WEB_SERVER_IP>
+- **Infrastructure as Code** with Terraform
+- **AWS Security Services** (GuardDuty, Security Hub, CloudWatch)
+- **Threat Detection** and response
+- **Security Monitoring** and alerting
+- **Incident Response** procedures
 
-# Monitor findings
-.\scripts\setup_lab.ps1 -Action monitor
-```
+## Next Steps
 
-### 5. Clean Up
-```powershell
-.\scripts\setup_lab.ps1 -Action destroy
-```
+1. **Run Security Scenarios** - Use the simulation scripts
+2. **Monitor Findings** - Check GuardDuty and Security Hub
+3. **Investigate Threats** - Analyze security alerts
+4. **Practice Remediation** - Implement security controls
+5. **Clean Up** - Destroy infrastructure when done
 
-## 🔑 What You'll Learn
+## Important Notes
 
-- **AWS GuardDuty**: ML-based threat detection
-- **AWS Security Hub**: Centralized security findings
-- **Infrastructure Security**: VPC, security groups, IAM
-- **Incident Response**: Detection, investigation, remediation
-- **Security Monitoring**: CloudWatch, SNS, dashboards
+- This lab creates intentionally vulnerable resources for educational purposes
+- Never deploy this infrastructure in production environments
+- Monitor your AWS costs and clean up resources when finished
+- All resources are isolated in a dedicated VPC for safety
 
-## 📚 Next Steps
-
-1. Read the full [README.md](README.md)
-2. Follow the [SETUP_GUIDE.md](docs/SETUP_GUIDE.md)
-3. Use the [LAB_CHECKLIST.md](docs/LAB_CHECKLIST.md) to track progress
-4. Explore the [scripts/](scripts/) directory for automation
-
-## ⚠️ Important Notes
-
-- **Educational Use Only**: This lab creates intentionally vulnerable resources
-- **Cost Awareness**: AWS resources will incur charges
-- **Clean Up**: Always destroy infrastructure after completing the lab
-- **Security**: Never deploy this in production environments
-
----
-
-**Ready to start?** Run `aws configure` and then follow the steps above! 🚀
+**Ready to start?** Run `aws configure` and then follow the steps above!

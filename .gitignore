@@ -1,8 +1,8 @@
-# 🔐 AWS Security Lab - Git Ignore File
+# AWS Security Lab - Git Ignore File
 # This file prevents sensitive information from being committed to GitHub
 
 # =============================================================================
-# 🚨 CRITICAL: AWS Credentials and Configuration
+# CRITICAL: AWS Credentials and Configuration
 # =============================================================================
 
 # AWS CLI Configuration
@@ -17,7 +17,7 @@ aws-sdk-config.json
 aws-config.json
 
 # =============================================================================
-# 🔑 SSH Keys and Certificates
+# SSH Keys and Certificates
 # =============================================================================
 
 # SSH Private Keys
@@ -45,7 +45,7 @@ id_dsa
 ssh/
 
 # =============================================================================
-# 🌍 Environment Variables and Secrets
+# Environment Variables and Secrets
 # =============================================================================
 
 # Environment files
@@ -63,7 +63,7 @@ secrets.env
 credentials.env
 
 # =============================================================================
-# 🏗️ Terraform State and Secrets
+# Terraform State and Secrets
 # =============================================================================
 
 # Terraform state files
@@ -87,7 +87,7 @@ variables.tf.local
 override.tf
 
 # =============================================================================
-# 📝 Logs and Temporary Files
+# Logs and Temporary Files
 # =============================================================================
 
 # Log files
@@ -106,7 +106,7 @@ access.log
 *.swo
 
 # =============================================================================
-# 💻 Operating System Files
+# Operating System Files
 # =============================================================================
 
 # Windows
@@ -131,7 +131,7 @@ ehthumbs.db
 .Trash-*
 
 # =============================================================================
-# 🛠️ Development Tools and IDEs
+# Development Tools and IDEs
 # =============================================================================
 
 # Visual Studio Code
@@ -164,7 +164,7 @@ tramp
 .\#*
 
 # =============================================================================
-# 📦 Package Managers and Dependencies
+# Package Managers and Dependencies
 # =============================================================================
 
 # Node.js
@@ -214,7 +214,7 @@ build/
 hs_err_pid*
 
 # =============================================================================
-# 🐳 Docker and Containers
+# Docker and Containers
 # =============================================================================
 
 # Docker
@@ -223,7 +223,7 @@ docker-compose.override.yml
 .dockerignore
 
 # =============================================================================
-# ☁️ Cloud Provider Specific
+# Cloud Provider Specific
 # =============================================================================
 
 # AWS
@@ -240,7 +240,7 @@ azure-credentials/
 google-credentials/
 
 # =============================================================================
-# 🔒 Security and Compliance
+# Security and Compliance
 # =============================================================================
 
 # Security scan results
@@ -253,7 +253,7 @@ audit-logs/
 access-logs/
 
 # =============================================================================
-# 📊 Data and Database Files
+# Data and Database Files
 # =============================================================================
 
 # Database files
@@ -269,7 +269,7 @@ data/
 datasets/
 
 # =============================================================================
-# 🧪 Testing and Coverage
+# Testing and Coverage
 # =============================================================================
 
 # Test coverage
@@ -284,7 +284,7 @@ junit.xml
 test-report.xml
 
 # =============================================================================
-# 🚀 Build and Deployment
+# Build and Deployment
 # =============================================================================
 
 # Build outputs
@@ -299,7 +299,7 @@ deployment/
 *.deploy
 
 # =============================================================================
-# 📱 Mobile and App Specific
+# Mobile and App Specific
 # =============================================================================
 
 # iOS
@@ -314,7 +314,7 @@ xcuserdata/
 local.properties
 
 # =============================================================================
-# 🎯 Project Specific Exclusions
+# Project Specific Exclusions
 # =============================================================================
 
 # Lab-specific files that shouldn't be committed
@@ -329,7 +329,7 @@ personal-config/
 local-settings/
 
 # =============================================================================
-# 📋 Documentation and Examples
+# Documentation and Examples
 # =============================================================================
 
 # Example files with real credentials (keep templates)
@@ -338,7 +338,7 @@ local-settings/
 *-sample.env
 
 # =============================================================================
-# 🔍 Monitoring and Debugging
+# Monitoring and Debugging
 # =============================================================================
 
 # Debug files
@@ -352,7 +352,7 @@ metrics/
 monitoring-data/
 
 # =============================================================================
-# 📚 Backup and Archive Files
+# Backup and Archive Files
 # =============================================================================
 
 # Backup files
@@ -370,7 +370,7 @@ monitoring-data/
 *.7z
 
 # =============================================================================
-# 🌐 Web and Network
+# Web and Network
 # =============================================================================
 
 # Web server files
@@ -382,7 +382,7 @@ network-config/
 vpn-config/
 
 # =============================================================================
-# 📱 Communication and Collaboration
+# Communication and Collaboration
 # =============================================================================
 
 # Chat logs
@@ -394,7 +394,7 @@ meeting-notes-sensitive/
 private-discussions/
 
 # =============================================================================
-# 🎯 Final Notes
+# Final Notes
 # =============================================================================
 
 # Remember: When in doubt, DON'T commit it!
