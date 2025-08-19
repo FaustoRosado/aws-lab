@@ -24,7 +24,7 @@ The setup credentials scripts are **automated tools** that help you:
 ### Windows Users
 ```powershell
 # Navigate to project root
-cd C:\Users\faust\aws-lab
+cd aws-lab
 
 # Set up credentials interactively
 .\scripts\setup_credentials.ps1 setup
