@@ -1,299 +1,378 @@
-# Security & Credentials Management Guide
+# Security and Credentials Management
 
-This guide explains how to securely manage your AWS credentials and what files should NEVER be committed to GitHub.
+This guide covers essential security practices and credential management for your AWS Security Lab.
 
-## CRITICAL SECURITY WARNING
+## Overview
 
-**NEVER commit AWS credentials to GitHub!** This includes:
-- Access Key IDs
-- Secret Access Keys
-- Session tokens
-- Private SSH keys
-- Configuration files with credentials
-- Environment files with secrets
+Security is the foundation of any cloud environment. This guide teaches you how to:
+- Manage AWS credentials securely
+- Implement security best practices
+- Monitor and audit access
+- Respond to security incidents
 
-**Why this matters:**
-- **Public repositories** are visible to everyone on the internet
-- **Credential exposure** can lead to unauthorized AWS access
-- **Cost implications** - attackers can use your account and charge you
-- **Security breaches** - compromise of your entire AWS infrastructure
-- **Compliance violations** - potential legal and regulatory issues
+## AWS Credentials Overview
 
----
+### Types of Credentials
 
-## What to Exclude from GitHub
+1. **Root Account Credentials**
+   - Your main AWS account email and password
+   - **Never use for daily operations**
+   - Only for account management and billing
 
-### 1. **Create a `.gitignore` File**
+2. **IAM User Credentials**
+   - Individual user accounts with specific permissions
+   - Username/password for console access
+   - Access keys for programmatic access
 
-Create this file in your project root directory:
+3. **IAM Role Credentials**
+   - Temporary credentials for specific tasks
+   - No long-term access keys to manage
+   - Automatically rotated by AWS
 
-```bash
-# AWS Credentials and Configuration
-.aws/
-aws-credentials.txt
-aws-config.txt
-*.pem
-*.key
-*.p12
-*.pfx
+4. **Access Keys**
+   - Programmatic access to AWS services
+   - Consist of Access Key ID and Secret Access Key
+   - Used by applications, scripts, and CLI tools
 
-# Environment Variables
-.env
-.env.local
-.env.production
-.env.staging
-*.env
+## Creating Secure Credentials
 
-# SSH Keys
-ssh/
-*.pub
-id_rsa
-id_ed25519
-lab-key
-lab-key.pub
+### IAM User Best Practices
 
-# Terraform State and Secrets
-*.tfstate
-*.tfstate.*
-.terraform/
-.terraform.lock.hcl
-terraform.tfvars
-*.tfvars
-secrets.tf
+1. **Use Descriptive Names**
+   ```
+   Good: security-lab-admin, security-lab-developer
+   Bad: user1, admin, test
+   ```
 
-# Logs and Temporary Files
-*.log
-*.tmp
-*.temp
-.DS_Store
-Thumbs.db
+2. **Enable Multi-Factor Authentication (MFA)**
+   - Require MFA for all users
+   - Use hardware tokens or authenticator apps
+   - Never disable MFA for production accounts
 
-# IDE and Editor Files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+3. **Follow Least Privilege Principle**
+   - Only grant necessary permissions
+   - Start with minimal access and add as needed
+   - Regular permission reviews
 
-# OS Generated Files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-```
+### Access Key Security
 
-### 2. **Files That Should NEVER Be Committed**
+1. **Generate Unique Keys per Purpose**
+   ```
+   security-lab-cli-key
+   security-lab-script-key
+   security-lab-application-key
+   ```
 
-| File Type | Example Names | Why Exclude |
-|-----------|---------------|-------------|
-| **AWS Credentials** | `.aws/credentials`, `aws-keys.txt` | Contains secret access keys |
-| **SSH Private Keys** | `lab-key`, `id_rsa`, `*.pem` | Private authentication keys |
-| **Environment Files** | `.env`, `config.env` | May contain secrets |
-| **Terraform State** | `*.tfstate`, `*.tfstate.backup` | May contain sensitive data |
-| **Configuration Files** | `terraform.tfvars`, `secrets.tf` | May contain credentials |
-| **Log Files** | `*.log`, `debug.log` | May contain sensitive information |
+2. **Set Expiration Dates**
+   - Rotate keys every 90 days
+   - Use IAM policies to enforce expiration
+   - Monitor key usage
 
----
+3. **Secure Storage**
+   - Never commit keys to version control
+   - Use environment variables or secure credential stores
+   - Encrypt keys at rest
 
-## Safe Credential Management
+## Environment Configuration
 
-### 1. **Use Environment Variables**
+### Setting Up Environment Variables
 
-Instead of hardcoding credentials, use environment variables:
+1. **Copy the Template**
+   ```bash
+   cp env.template .env.lab
+   ```
 
-```bash
-# Set environment variables (Windows PowerShell)
-$env:AWS_ACCESS_KEY_ID="your-access-key"
-$env:AWS_SECRET_ACCESS_KEY="your-secret-key"
-$env:AWS_DEFAULT_REGION="us-east-1"
+2. **Configure Your Credentials**
+   ```bash
+   # .env.lab
+   AWS_ACCESS_KEY_ID=your_access_key_here
+   AWS_SECRET_ACCESS_KEY=your_secret_key_here
+   AWS_ACCOUNT_ID=your_12_digit_account_id
+   AWS_DEFAULT_REGION=us-east-1
+   ```
 
-# Set environment variables (Linux/Mac)
-export AWS_ACCESS_KEY_ID="your-access-key"
-export AWS_SECRET_ACCESS_KEY="your-secret-key"
-export AWS_DEFAULT_REGION="us-east-1"
-```
+3. **Load Environment Variables**
+   ```bash
+   # Windows PowerShell
+   Get-Content .env.lab | ForEach-Object { if($_ -match "^([^=]+)=(.*)$") { [Environment]::SetEnvironmentVariable($matches[1], $matches[2], "Process") } }
+   
+   # Linux/macOS
+   export $(cat .env.lab | xargs)
+   ```
 
-### 2. **Use AWS CLI Configuration**
+### AWS CLI Configuration
 
-Configure AWS CLI securely:
+1. **Configure AWS CLI**
+   ```bash
+   aws configure
+   ```
 
-```bash
-# Interactive configuration
-aws configure
+2. **Use Named Profiles**
+   ```bash
+   aws configure --profile security-lab
+   ```
 
-# Manual configuration
-aws configure set aws_access_key_id your-access-key
-aws configure set aws_secret_access_key your-secret-key
-aws configure set default.region us-east-1
-```
+3. **Switch Between Profiles**
+   ```bash
+   aws s3 ls --profile security-lab
+   ```
 
-### 3. **Use IAM Roles (Recommended)**
+## Security Best Practices
 
-For production environments, use IAM roles instead of access keys:
+### Network Security
 
-```bash
-# For EC2 instances
-aws configure set role_arn arn:aws:iam::123456789012:role/YourRoleName
+1. **Use Private Subnets**
+   - Place sensitive resources in private subnets
+   - Use NAT Gateways for outbound internet access
+   - Implement proper security group rules
 
-# For cross-account access
-aws configure set role_arn arn:aws:iam::123456789012:role/CrossAccountRole
-```
+2. **Security Group Configuration**
+   - Restrict access to necessary ports only
+   - Use specific IP ranges, not 0.0.0.0/0
+   - Regular security group reviews
 
----
+3. **VPC Flow Logs**
+   - Enable VPC Flow Logs for network monitoring
+   - Monitor for unusual traffic patterns
+   - Integrate with GuardDuty for threat detection
 
-## Template Files
+### Data Security
 
-### 1. **Environment Template (`env.template`)**
+1. **Encryption at Rest**
+   - Enable S3 bucket encryption
+   - Use EBS encryption for volumes
+   - Encrypt RDS databases
 
-Create a template file that users can copy and fill in:
+2. **Encryption in Transit**
+   - Use HTTPS for web traffic
+   - Enable TLS for database connections
+   - Use AWS Certificate Manager for SSL certificates
 
-```bash
-# Copy the template
-cp env.template .env
+3. **Access Logging**
+   - Enable S3 access logging
+   - Enable CloudTrail for API logging
+   - Monitor access patterns
 
-# Edit with your actual values
-nano .env
-```
+### Identity and Access Management
 
-### 2. **Template Content**
+1. **Regular Access Reviews**
+   - Monthly user access reviews
+   - Remove unused permissions
+   - Document access justifications
 
-Your `env.template` should look like this:
+2. **Privileged Access Management**
+   - Limit admin access to essential users
+   - Use temporary elevated permissions
+   - Monitor privileged actions
 
-```bash
-# AWS Configuration
-AWS_ACCESS_KEY_ID=your_access_key_here
-AWS_SECRET_ACCESS_KEY=your_secret_key_here
-AWS_DEFAULT_REGION=us-east-1
+3. **Cross-Account Access**
+   - Use IAM roles for cross-account access
+   - Implement proper trust relationships
+   - Regular cross-account permission reviews
 
-# Lab Configuration
-ENVIRONMENT=lab
-PROJECT_NAME=aws-security-lab
-OWNER=your_name_here
+## Monitoring and Alerting
 
-# Optional: Advanced Settings
-ENABLE_MONITORING=true
-ENABLE_LOGGING=true
-LOG_LEVEL=info
-```
+### CloudWatch Monitoring
 
----
+1. **Set Up Dashboards**
+   - Monitor resource usage
+   - Track performance metrics
+   - Set up cost monitoring
 
-## Best Practices
+2. **Configure Alarms**
+   - High CPU/memory usage
+   - Unusual network traffic
+   - Cost threshold alerts
 
-### 1. **Credential Rotation**
+### Security Monitoring
 
-- Rotate access keys every 90 days
-- Use temporary credentials when possible
-- Monitor credential usage with CloudTrail
+1. **GuardDuty Integration**
+   - Enable threat detection
+   - Configure alerting
+   - Regular finding reviews
 
-### 2. **Access Control**
+2. **Security Hub**
+   - Centralized security view
+   - Compliance monitoring
+   - Automated response workflows
 
-- Follow the principle of least privilege
-- Use IAM groups and policies
-- Regularly review and audit permissions
+3. **CloudTrail Monitoring**
+   - API call logging
+   - User activity tracking
+   - Suspicious behavior detection
 
-### 3. **Monitoring**
+## Incident Response
 
-- Enable CloudTrail for API logging
-- Set up CloudWatch alarms for unusual activity
-- Monitor AWS costs and usage
+### Security Incident Procedures
 
-### 4. **Documentation**
+1. **Immediate Response**
+   - Isolate affected resources
+   - Revoke compromised credentials
+   - Document the incident
 
-- Document your security practices
-- Keep security procedures up to date
-- Train team members on security
+2. **Investigation**
+   - Review CloudTrail logs
+   - Check GuardDuty findings
+   - Analyze network traffic
 
----
+3. **Recovery**
+   - Restore from backups
+   - Implement security improvements
+   - Update incident response procedures
 
-## Common Mistakes to Avoid
+### Communication Plan
 
-### 1. **Never Do This**
+1. **Internal Notification**
+   - Security team alerts
+   - Management notification
+   - Team communication
 
-```bash
-# ❌ DON'T: Hardcode credentials in scripts
-aws configure set aws_access_key_id AKIAIOSFODNN7EXAMPLE
+2. **External Communication**
+   - Customer notifications (if applicable)
+   - Regulatory reporting
+   - Public disclosure (if required)
 
-# ❌ DON'T: Commit credential files
-git add .aws/credentials
-git commit -m "Add AWS credentials"
+## Compliance and Auditing
 
-# ❌ DON'T: Share credentials in chat or email
-# Send your access key to someone
-```
+### Regular Audits
 
-### 2. **Always Do This**
+1. **Monthly Security Reviews**
+   - User access reviews
+   - Permission audits
+   - Security group reviews
 
-```bash
-# ✅ DO: Use environment variables
-export AWS_ACCESS_KEY_ID="your-key"
+2. **Quarterly Compliance Checks**
+   - Policy compliance
+   - Security standard adherence
+   - Risk assessments
 
-# ✅ DO: Use .gitignore
-echo ".aws/" >> .gitignore
+3. **Annual Security Assessments**
+   - Penetration testing
+   - Security architecture review
+   - Incident response testing
 
-# ✅ DO: Use IAM roles when possible
-aws configure set role_arn arn:aws:iam::123456789012:role/YourRole
-```
+### Documentation
 
----
+1. **Security Policies**
+   - Access control policies
+   - Data handling procedures
+   - Incident response plans
+
+2. **Audit Trails**
+   - Change management logs
+   - Access request records
+   - Security incident reports
+
+## Cost Management
+
+### Security Cost Optimization
+
+1. **Monitor Security Service Costs**
+   - GuardDuty data processing costs
+   - CloudTrail storage costs
+   - Security Hub costs
+
+2. **Optimize Resource Usage**
+   - Right-size security groups
+   - Optimize logging retention
+   - Use cost-effective monitoring
+
+3. **Budget Alerts**
+   - Set monthly spending limits
+   - Configure cost alerts
+   - Regular cost reviews
+
+## Tools and Resources
+
+### AWS Security Services
+
+1. **Identity and Access Management (IAM)**
+   - User and group management
+   - Policy creation and management
+   - Access key management
+
+2. **AWS CloudTrail**
+   - API call logging
+   - User activity tracking
+   - Compliance monitoring
+
+3. **Amazon GuardDuty**
+   - Threat detection
+   - Continuous monitoring
+   - Security findings
+
+4. **AWS Security Hub**
+   - Centralized security view
+   - Automated compliance checks
+   - Security best practices
+
+### Third-Party Tools
+
+1. **Credential Management**
+   - HashiCorp Vault
+   - AWS Secrets Manager
+   - Password managers
+
+2. **Security Monitoring**
+   - SIEM solutions
+   - Vulnerability scanners
+   - Penetration testing tools
 
 ## Troubleshooting
 
-### 1. **Permission Errors**
+### Common Security Issues
 
-If you get permission errors:
+1. **Access Denied Errors**
+   - Check IAM permissions
+   - Verify resource policies
+   - Review security group rules
 
-```bash
-# Check your current identity
-aws sts get-caller-identity
+2. **Credential Problems**
+   - Validate access keys
+   - Check key expiration
+   - Verify region configuration
 
-# Verify your credentials
-aws iam get-user
+3. **Network Access Issues**
+   - Review security group rules
+   - Check route table configuration
+   - Verify VPC settings
 
-# Check your permissions
-aws iam list-attached-user-policies --user-name YourUsername
-```
+### Getting Help
 
-### 2. **Configuration Issues**
+1. **AWS Support**
+   - Technical support
+   - Security guidance
+   - Best practice recommendations
 
-If AWS CLI can't find your credentials:
+2. **Community Resources**
+   - AWS Security Blog
+   - Security documentation
+   - User forums
 
-```bash
-# Check configuration files
-cat ~/.aws/credentials
-cat ~/.aws/config
+3. **Professional Services**
+   - Security consultants
+   - Penetration testing
+   - Compliance audits
 
-# Verify environment variables
-echo $AWS_ACCESS_KEY_ID
-echo $AWS_SECRET_ACCESS_KEY
-```
+## Next Steps
 
-### 3. **Security Concerns**
+After implementing these security practices:
 
-If you accidentally exposed credentials:
+1. **Regular Security Reviews**
+   - Monthly access reviews
+   - Quarterly security assessments
+   - Annual penetration testing
 
-1. **Immediately deactivate** the exposed credentials
-2. **Create new credentials** to replace them
-3. **Review your Git history** and remove any commits with credentials
-4. **Check AWS CloudTrail** for unauthorized usage
-5. **Monitor your AWS account** for unusual activity
+2. **Continuous Improvement**
+   - Update security policies
+   - Implement new security features
+   - Stay current with security threats
+
+3. **Team Training**
+   - Security awareness training
+   - Incident response drills
+   - Best practice updates
 
 ---
 
-## Summary
-
-- **Never commit credentials** to version control
-- **Use environment variables** or AWS CLI configuration
-- **Implement proper .gitignore** files
-- **Follow security best practices** for credential management
-- **Monitor and audit** your AWS account regularly
-- **Train your team** on security procedures
-
----
-
-<div align="center">
-  <p><em>Secure credential management is the foundation of AWS security!</em></p>
-</div>
+**Remember**: Security is an ongoing process, not a one-time setup. Regular monitoring, updates, and training are essential for maintaining a secure cloud environment.

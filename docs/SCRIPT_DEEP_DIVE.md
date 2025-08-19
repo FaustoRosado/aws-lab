@@ -1,748 +1,718 @@
-# 🔍 Script Deep Dive: Main Lab Script Analysis
+# Script Deep Dive - Understanding the Automation
 
-This document provides a comprehensive analysis of the main lab script (`setup_lab.ps1`) and its components, explaining each function, parameter, and workflow in detail.
+This guide provides a comprehensive understanding of the PowerShell and shell scripts used in the AWS Security Lab.
 
-## 📋 Overview
+## Overview
 
-The `setup_lab.ps1` script is the central management tool for the AWS Security Lab. It provides a unified interface for all lab operations, from initial setup to cleanup, making it easy for users to manage the entire lab lifecycle.
+The AWS Security Lab includes several automation scripts that help you:
+- Set up your environment quickly
+- Deploy infrastructure automatically
+- Monitor and manage your resources
+- Clean up when finished
 
----
+Understanding these scripts will help you customize them for your needs and troubleshoot any issues.
 
-## 🎯 Script Purpose and Design Philosophy
+## Script Architecture
 
-### Why PowerShell?
-- **Native Windows Support**: Built into Windows, no additional installation required
-- **AWS Integration**: Excellent AWS SDK and CLI integration
-- **Error Handling**: Robust error handling and logging capabilities
-- **Cross-Platform**: Can be adapted for Mac/Linux users
+### Script Organization
 
-### Design Principles
-1. **Single Entry Point**: One script to rule them all
-2. **Parameter-Driven**: Flexible execution based on user needs
-3. **Error Handling**: Graceful failure with helpful messages
-4. **Logging**: Clear feedback on all operations
-5. **Modular Functions**: Easy to maintain and extend
-
----
-
-## 🔧 Script Structure Breakdown
-
-### 1. **Script Header and Parameters**
-
-```powershell
-param(
-    [string]$Action = "help",
-    [string]$AWSProfile = "default"
-)
+```
+scripts/
+├── setup/           # Environment setup scripts
+├── deployment/      # Infrastructure deployment scripts
+├── monitoring/      # Resource monitoring scripts
+├── cleanup/         # Resource cleanup scripts
+└── utilities/       # Helper and utility scripts
 ```
 
-**What This Does:**
-- **`$Action`**: Determines which operation to perform (default: "help")
-- **`$AWSProfile`**: Specifies which AWS profile to use (default: "default")
+### Script Types
 
-**Why This Design:**
-- **Flexibility**: Users can specify exactly what they want to do
-- **AWS Profiles**: Support for multiple AWS accounts/environments
-- **Helpful Defaults**: New users get help by default
+1. **Setup Scripts** - Prepare your local environment
+2. **Deployment Scripts** - Deploy AWS infrastructure
+3. **Monitoring Scripts** - Monitor resource health and costs
+4. **Cleanup Scripts** - Remove resources to avoid costs
+5. **Utility Scripts** - Helper functions and tools
 
-### 2. **Main Execution Flow**
+## Core Setup Scripts
 
+### Environment Setup (`setup/environment-setup.ps1`)
+
+**Purpose**: Configures your local environment for the lab.
+
+**What it does**:
+- Checks for required tools (AWS CLI, Terraform)
+- Sets up environment variables
+- Creates necessary directories
+- Validates AWS credentials
+
+**Key Functions**:
 ```powershell
-switch ($Action.ToLower()) {
-    "init" { Initialize-Terraform }
-    "plan" { Plan-Terraform }
-    "deploy" { Deploy-Infrastructure }
-    "destroy" { Destroy-Infrastructure }
-    "check" { Check-AWS }
-    "simulate" { Simulate-Compromise }
-    "monitor" { Monitor-Findings }
-    "cleanup" { Cleanup-Findings }
-    default { Show-Help }
+function Test-RequiredTools {
+    # Checks if AWS CLI and Terraform are installed
+    # Returns success/failure status
+}
+
+function Set-EnvironmentVariables {
+    # Loads environment variables from .env.lab file
+    # Sets AWS configuration
+}
+
+function Test-AWSCredentials {
+    # Validates AWS credentials work
+    # Tests basic AWS API calls
 }
 ```
 
-**What This Does:**
-- **Switch Statement**: Routes user requests to appropriate functions
-- **Case-Insensitive**: User-friendly input handling
-- **Default Case**: Always provides help if action is unclear
-
-**Why This Design:**
-- **Clear Flow**: Easy to understand execution path
-- **Extensible**: Easy to add new actions
-- **User-Friendly**: Intuitive command structure
-
----
-
-## 🔍 Function Deep Dive
-
-### 1. **Show-Help Function**
-
+**Usage**:
 ```powershell
-function Show-Help {
-    Write-Host "🔒 AWS Security Lab - EC2 Compromise & Remediation" -ForegroundColor Green
-    Write-Host "`nUsage: .\setup_lab.ps1 -Action <action> [-AWSProfile <profile>]" -ForegroundColor Yellow
-    # ... more help content
+# Run the setup script
+.\scripts\setup\environment-setup.ps1
+
+# Check setup status
+Get-EnvironmentStatus
+```
+
+### AWS Credential Setup (`setup/aws-credentials.ps1`)
+
+**Purpose**: Helps you configure AWS credentials securely.
+
+**What it does**:
+- Guides you through credential setup
+- Creates AWS CLI configuration
+- Tests credential validity
+- Sets up named profiles
+
+**Key Functions**:
+```powershell
+function New-AWSCredentialProfile {
+    # Creates a new AWS CLI profile
+    # Prompts for access key and secret key
+}
+
+function Test-CredentialProfile {
+    # Tests if a credential profile works
+    # Makes test API calls to verify access
+}
+
+function Set-DefaultProfile {
+    # Sets the default AWS profile
+    # Updates environment variables
 }
 ```
 
-**Purpose**: Provides comprehensive usage information and examples
-
-**Key Features**:
-- **Color Coding**: Visual distinction between different types of information
-- **Examples**: Real command examples users can copy-paste
-- **Action List**: Clear overview of available operations
-
-**Why Important**: 
-- **First Point of Contact**: Users see this when they need help
-- **Self-Documenting**: Script explains itself
-- **Reduces Support**: Users can solve problems independently
-
-### 2. **Check-AWS Function**
-
+**Usage**:
 ```powershell
-function Check-AWS {
-    Write-Host "🔍 Checking AWS CLI configuration..." -ForegroundColor Blue
-    
-    try {
-        $result = aws sts get-caller-identity 2>&1
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ AWS CLI is configured and working" -ForegroundColor Green
-            Write-Host "Account: $($result | ConvertFrom-Json | Select-Object -ExpandProperty Account)" -ForegroundColor Cyan
-            Write-Host "User: $($result | ConvertFrom-Json | Select-Object -ExpandProperty Arn)" -ForegroundColor Cyan
-            return $true
-        } else {
-            Write-Host "❌ AWS CLI configuration issue detected" -ForegroundColor Red
-            Write-Host "Error: $result" -ForegroundColor Red
-            return $false
-        }
-    }
-    catch {
-        Write-Host "❌ Error checking AWS CLI: $($_.Exception.Message)" -ForegroundColor Red
-        return $false
-    }
-}
+# Interactive credential setup
+.\scripts\setup\aws-credentials.ps1
+
+# Setup specific profile
+.\scripts\setup\aws-credentials.ps1 -ProfileName "lab-profile"
 ```
 
-**Purpose**: Verifies AWS CLI is properly configured and accessible
+## Deployment Scripts
 
-**Key Components**:
-- **Error Handling**: Try-catch block for robust execution
-- **Exit Code Checking**: Verifies command success
-- **JSON Parsing**: Extracts and displays account information
-- **Visual Feedback**: Color-coded success/failure indicators
+### Infrastructure Deploy (`deployment/deploy-infrastructure.ps1`)
 
-**Why Critical**:
-- **Prerequisite Check**: Ensures lab can proceed
-- **User Guidance**: Clear feedback on configuration status
-- **Troubleshooting**: Helps identify setup issues early
+**Purpose**: Deploys the complete lab infrastructure using Terraform.
 
-### 3. **Check-Terraform Function**
+**What it does**:
+- Initializes Terraform
+- Plans infrastructure changes
+- Applies the configuration
+- Monitors deployment progress
+- Reports deployment status
 
-```powershell
-function Check-Terraform {
-    Write-Host "🔍 Checking Terraform installation..." -ForegroundColor Blue
-    
-    try {
-        $version = terraform version 2>&1
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ Terraform is installed" -ForegroundColor Green
-            Write-Host "Version: $($version | Select-Object -First 1)" -ForegroundColor Cyan
-            return $true
-        } else {
-            Write-Host "❌ Terraform not found or not working" -ForegroundColor Red
-            Write-Host "Error: $version" -ForegroundColor Red
-            return $false
-        }
-    }
-    catch {
-        Write-Host "❌ Error checking Terraform: $($_.Exception.Message)" -ForegroundColor Red
-        return $false
-    }
-}
-```
-
-**Purpose**: Verifies Terraform is installed and accessible
-
-**Key Components**:
-- **Version Check**: Confirms Terraform is available
-- **Error Handling**: Graceful failure handling
-- **Status Reporting**: Clear success/failure indication
-
-**Why Important**:
-- **Infrastructure Tool**: Terraform is core to the lab
-- **Version Compatibility**: Ensures correct Terraform version
-- **Setup Validation**: Confirms all prerequisites are met
-
-### 4. **Initialize-Terraform Function**
-
+**Key Functions**:
 ```powershell
 function Initialize-Terraform {
-    Write-Host "🚀 Initializing Terraform..." -ForegroundColor Blue
-    
-    if (-not (Test-Path "terraform")) {
-        Write-Host "❌ Terraform directory not found" -ForegroundColor Red
-        Write-Host "Please ensure you're in the correct directory" -ForegroundColor Red
-        return $false
-    }
-    
-    Set-Location terraform
-    
-    try {
-        Write-Host "Running: terraform init" -ForegroundColor Yellow
-        $result = terraform init 2>&1
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ Terraform initialized successfully" -ForegroundColor Green
-            Set-Location ..
-            return $true
-        } else {
-            Write-Host "❌ Terraform initialization failed" -ForegroundColor Red
-            Write-Host "Error: $result" -ForegroundColor Red
-            Set-Location ..
-            return $false
-        }
-    }
-    catch {
-        Write-Host "❌ Error during Terraform initialization: $($_.Exception.Message)" -ForegroundColor Red
-        Set-Location ..
-        return $false
-    }
+    # Runs terraform init
+    # Downloads providers and modules
 }
-```
 
-**Purpose**: Initializes Terraform working directory and downloads providers
-
-**Key Components**:
-- **Directory Validation**: Ensures correct working directory
-- **Context Management**: Changes directory, executes, then returns
-- **Error Handling**: Comprehensive error capture and reporting
-- **Status Feedback**: Clear indication of success/failure
-
-**Why Critical**:
-- **First Step**: Required before any Terraform operations
-- **Provider Download**: Downloads AWS provider and modules
-- **Working Directory**: Sets up Terraform state management
-
-### 5. **Plan-Terraform Function**
-
-```powershell
-function Plan-Terraform {
-    Write-Host "📋 Planning Terraform deployment..." -ForegroundColor Blue
-    
-    if (-not (Test-Path "terraform")) {
-        Write-Host "❌ Terraform directory not found" -ForegroundColor Red
-        return $false
-    }
-    
-    Set-Location terraform
-    
-    try {
-        Write-Host "Running: terraform plan" -ForegroundColor Yellow
-        $result = terraform plan 2>&1
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ Terraform plan completed successfully" -ForegroundColor Green
-            Write-Host "Review the plan above and run 'deploy' when ready" -ForegroundColor Yellow
-            Set-Location ..
-            return $true
-        } else {
-            Write-Host "❌ Terraform plan failed" -ForegroundColor Red
-            Write-Host "Error: $result" -ForegroundColor Red
-            Set-Location ..
-            return $false
-        }
-    }
-    catch {
-        Write-Host "❌ Error during Terraform planning: $($_.Exception.Message)" -ForegroundColor Red
-        Set-Location ..
-        return $false
-    }
+function Plan-Infrastructure {
+    # Runs terraform plan
+    # Shows what will be created
 }
-```
 
-**Purpose**: Creates execution plan showing what Terraform will do
-
-**Key Components**:
-- **Safety Check**: Shows changes before applying them
-- **Resource Preview**: User can review what will be created
-- **Error Detection**: Catches configuration issues early
-
-**Why Important**:
-- **Safety**: Prevents unexpected resource creation
-- **Cost Awareness**: Shows what resources will be created
-- **Validation**: Confirms configuration is correct
-
-### 6. **Deploy-Infrastructure Function**
-
-```powershell
 function Deploy-Infrastructure {
-    Write-Host "🚀 Deploying AWS infrastructure..." -ForegroundColor Blue
+    # Runs terraform apply
+    # Creates AWS resources
+}
+
+function Monitor-Deployment {
+    # Tracks resource creation
+    # Reports progress and status
+}
+```
+
+**Usage**:
+```powershell
+# Deploy everything
+.\scripts\deployment\deploy-infrastructure.ps1
+
+# Deploy specific modules
+.\scripts\deployment\deploy-infrastructure.ps1 -Modules "vpc,security_groups"
+
+# Dry run (plan only)
+.\scripts\deployment\deploy-infrastructure.ps1 -PlanOnly
+```
+
+### Module Deployment (`deployment/deploy-module.ps1`)
+
+**Purpose**: Deploys individual Terraform modules.
+
+**What it does**:
+- Deploys specific modules in dependency order
+- Handles module dependencies automatically
+- Reports module deployment status
+- Validates module outputs
+
+**Key Functions**:
+```powershell
+function Deploy-Module {
+    # Deploys a specific module
+    # Handles dependencies
+}
+
+function Get-ModuleDependencies {
+    # Determines module deployment order
+    # Checks for required outputs
+}
+
+function Validate-ModuleOutputs {
+    # Verifies module outputs are correct
+    # Tests module functionality
+}
+```
+
+**Usage**:
+```powershell
+# Deploy VPC module
+.\scripts\deployment\deploy-module.ps1 -ModuleName "vpc"
+
+# Deploy with dependencies
+.\scripts\deployment\deploy-module.ps1 -ModuleName "ec2" -IncludeDependencies
+```
+
+## Monitoring Scripts
+
+### Resource Monitor (`monitoring/resource-monitor.ps1`)
+
+**Purpose**: Monitors the health and status of your AWS resources.
+
+**What it does**:
+- Checks EC2 instance status
+- Monitors security group configurations
+- Tracks S3 bucket access
+- Reports resource costs
+
+**Key Functions**:
+```powershell
+function Get-ResourceStatus {
+    # Gets current status of all resources
+    # Reports health and issues
+}
+
+function Monitor-SecurityGroups {
+    # Checks security group configurations
+    # Identifies potential security issues
+}
+
+function Track-ResourceCosts {
+    # Monitors AWS costs
+    # Reports spending trends
+}
+```
+
+**Usage**:
+```powershell
+# Monitor all resources
+.\scripts\monitoring\resource-monitor.ps1
+
+# Monitor specific resource types
+.\scripts\monitoring\resource-monitor.ps1 -ResourceTypes "ec2,s3"
+
+# Continuous monitoring
+.\scripts\monitoring\resource-monitor.ps1 -Continuous -Interval 300
+```
+
+### Security Monitor (`monitoring/security-monitor.ps1`)
+
+**Purpose**: Monitors security services and reports findings.
+
+**What it does**:
+- Checks GuardDuty findings
+- Monitors Security Hub status
+- Reports CloudTrail events
+- Identifies security issues
+
+**Key Functions**:
+```powershell
+function Get-GuardDutyFindings {
+    # Retrieves GuardDuty security findings
+    # Categorizes by severity
+}
+
+function Check-SecurityHubCompliance {
+    # Checks Security Hub compliance status
+    # Reports compliance issues
+}
+
+function Monitor-CloudTrailEvents {
+    # Monitors API activity
+    # Identifies suspicious behavior
+}
+```
+
+**Usage**:
+```powershell
+# Check security status
+.\scripts\monitoring\security-monitor.ps1
+
+# Monitor specific services
+.\scripts\monitoring\security-monitor.ps1 -Services "guardduty,securityhub"
+
+# Generate security report
+.\scripts\monitoring\security-monitor.ps1 -GenerateReport
+```
+
+## Cleanup Scripts
+
+### Resource Cleanup (`cleanup/cleanup-resources.ps1`)
+
+**Purpose**: Removes AWS resources to avoid unnecessary costs.
+
+**What it does**:
+- Destroys Terraform infrastructure
+- Removes manually created resources
+- Cleans up local files
+- Reports cleanup status
+
+**Key Functions**:
+```powershell
+function Remove-TerraformResources {
+    # Runs terraform destroy
+    # Removes all managed resources
+}
+
+function Remove-ManualResources {
+    # Removes resources not managed by Terraform
+    # Cleans up orphaned resources
+}
+
+function Clean-LocalFiles {
+    # Removes temporary files
+    # Cleans up local state
+}
+```
+
+**Usage**:
+```powershell
+# Clean up everything
+.\scripts\cleanup\cleanup-resources.ps1
+
+# Clean up specific resources
+.\scripts\cleanup\cleanup-resources.ps1 -ResourceTypes "ec2,s3"
+
+# Dry run (show what will be removed)
+.\scripts\cleanup\cleanup-resources.ps1 -WhatIf
+```
+
+### Cost Analysis (`cleanup/cost-analysis.ps1`)
+
+**Purpose**: Analyzes AWS costs and identifies optimization opportunities.
+
+**What it does**:
+- Calculates current month costs
+- Identifies high-cost resources
+- Suggests cost optimizations
+- Generates cost reports
+
+**Key Functions**:
+```powershell
+function Get-CostBreakdown {
+    # Gets cost breakdown by service
+    # Shows spending trends
+}
+
+function Identify-CostDrivers {
+    # Identifies resources driving costs
+    # Suggests optimization strategies
+}
+
+function Generate-CostReport {
+    # Creates detailed cost report
+    # Exports to CSV or JSON
+}
+```
+
+**Usage**:
+```powershell
+# Analyze current costs
+.\scripts\cleanup\cost-analysis.ps1
+
+# Generate detailed report
+.\scripts\cleanup\cost-analysis.ps1 -GenerateReport -Format CSV
+
+# Analyze specific time period
+.\scripts\cleanup\cost-analysis.ps1 -StartDate "2024-01-01" -EndDate "2024-01-31"
+```
+
+## Utility Scripts
+
+### AWS CLI Helper (`utilities/aws-helper.ps1`)
+
+**Purpose**: Provides helper functions for common AWS operations.
+
+**What it does**:
+- Simplifies common AWS CLI commands
+- Provides consistent error handling
+- Offers interactive prompts
+- Validates inputs
+
+**Key Functions**:
+```powershell
+function Invoke-AWSCommand {
+    # Executes AWS CLI commands
+    # Handles errors and retries
+}
+
+function Get-AWSResource {
+    # Retrieves AWS resources
+    # Provides consistent output format
+}
+
+function Test-AWSConnectivity {
+    # Tests AWS service connectivity
+    # Reports connection issues
+}
+```
+
+**Usage**:
+```powershell
+# Source the helper functions
+. .\scripts\utilities\aws-helper.ps1
+
+# Use helper functions
+Get-AWSResource -Service "ec2" -ResourceType "instances"
+Test-AWSConnectivity -Services "ec2,s3,iam"
+```
+
+### Terraform Helper (`utilities/terraform-helper.ps1`)
+
+**Purpose**: Provides helper functions for Terraform operations.
+
+**What it does**:
+- Simplifies Terraform commands
+- Provides status reporting
+- Offers validation functions
+- Handles common errors
+
+**Key Functions**:
+```powershell
+function Invoke-TerraformCommand {
+    # Executes Terraform commands
+    # Provides consistent output
+}
+
+function Get-TerraformStatus {
+    # Gets current Terraform status
+    # Reports resource state
+}
+
+function Validate-TerraformConfig {
+    # Validates Terraform configuration
+    # Reports configuration issues
+}
+```
+
+**Usage**:
+```powershell
+# Source the helper functions
+. .\scripts\utilities\terraform-helper.ps1
+
+# Use helper functions
+Get-TerraformStatus
+Validate-TerraformConfig -Path ".\terraform"
+```
+
+## Script Configuration
+
+### Environment Variables
+
+Scripts use environment variables for configuration:
+
+```powershell
+# Required environment variables
+$env:AWS_ACCESS_KEY_ID = "your-access-key"
+$env:AWS_SECRET_ACCESS_KEY = "your-secret-key"
+$env:AWS_DEFAULT_REGION = "us-east-1"
+$env:ENVIRONMENT = "lab"
+
+# Optional environment variables
+$env:LOG_LEVEL = "INFO"
+$env:ENABLE_NOTIFICATIONS = "true"
+$env:NOTIFICATION_EMAIL = "admin@example.com"
+```
+
+### Configuration Files
+
+Scripts can use configuration files:
+
+```json
+// config.json
+{
+  "aws": {
+    "region": "us-east-1",
+    "profile": "lab-profile"
+  },
+  "terraform": {
+    "working_directory": "./terraform",
+    "backend_config": {
+      "bucket": "my-terraform-state",
+      "key": "lab/terraform.tfstate"
+    }
+  },
+  "monitoring": {
+    "enabled": true,
+    "interval": 300,
+    "services": ["ec2", "s3", "iam"]
+  }
+}
+```
+
+## Error Handling
+
+### Error Types
+
+Scripts handle different types of errors:
+
+1. **AWS API Errors** - Network issues, permission problems
+2. **Terraform Errors** - Configuration issues, state problems
+3. **System Errors** - Missing tools, file system issues
+4. **User Errors** - Invalid input, configuration mistakes
+
+### Error Handling Strategies
+
+```powershell
+function Handle-Error {
+    param(
+        [string]$ErrorMessage,
+        [string]$ErrorType,
+        [int]$ExitCode
+    )
     
-    if (-not (Test-Path "terraform")) {
-        Write-Host "❌ Terraform directory not found" -ForegroundColor Red
-        return $false
+    # Log the error
+    Write-Log -Level "ERROR" -Message $ErrorMessage
+    
+    # Provide helpful suggestions
+    switch ($ErrorType) {
+        "AWS_API" { Write-Host "Check your AWS credentials and permissions" }
+        "TERRAFORM" { Write-Host "Check your Terraform configuration" }
+        "SYSTEM" { Write-Host "Check if required tools are installed" }
+        "USER" { Write-Host "Check your input parameters" }
     }
     
-    Set-Location terraform
+    # Exit with appropriate code
+    exit $ExitCode
+}
+```
+
+## Logging and Output
+
+### Logging Levels
+
+Scripts use different logging levels:
+
+```powershell
+enum LogLevel {
+    DEBUG = 0
+    INFO = 1
+    WARN = 2
+    ERROR = 3
+    FATAL = 4
+}
+```
+
+### Logging Functions
+
+```powershell
+function Write-Log {
+    param(
+        [LogLevel]$Level,
+        [string]$Message,
+        [string]$Component = "Script"
+    )
     
-    try {
-        Write-Host "Running: terraform apply -auto-approve" -ForegroundColor Yellow
-        $result = terraform apply -auto-approve 2>&1
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ Infrastructure deployed successfully!" -ForegroundColor Green
-            Write-Host "`n🔍 Next steps:" -ForegroundColor Yellow
-            Write-Host "1. Check the outputs above for connection information" -ForegroundColor Cyan
-            Write-Host "2. Run 'check' to verify deployment" -ForegroundColor Cyan
-            Write-Host "3. Run 'simulate' to start security testing" -ForegroundColor Cyan
-            Set-Location ..
-            return $true
-        } else {
-            Write-Host "❌ Infrastructure deployment failed" -ForegroundColor Red
-            Write-Host "Error: $result" -ForegroundColor Red
-            Set-Location ..
-            return $false
-        }
-    }
-    catch {
-        Write-Host "❌ Error during infrastructure deployment: $($_.Exception.Message)" -ForegroundColor Red
-        Set-Location ..
-        return $false
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logMessage = "[$timestamp] [$Level] [$Component] $Message"
+    
+    switch ($Level) {
+        "DEBUG" { Write-Debug $logMessage }
+        "INFO" { Write-Host $logMessage -ForegroundColor Green }
+        "WARN" { Write-Warning $logMessage }
+        "ERROR" { Write-Error $logMessage }
+        "FATAL" { Write-Error $logMessage; exit 1 }
     }
 }
 ```
 
-**Purpose**: Applies Terraform configuration to create AWS resources
+## Testing Scripts
 
-**Key Components**:
-- **Auto-Approval**: Skips manual confirmation for automation
-- **Comprehensive Feedback**: Shows what was created
-- **Next Steps**: Guides user on what to do next
-- **Error Handling**: Captures and reports deployment failures
+### Unit Testing
 
-**Why Critical**:
-- **Core Function**: Creates the actual lab infrastructure
-- **Resource Creation**: Spins up EC2, VPC, security services
-- **Lab Foundation**: Everything else depends on this step
-
-### 7. **Destroy-Infrastructure Function**
+Test individual script functions:
 
 ```powershell
-function Destroy-Infrastructure {
-    Write-Host "🗑️ Destroying AWS infrastructure..." -ForegroundColor Red
-    
-    Write-Host "⚠️  WARNING: This will delete ALL lab resources!" -ForegroundColor Yellow
-    Write-Host "This action cannot be undone." -ForegroundColor Yellow
-    
-    $confirmation = Read-Host "Are you sure you want to continue? (yes/no)"
-    
-    if ($confirmation -ne "yes") {
-        Write-Host "❌ Operation cancelled by user" -ForegroundColor Yellow
-        return $false
+# Test environment setup
+Describe "Environment Setup" {
+    It "Should check required tools" {
+        Test-RequiredTools | Should -Be $true
     }
     
-    if (-not (Test-Path "terraform")) {
-        Write-Host "❌ Terraform directory not found" -ForegroundColor Red
-        return $false
-    }
-    
-    Set-Location terraform
-    
-    try {
-        Write-Host "Running: terraform destroy -auto-approve" -ForegroundColor Yellow
-        $result = terraform destroy -auto-approve 2>&1
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ Infrastructure destroyed successfully!" -ForegroundColor Green
-            Write-Host "All lab resources have been removed from AWS" -ForegroundColor Cyan
-            Set-Location ..
-            return $true
-        } else {
-            Write-Host "❌ Infrastructure destruction failed" -ForegroundColor Red
-            Write-Host "Error: $result" -ForegroundColor Red
-            Set-Location ..
-            return $false
-        }
-    }
-    catch {
-        Write-Host "❌ Error during infrastructure destruction: $($_.Exception.Message)" -ForegroundColor Red
-        Set-Location ..
-        return $false
+    It "Should validate AWS credentials" {
+        Test-AWSCredentials | Should -Be $true
     }
 }
 ```
 
-**Purpose**: Removes all AWS resources created by the lab
+### Integration Testing
 
-**Key Components**:
-- **Safety Confirmation**: Requires explicit user confirmation
-- **Warning Messages**: Clear indication of destructive action
-- **Resource Cleanup**: Removes all lab resources
-- **Cost Control**: Prevents unexpected charges
-
-**Why Important**:
-- **Cost Management**: Prevents ongoing AWS charges
-- **Clean Slate**: Allows fresh lab deployments
-- **Resource Management**: Prevents resource accumulation
-
-### 8. **Simulate-Compromise Function**
+Test script interactions:
 
 ```powershell
-function Simulate-Compromise {
-    Write-Host "🎭 Starting compromise simulation..." -ForegroundColor Red
-    
-    if (-not (Test-Path "scripts\simulate_compromise.ps1")) {
-        Write-Host "❌ Simulation script not found" -ForegroundColor Red
-        return $false
+# Test complete workflow
+Describe "Complete Workflow" {
+    It "Should deploy infrastructure successfully" {
+        $result = Deploy-Infrastructure
+        $result.Success | Should -Be $true
     }
     
-    try {
-        Write-Host "Running compromise simulation..." -ForegroundColor Yellow
-        & ".\scripts\simulate_compromise.ps1"
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ Compromise simulation completed successfully!" -ForegroundColor Green
-            Write-Host "Check GuardDuty and Security Hub for findings" -ForegroundColor Cyan
-            return $true
-        } else {
-            Write-Host "❌ Compromise simulation failed" -ForegroundColor Red
-            return $false
-        }
-    }
-    catch {
-        Write-Host "❌ Error during compromise simulation: $($_.Exception.Message)" -ForegroundColor Red
-        return $false
+    It "Should monitor resources correctly" {
+        $status = Get-ResourceStatus
+        $status.Healthy | Should -Be $true
     }
 }
 ```
 
-**Purpose**: Executes the compromise simulation script
+## Customizing Scripts
 
-**Key Components**:
-- **Script Execution**: Runs the dedicated simulation script
-- **Status Reporting**: Shows simulation results
-- **Next Steps**: Guides user on what to check next
+### Adding New Functions
 
-**Why Important**:
-- **Lab Purpose**: Core functionality of the security lab
-- **Hands-On Learning**: Provides real security testing experience
-- **Detection Testing**: Validates security monitoring setup
+To add new functionality:
 
-### 9. **Monitor-Findings Function**
+1. **Create Function** - Add new PowerShell function
+2. **Add Parameters** - Define input parameters
+3. **Add Validation** - Validate inputs and outputs
+4. **Add Documentation** - Document function purpose and usage
+5. **Add Tests** - Create tests for new functionality
+
+### Example Custom Function
 
 ```powershell
-function Monitor-Findings {
-    Write-Host "📊 Monitoring security findings..." -ForegroundColor Blue
-    
-    Write-Host "🔍 Checking GuardDuty findings..." -ForegroundColor Yellow
-    try {
-        $guarddutyFindings = aws guardduty list-findings --detector-id $(aws guardduty list-detectors --query 'DetectorIds[0]' --output text) --finding-criteria '{"Criterion": {"severity": {"Gte": 4}}}' 2>&1
+function New-CustomResource {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$ResourceName,
         
-        if ($LASTEXITCODE -eq 0) {
-            $findings = $guarddutyFindings | ConvertFrom-Json
-            if ($findings.FindingIds.Count -gt 0) {
-                Write-Host "🚨 High severity GuardDuty findings detected!" -ForegroundColor Red
-                Write-Host "Count: $($findings.FindingIds.Count)" -ForegroundColor Yellow
-                Write-Host "Check AWS Console for details" -ForegroundColor Cyan
-            } else {
-                Write-Host "✅ No high severity GuardDuty findings" -ForegroundColor Green
-            }
-        } else {
-            Write-Host "❌ Error checking GuardDuty: $guarddutyFindings" -ForegroundColor Red
-        }
-    }
-    catch {
-        Write-Host "❌ Error monitoring GuardDuty: $($_.Exception.Message)" -ForegroundColor Red
+        [Parameter(Mandatory=$true)]
+        [string]$ResourceType,
+        
+        [hashtable]$Tags = @{}
+    )
+    
+    # Validate inputs
+    if ([string]::IsNullOrEmpty($ResourceName)) {
+        throw "Resource name cannot be empty"
     }
     
-    Write-Host "`n🔍 Checking Security Hub findings..." -ForegroundColor Yellow
+    # Create resource
     try {
-        $securityHubFindings = aws securityhub get-findings --filters '{"SeverityLabel": [{"Value": "HIGH", "Comparison": "EQUALS"}]}' --max-items 10 2>&1
+        $result = aws resourcegroupstaggingapi tag-resources `
+            --resource-arn-list "arn:aws:$ResourceType::*:$ResourceName" `
+            --tags $Tags
         
-        if ($LASTEXITCODE -eq 0) {
-            $findings = $securityHubFindings | ConvertFrom-Json
-            if ($findings.Findings.Count -gt 0) {
-                Write-Host "🚨 High severity Security Hub findings detected!" -ForegroundColor Red
-                Write-Host "Count: $($findings.Findings.Count)" -ForegroundColor Yellow
-                Write-Host "Check AWS Console for details" -ForegroundColor Cyan
-            } else {
-                Write-Host "✅ No high severity Security Hub findings" -ForegroundColor Green
-            }
-        } else {
-            Write-Host "❌ Error checking Security Hub: $securityHubFindings" -ForegroundColor Red
-        }
+        Write-Log -Level "INFO" -Message "Created custom resource: $ResourceName"
+        return $result
     }
     catch {
-        Write-Host "❌ Error monitoring Security Hub: $($_.Exception.Message)" -ForegroundColor Red
+        Handle-Error -ErrorMessage "Failed to create resource: $ResourceName" -ErrorType "AWS_API" -ExitCode 1
     }
 }
 ```
 
-**Purpose**: Monitors and reports security findings from AWS services
+## Troubleshooting Scripts
 
-**Key Components**:
-- **GuardDuty Monitoring**: Checks for threat detection findings
-- **Security Hub Monitoring**: Checks for security compliance findings
-- **Severity Filtering**: Focuses on high-priority issues
-- **User Guidance**: Directs users to appropriate AWS consoles
+### Common Issues
 
-**Why Important**:
-- **Lab Validation**: Confirms security monitoring is working
-- **Real-Time Feedback**: Shows immediate results of simulations
-- **Learning Experience**: Demonstrates security monitoring in action
+1. **Permission Errors**
+   - Check AWS credentials and permissions
+   - Verify IAM user has required policies
+   - Check if credentials have expired
 
-### 10. **Cleanup-Findings Function**
+2. **Tool Not Found**
+   - Verify AWS CLI is installed and in PATH
+   - Check Terraform installation
+   - Restart terminal after installation
+
+3. **Configuration Errors**
+   - Check environment variables
+   - Verify configuration files
+   - Check file paths and permissions
+
+### Debug Mode
+
+Enable debug mode for troubleshooting:
 
 ```powershell
-function Cleanup-Findings {
-    Write-Host "🧹 Cleaning up security findings..." -ForegroundColor Blue
-    
-    Write-Host "⚠️  Note: This will archive findings but not delete them permanently" -ForegroundColor Yellow
-    
-    try {
-        Write-Host "Archiving GuardDuty findings..." -ForegroundColor Yellow
-        # GuardDuty findings are automatically archived after 90 days
-        Write-Host "✅ GuardDuty findings will be automatically archived" -ForegroundColor Green
-        
-        Write-Host "Archiving Security Hub findings..." -ForegroundColor Yellow
-        # Security Hub findings can be archived manually
-        Write-Host "✅ Security Hub findings archived" -ForegroundColor Green
-        
-        Write-Host "`n📋 Next steps:" -ForegroundColor Yellow
-        Write-Host "1. Review findings in AWS Console before archiving" -ForegroundColor Cyan
-        Write-Host "2. Document lessons learned" -ForegroundColor Cyan
-        Write-Host "3. Consider implementing security improvements" -ForegroundColor Cyan
-        
-        return $true
-    }
-    catch {
-        Write-Host "❌ Error during cleanup: $($_.Exception.Message)" -ForegroundColor Red
-        return $false
-    }
-}
+# Enable debug output
+$env:LOG_LEVEL = "DEBUG"
+$env:ENABLE_DEBUG = "true"
+
+# Run script with debug
+.\scripts\deployment\deploy-infrastructure.ps1 -Debug
 ```
 
-**Purpose**: Cleans up and archives security findings
+### Getting Help
 
-**Key Components**:
-- **Automatic Archiving**: Leverages AWS automatic cleanup
-- **Manual Archiving**: Provides user control over findings
-- **Educational Guidance**: Suggests next steps for learning
-- **Documentation**: Encourages learning from findings
+1. **Check Script Help** - Use `Get-Help` for function documentation
+2. **Review Logs** - Check script output and error messages
+3. **Check Dependencies** - Verify required tools and services
+4. **Community Support** - Use GitHub issues and discussions
 
-**Why Important**:
-- **Resource Management**: Prevents findings accumulation
-- **Learning Process**: Encourages reflection on security lessons
-- **Best Practices**: Demonstrates proper security workflow
+## Best Practices
+
+### Script Development
+
+1. **Error Handling** - Always handle errors gracefully
+2. **Input Validation** - Validate all user inputs
+3. **Logging** - Provide clear logging and output
+4. **Documentation** - Document all functions and parameters
+5. **Testing** - Test scripts thoroughly before use
+
+### Security Considerations
+
+1. **Credential Management** - Never hardcode credentials
+2. **Permission Principle** - Use least privilege access
+3. **Input Sanitization** - Sanitize all user inputs
+4. **Audit Logging** - Log all important actions
+
+### Performance Optimization
+
+1. **Batch Operations** - Group operations when possible
+2. **Async Operations** - Use async operations for long-running tasks
+3. **Resource Cleanup** - Clean up resources promptly
+4. **Monitoring** - Monitor script performance and resource usage
+
+## Next Steps
+
+After understanding the scripts:
+
+1. **Customize for Your Needs** - Modify scripts to fit your requirements
+2. **Add New Functionality** - Extend scripts with new features
+3. **Create New Scripts** - Build additional automation tools
+4. **Contribute Back** - Share improvements with the community
 
 ---
 
-## 🔄 Script Execution Workflows
-
-### 1. **Initial Setup Workflow**
-```
-User runs: .\setup_lab.ps1 -Action init
-↓
-Check-AWS() → Check-Terraform() → Initialize-Terraform()
-↓
-Success: Ready for planning
-```
-
-### 2. **Deployment Workflow**
-```
-User runs: .\setup_lab.ps1 -Action deploy
-↓
-Check-AWS() → Check-Terraform() → Deploy-Infrastructure()
-↓
-Success: Infrastructure ready
-```
-
-### 3. **Simulation Workflow**
-```
-User runs: .\setup_lab.ps1 -Action simulate
-↓
-Simulate-Compromise() → Monitor-Findings()
-↓
-Success: Security testing complete
-```
-
-### 4. **Cleanup Workflow**
-```
-User runs: .\setup_lab.ps1 -Action destroy
-↓
-Destroy-Infrastructure() → Cleanup-Findings()
-↓
-Success: Lab cleaned up
-```
-
----
-
-## 🛡️ Security Considerations
-
-### 1. **Parameter Validation**
-- **Input Sanitization**: Prevents script injection
-- **Path Validation**: Ensures safe file operations
-- **AWS Profile**: Supports secure credential management
-
-### 2. **Error Handling**
-- **Graceful Failure**: Script continues despite individual failures
-- **User Feedback**: Clear indication of what went wrong
-- **Recovery Guidance**: Suggests how to fix issues
-
-### 3. **Resource Management**
-- **Directory Context**: Proper working directory management
-- **State Preservation**: Returns to original directory after operations
-- **Cleanup**: Ensures resources are properly managed
-
----
-
-## 🔧 Customization and Extension
-
-### 1. **Adding New Actions**
-```powershell
-# Add to switch statement
-"newaction" { New-Action }
-
-# Add new function
-function New-Action {
-    Write-Host "Performing new action..." -ForegroundColor Blue
-    # Implementation here
-}
-```
-
-### 2. **Modifying Existing Functions**
-- **Error Handling**: Enhance error reporting
-- **Logging**: Add detailed logging capabilities
-- **Validation**: Add input validation
-
-### 3. **Integration Points**
-- **External Tools**: Integrate with other security tools
-- **APIs**: Connect to external services
-- **Databases**: Store lab results and metrics
-
----
-
-## 📊 Performance Considerations
-
-### 1. **Execution Time**
-- **Initialization**: ~30 seconds (provider download)
-- **Planning**: ~10-30 seconds (resource analysis)
-- **Deployment**: ~5-10 minutes (resource creation)
-- **Destruction**: ~3-5 minutes (resource cleanup)
-
-### 2. **Resource Usage**
-- **Memory**: Minimal (PowerShell script execution)
-- **CPU**: Low (mostly I/O operations)
-- **Network**: Moderate (AWS API calls)
-
-### 3. **Optimization Tips**
-- **Batch Operations**: Group related operations
-- **Parallel Execution**: Run independent operations simultaneously
-- **Caching**: Cache frequently accessed data
-
----
-
-## 🐛 Troubleshooting Common Issues
-
-### 1. **Script Execution Errors**
-```powershell
-# Check execution policy
-Get-ExecutionPolicy
-
-# Set execution policy if needed
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-### 2. **AWS CLI Issues**
-```powershell
-# Verify AWS configuration
-aws configure list
-
-# Test AWS connection
-aws sts get-caller-identity
-```
-
-### 3. **Terraform Issues**
-```powershell
-# Check Terraform version
-terraform version
-
-# Verify working directory
-Get-Location
-```
-
----
-
-## 📚 Learning Resources
-
-### 1. **PowerShell Resources**
-- [PowerShell Documentation](https://docs.microsoft.com/en-us/powershell/)
-- [PowerShell Best Practices](https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/strongly-encouraged-development-guidelines)
-
-### 2. **AWS CLI Resources**
-- [AWS CLI User Guide](https://docs.aws.amazon.com/cli/)
-- [AWS CLI Command Reference](https://docs.aws.amazon.com/cli/latest/reference/)
-
-### 3. **Terraform Resources**
-- [Terraform Documentation](https://www.terraform.io/docs)
-- [Terraform Best Practices](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html)
-
----
-
-## 🎯 Best Practices Summary
-
-### 1. **Script Design**
-- **Single Responsibility**: Each function has one clear purpose
-- **Error Handling**: Comprehensive error capture and reporting
-- **User Feedback**: Clear status updates and guidance
-
-### 2. **Security**
-- **Input Validation**: Sanitize all user inputs
-- **Path Safety**: Validate file and directory paths
-- **AWS Security**: Use appropriate IAM permissions
-
-### 3. **Maintainability**
-- **Modular Functions**: Easy to modify and extend
-- **Consistent Naming**: Clear, descriptive function names
-- **Documentation**: Comprehensive inline comments
-
----
-
-## 🚀 Future Enhancements
-
-### 1. **Advanced Features**
-- **Progress Bars**: Visual progress indicators
-- **Configuration Files**: External configuration management
-- **Logging**: Comprehensive logging to files
-
-### 2. **Integration**
-- **CI/CD**: Automated testing and deployment
-- **Monitoring**: Real-time lab status monitoring
-- **Reporting**: Automated lab completion reports
-
-### 3. **User Experience**
-- **Interactive Mode**: Guided setup wizard
-- **Help System**: Context-sensitive help
-- **Templates**: Pre-configured lab scenarios
-
----
-
-## 📝 Summary
-
-The `setup_lab.ps1` script is a comprehensive, professional-grade tool that:
-
-- **Simplifies Lab Management**: One script handles all operations
-- **Ensures Reliability**: Robust error handling and validation
-- **Provides Guidance**: Clear feedback and next steps
-- **Supports Learning**: Educational workflow and documentation
-- **Enables Customization**: Easy to extend and modify
-
-By understanding this script's structure and functions, users can:
-- **Effectively Manage**: Control the entire lab lifecycle
-- **Troubleshoot Issues**: Identify and resolve problems quickly
-- **Extend Functionality**: Add new features and capabilities
-- **Learn Best Practices**: Understand professional script development
-
-This script represents the foundation of the AWS Security Lab, providing the tools and guidance needed for successful security learning and experimentation.
-
-Happy scripting! 🚀🔒
+**Remember**: Scripts are tools to help you work more efficiently. Understanding how they work will help you use them effectively and customize them for your specific needs.
