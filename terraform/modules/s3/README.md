@@ -1,51 +1,64 @@
-# 🗄️ S3 Module - Object Storage
+# S3 Module - Object Storage
 
-## 📚 **What is S3?**
+## What is S3?
 
-**S3 (Simple Storage Service)** is AWS's **object storage service**. Think of it as a **giant digital warehouse** where you can store any type of file - documents, images, videos, backups, and more. It's designed to be highly available, secure, and scalable.
+**S3 (Simple Storage Service)** is AWS's **object storage service**. Think of it as a **giant digital warehouse** where you can store any type of file - documents, images, videos, backups, and more - with high availability and durability.
 
-### **🏠 Real-World Analogy**
+### Real-World Analogy
 
-- **🗄️ S3 Bucket** = A storage unit in your digital warehouse
-- **📁 Objects** = Individual files you store (documents, images, etc.)
-- **🔐 Access Control** = Security rules for who can access what
-- **🌍 Regions** = Different warehouse locations around the world
-- **📊 Versioning** = Keeping multiple copies of the same file
-- **🔒 Encryption** = Locking your files with digital keys
-
----
-
-## 🎯 **What This Module Creates**
-
-This module sets up **S3 storage infrastructure** for your security lab:
-
-- **🗄️ S3 Buckets** - Storage containers for your files
-- **🔐 Bucket Policies** - Security rules for access control
-- **📊 Versioning** - File history and recovery capabilities
-- **🔒 Encryption** - Data protection at rest and in transit
-- **📝 Sample Data** - Example files for testing and learning
-- **🏷️ Tags** - Organization and cost tracking
+- **S3 Bucket** = A storage unit in your digital warehouse
+- **Objects** = Files you store (documents, images, videos)
+- **Bucket Policy** = Security rules for who can access your storage
+- **Versioning** = Keeping multiple copies of the same file
+- **Encryption** = Locking your storage unit with a key
+- **Sample Data** = Example files to test and learn with
 
 ---
 
-## 🏗️ **Module Structure**
+## What This Module Creates
+
+This module sets up **secure and organized storage** for your AWS environment:
+
+- **S3 Buckets** - Storage containers for your files
+- **Bucket Policies** - Security rules controlling access
+- **Versioning** - Keep multiple versions of files
+- **Encryption** - Secure your data at rest
+- **Sample Data** - Example files for testing and learning
+- **Access Logging** - Track who accesses your data
+
+---
+
+## Module Structure
 
 ```
 s3/
-├── main.tf           # 🎯 Creates S3 buckets and configurations
-├── variables.tf      # 📝 What the module needs as input
-├── outputs.tf        # 📤 What the module provides to others
-├── README.md         # 📖 This file!
-└── sample_data/      # 📝 Example files for testing
-    └── threats/      # 🚨 Sample threat data
-        └── malware_indicators.json # Example malware data
+├── main.tf      # Creates S3 buckets and security features
+├── variables.tf # What the module needs as input
+├── outputs.tf   # What the module provides to others
+├── README.md    # This file!
+└── sample_data/ # Example files for testing
+    ├── README.md              # Sample data documentation
+    └── threats/               # Security threat examples
+        └── malware_indicators.json # Sample malware data
 ```
 
 ---
 
-## 📝 **Input Variables Explained**
+## Input Variables Explained
 
-### **🏷️ Environment and Naming**
+### Bucket Configuration
+
+```hcl
+variable "bucket_name" {
+  description = "Name for the S3 bucket (must be globally unique)"
+  type        = string
+  default     = "my-security-lab-bucket"
+}
+```
+
+**What this means:** Your S3 bucket will have this name (must be unique across all AWS accounts)
+
+### Environment Configuration
 
 ```hcl
 variable "environment" {
@@ -57,81 +70,67 @@ variable "environment" {
 
 **What this means:** All S3 resources get tagged with your environment (dev, staging, prod)
 
-### **🗄️ Bucket Configuration**
-
-```hcl
-variable "bucket_names" {
-  description = "List of S3 bucket names to create"
-  type        = list(string)
-  default     = ["lab-data", "lab-backups", "lab-logs"]
-}
-```
-
-**What this means:** Defines which S3 buckets to create for different purposes
-
-### **🔐 Security Settings**
+### Security Configuration
 
 ```hcl
 variable "enable_versioning" {
-  description = "Enable versioning for all buckets"
+  description = "Enable versioning for the S3 bucket"
   type        = bool
   default     = true
 }
 
 variable "enable_encryption" {
-  description = "Enable server-side encryption for all buckets"
+  description = "Enable server-side encryption for the S3 bucket"
   type        = bool
   default     = true
 }
 ```
 
-**What this means:** Controls security features like file versioning and encryption
+**What this means:** 
+- **Versioning:** Keeps multiple versions of files (good for backup and recovery)
+- **Encryption:** Protects your data with AWS-managed encryption keys
 
 ---
 
-## 🔍 **How It Works (Step by Step)**
+## How It Works (Step by Step)
 
-### **Step 1: Create S3 Buckets**
+### Step 1: Create S3 Bucket
 
 ```hcl
-resource "aws_s3_bucket" "buckets" {
-  for_each = toset(var.bucket_names)
-  
-  bucket = "${var.environment}-${each.value}-${random_string.bucket_suffix.result}"
+resource "aws_s3_bucket" "main" {
+  bucket = var.bucket_name
   
   tags = {
-    Name        = "${var.environment}-${each.value}-bucket"
+    Name        = "${var.environment}-s3-bucket"
     Environment = var.environment
-    Type        = "Data Storage"
+    Service     = "S3"
   }
 }
 ```
 
-**What this does:** Creates multiple S3 buckets with unique names for different purposes
+**What this does:** Creates the main S3 bucket where you'll store your files
 
-### **Step 2: Enable Versioning**
+### Step 2: Enable Versioning
 
 ```hcl
-resource "aws_s3_bucket_versioning" "versioning" {
-  for_each = aws_s3_bucket.buckets
-  
-  bucket = each.value.id
+resource "aws_s3_bucket_versioning" "main" {
+  count  = var.enable_versioning ? 1 : 0
+  bucket = aws_s3_bucket.main.id
   
   versioning_configuration {
-    status = var.enable_versioning ? "Enabled" : "Disabled"
+    status = "Enabled"
   }
 }
 ```
 
-**What this does:** Enables file versioning so you can recover previous versions of files
+**What this does:** Enables versioning so you can keep multiple versions of the same file
 
-### **Step 3: Configure Encryption**
+### Step 3: Enable Encryption
 
 ```hcl
-resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
-  for_each = aws_s3_bucket.buckets
-  
-  bucket = each.value.id
+resource "aws_s3_bucket_server_side_encryption_configuration" "main" {
+  count  = var.enable_encryption ? 1 : 0
+  bucket = aws_s3_bucket.main.id
   
   rule {
     apply_server_side_encryption_by_default {
@@ -141,15 +140,13 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
 }
 ```
 
-**What this does:** Encrypts all files stored in the buckets using AES-256 encryption
+**What this does:** Encrypts all files stored in the bucket using AES-256 encryption
 
-### **Step 4: Set Bucket Policies**
+### Step 4: Create Bucket Policy
 
 ```hcl
-resource "aws_s3_bucket_policy" "bucket_policies" {
-  for_each = aws_s3_bucket.buckets
-  
-  bucket = each.value.id
+resource "aws_s3_bucket_policy" "main" {
+  bucket = aws_s3_bucket.main.id
   
   policy = jsonencode({
     Version = "2012-10-17"
@@ -159,7 +156,7 @@ resource "aws_s3_bucket_policy" "bucket_policies" {
         Effect = "Deny"
         Principal = "*"
         Action = "s3:PutObject"
-        Resource = "${each.value.arn}/*"
+        Resource = "${aws_s3_bucket.main.arn}/*"
         Condition = {
           StringNotEquals = {
             "s3:x-amz-server-side-encryption" = "AES256"
@@ -171,365 +168,308 @@ resource "aws_s3_bucket_policy" "bucket_policies" {
 }
 ```
 
-**What this does:** Creates security policies that enforce encryption and control access
+**What this does:** Creates a policy that denies uploads of unencrypted files
 
-### **Step 5: Upload Sample Data**
+### Step 5: Upload Sample Data
 
 ```hcl
 resource "aws_s3_object" "sample_data" {
   for_each = fileset("${path.module}/sample_data", "**/*")
   
-  bucket = aws_s3_bucket.buckets["lab-data"].id
+  bucket = aws_s3_bucket.main.id
   key    = "sample_data/${each.value}"
   source = "${path.module}/sample_data/${each.value}"
   
   tags = {
-    Name        = "sample-data-${each.value}"
+    Name        = "${var.environment}-sample-data-${each.value}"
     Environment = var.environment
     Type        = "Sample Data"
   }
 }
 ```
 
-**What this does:** Uploads example files to help you test and learn about S3 functionality
+**What this does:** Automatically uploads all files from the sample_data folder to your S3 bucket
 
 ---
 
-## 🗄️ **S3 Bucket Types and Purposes**
+## S3 Bucket Types and Use Cases
 
-### **📊 Data Bucket (`lab-data`)**
+### Standard Storage
+- **Use for:** Frequently accessed data, web applications, content distribution
+- **Availability:** 99.99% availability
+- **Durability:** 99.999999999% (11 9's)
+- **Cost:** Standard pricing
 
-**Purpose:** Store application data, user uploads, and working files
-**Features:**
-- **Versioning enabled** for file recovery
-- **Encryption enabled** for data protection
-- **Sample data included** for testing
-- **Access logging** for audit trails
+### Intelligent Tiering
+- **Use for:** Data with unknown or changing access patterns
+- **Benefit:** Automatically moves data to cost-effective storage tiers
+- **Cost:** Small monthly monitoring fee
 
-**Use cases:**
-- Application data storage
-- User file uploads
-- Working documents
-- Sample datasets
+### Standard-IA (Infrequent Access)
+- **Use for:** Data accessed less frequently but requires rapid access
+- **Cost:** Lower than standard storage
+- **Retrieval:** Small retrieval fee
 
-### **💾 Backups Bucket (`lab-backups`)**
-
-**Purpose:** Store system backups, snapshots, and recovery data
-**Features:**
-- **Versioning enabled** for backup history
-- **Encryption enabled** for data security
-- **Lifecycle policies** for cost optimization
-- **Cross-region replication** for disaster recovery
-
-**Use cases:**
-- Database backups
-- System snapshots
-- Configuration backups
-- Disaster recovery data
-
-### **📝 Logs Bucket (`lab-logs`)**
-
-**Purpose:** Store application logs, audit trails, and monitoring data
-**Features:**
-- **Log delivery** from CloudWatch and other services
-- **Retention policies** for compliance
-- **Access logging** for security monitoring
-- **Cost optimization** through lifecycle policies
-
-**Use cases:**
-- Application logs
-- Security audit logs
-- Performance metrics
-- Compliance data
+### Glacier
+- **Use for:** Long-term backup and archival data
+- **Cost:** Very low storage cost
+- **Retrieval:** Hours to days, with retrieval fees
 
 ---
 
-## 🔐 **Security Features Explained**
+## Security Features
 
-### **🔒 Server-Side Encryption**
+### Server-Side Encryption
+- **AES-256 encryption** for all objects
+- **AWS-managed keys** (no key management required)
+- **Automatic encryption** of all uploads
 
-**What it does:**
-- **Encrypts files** when they're stored in S3
-- **Uses AES-256** encryption algorithm
-- **Automatic encryption** for all new files
-- **No additional cost** for encryption
+### Bucket Policies
+- **Fine-grained access control** using JSON policies
+- **Deny unencrypted uploads** for compliance
+- **IP-based restrictions** for additional security
 
-**Benefits:**
-- **Data protection** at rest
-- **Compliance** with security standards
-- **Automatic key management** by AWS
-- **Transparent** to applications
+### Versioning
+- **Multiple file versions** for backup and recovery
+- **Protection against accidental deletion**
+- **Compliance requirements** for data retention
 
-### **📊 Versioning**
-
-**What it does:**
-- **Keeps multiple versions** of the same file
-- **Prevents accidental deletion** of important data
-- **Enables file recovery** from any point in time
-- **Tracks file changes** over time
-
-**Use cases:**
-- **File recovery** after accidental deletion
-- **Rollback** to previous versions
-- **Audit trails** of file changes
-- **Compliance** with data retention requirements
-
-### **🛡️ Bucket Policies**
-
-**What they do:**
-- **Control access** to bucket contents
-- **Enforce security** requirements
-- **Prevent unauthorized** access
-- **Ensure compliance** with security policies
-
-**Example policies:**
-- **Deny unencrypted uploads** (enforce encryption)
-- **Restrict access** to specific IP ranges
-- **Require specific headers** for uploads
-- **Log all access** for security monitoring
+### Access Logging
+- **Track all bucket access** for security monitoring
+- **Audit trail** for compliance requirements
+- **Security analysis** and threat detection
 
 ---
 
-## 📤 **What the Module Provides (Outputs)**
+## What the Module Provides (Outputs)
 
-### **🗄️ Bucket Information**
+### Bucket Information
 
 ```hcl
-output "bucket_names" {
-  description = "Names of created S3 buckets"
-  value       = [for bucket in aws_s3_bucket.buckets : bucket.bucket]
+output "bucket_id" {
+  description = "ID of the created S3 bucket"
+  value       = aws_s3_bucket.main.id
 }
 
-output "bucket_arns" {
-  description = "ARNs of created S3 buckets"
-  value       = { for k, v in aws_s3_bucket.buckets : k => v.arn }
+output "bucket_arn" {
+  description = "ARN of the created S3 bucket"
+  value       = aws_s3_bucket.main.arn
 }
 ```
 
-**Used by:** Other modules or scripts that need to reference your S3 buckets
+**Used by:** Other modules that need to reference your S3 bucket
 
-### **🔐 Security Information**
+### Bucket URL Information
 
 ```hcl
-output "encryption_status" {
-  description = "Encryption status for each bucket"
-  value       = { for k, v in aws_s3_bucket.buckets : k => var.enable_encryption }
+output "bucket_domain_name" {
+  description = "Domain name of the S3 bucket"
+  value       = aws_s3_bucket.main.bucket_domain_name
 }
 
-output "versioning_status" {
-  description = "Versioning status for each bucket"
-  value       = { for k, v in aws_s3_bucket.buckets : k => var.enable_versioning }
+output "bucket_regional_domain_name" {
+  description = "Regional domain name of the S3 bucket"
+  value       = aws_s3_bucket.main.bucket_regional_domain_name
 }
 ```
 
-**Used by:** Security monitoring and compliance reporting
-
-### **📝 Sample Data Information**
-
-```hcl
-output "sample_data_keys" {
-  description = "Keys of uploaded sample data files"
-  value       = [for obj in aws_s3_object.sample_data : obj.key]
-}
-```
-
-**Used by:** You to know what sample files are available for testing
+**Used by:** Applications that need to access files in your bucket
 
 ---
 
-## 🎨 **Customizing Your S3 Setup**
+## Customizing Your S3 Setup
 
-### **🗄️ Add More Buckets**
-
-```hcl
-variable "bucket_names" {
-  description = "List of S3 bucket names to create"
-  type        = list(string)
-  default     = [
-    "lab-data",
-    "lab-backups", 
-    "lab-logs",
-    "lab-archives",    # New bucket for long-term storage
-    "lab-temp"         # New bucket for temporary files
-  ]
-}
-```
-
-### **🔐 Customize Security Settings**
+### Change Bucket Name
 
 ```hcl
-variable "encryption_algorithm" {
-  description = "Encryption algorithm to use"
+variable "bucket_name" {
+  description = "Name for the S3 bucket"
   type        = string
-  default     = "AES256"  # Options: AES256, aws:kms
-}
-
-variable "enable_public_access" {
-  description = "Allow public access to buckets (not recommended for production)"
-  type        = bool
-  default     = false
+  default     = "my-custom-bucket-name"  # Change from default
 }
 ```
 
-### **📊 Configure Lifecycle Policies**
+### Disable Versioning
 
 ```hcl
-resource "aws_s3_bucket_lifecycle_configuration" "lifecycle" {
-  for_each = aws_s3_bucket.buckets
+variable "enable_versioning" {
+  description = "Enable versioning for the S3 bucket"
+  type        = bool
+  default     = false  # Change from true to false
+}
+```
+
+### Add Custom Bucket Policy
+
+```hcl
+# Allow specific IAM users to access the bucket
+resource "aws_s3_bucket_policy" "custom_access" {
+  bucket = aws_s3_bucket.main.id
   
-  bucket = each.value.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowSpecificUsers"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::123456789012:user/username"
+        }
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = "${aws_s3_bucket.main.arn}/*"
+      }
+    ]
+  })
+}
+```
+
+### Create Multiple Buckets
+
+```hcl
+# Create separate buckets for different purposes
+resource "aws_s3_bucket" "logs" {
+  bucket = "${var.environment}-logs-bucket"
   
-  rule {
-    id     = "cost_optimization"
-    status = "Enabled"
-    
-    transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
-    }
-    
-    transition {
-      days          = 90
-      storage_class = "GLACIER"
-    }
-    
-    expiration {
-      days = 365
-    }
+  tags = {
+    Name        = "${var.environment}-logs-bucket"
+    Environment = var.environment
+    Purpose     = "Logs"
+  }
+}
+
+resource "aws_s3_bucket" "backups" {
+  bucket = "${var.environment}-backups-bucket"
+  
+  tags = {
+    Name        = "${var.environment}-backups-bucket"
+    Environment = var.environment
+    Purpose     = "Backups"
   }
 }
 ```
 
 ---
 
-## 🚨 **Common Questions**
+## Common Questions
 
-### **❓ "How much does S3 cost?"**
+### "What's the difference between S3 and EBS?"
 
-**Storage costs:**
-- **Standard storage:** $0.023 per GB per month
-- **Standard-IA:** $0.0125 per GB per month (30+ days)
-- **Glacier:** $0.004 per GB per month (90+ days)
-- **Data transfer:** $0.09 per GB out
+- **S3:** Object storage for files, documents, backups (accessed via API)
+- **EBS:** Block storage for EC2 instances (like a hard drive)
 
-**Other costs:**
-- **PUT/COPY/POST requests:** $0.0005 per 1,000 requests
-- **GET requests:** $0.0004 per 10,000 requests
-- **Versioning:** Pay for all versions stored
+### "How much data can I store in S3?"
 
-### **❓ "What's the difference between bucket policies and IAM policies?"**
+**Unlimited storage!** S3 can store virtually unlimited amounts of data with no maximum file size limits.
 
-- **🪣 Bucket Policies:** Attached to S3 buckets, control access to bucket contents
-- **👤 IAM Policies:** Attached to users/roles, control what AWS services they can access
-- **🔄 Best Practice:** Use bucket policies for bucket-specific rules, IAM policies for user permissions
+### "Is S3 data automatically backed up?"
 
-### **❓ "How do I recover a deleted file?"**
+**Yes!** S3 automatically replicates your data across multiple facilities for 99.999999999% durability.
 
-**If versioning is enabled:**
-1. **Go to S3 console** and navigate to your bucket
-2. **Show versions** to see all file versions
-3. **Select the deleted version** you want to recover
-4. **Click "Delete"** on the current version (if it exists)
-5. **Click "Restore"** on the version you want to recover
+### "Can I access S3 from the internet?"
 
-**If versioning is disabled:**
-- **File recovery is not possible** after deletion
-- **Enable versioning** to prevent this in the future
+**Yes, but be careful!** S3 buckets are private by default. You control access through bucket policies and IAM permissions.
 
-### **❓ "Can I use S3 for hosting a website?"**
+### "How do I organize files in S3?"
 
-**Yes!** S3 can host static websites:
-- **Enable static website hosting** on your bucket
-- **Upload HTML, CSS, and JavaScript files**
-- **Access via the S3 website endpoint**
-- **Use CloudFront** for better performance and HTTPS
+**Use folders (prefixes):**
+- `logs/2024/01/` for log files
+- `backups/database/` for database backups
+- `documents/projects/` for project files
 
 ---
 
-## 🔧 **Troubleshooting**
+## Troubleshooting
 
-### **🚨 Error: "Bucket name already exists"**
-**Solution:** S3 bucket names must be globally unique. Use a random suffix or different names.
+### Error: "Bucket name already exists"
+**Solution:** S3 bucket names must be globally unique. Choose a different name.
 
-### **🚨 Error: "Access denied"**
-**Solution:** Check your IAM permissions and bucket policies. Ensure you have `s3:*` permissions.
+### Error: "Access denied"
+**Solution:** Check your IAM permissions and bucket policies
 
-### **🚨 Error: "Invalid bucket name"**
-**Solution:** Bucket names must:
-- Be 3-63 characters long
-- Contain only lowercase letters, numbers, dots, and hyphens
-- Start and end with a letter or number
-- Not be formatted as an IP address
+### Error: "Invalid bucket name"
+**Solution:** Bucket names must be 3-63 characters, lowercase, and contain only letters, numbers, hyphens, and periods
 
-### **🚨 Error: "Encryption configuration failed"**
-**Solution:** Ensure your IAM user has `s3:PutEncryptionConfiguration` permission.
+### Error: "Versioning not enabled"
+**Solution:** Make sure the versioning variable is set to true
 
 ---
 
-## 🎯 **Next Steps**
+## Next Steps
 
-1. **🔍 Look at the main.tf** to see how S3 buckets are created
-2. **📝 Modify variables** to customize your storage setup
-3. **🚀 Deploy the module** to create your S3 infrastructure
-4. **📁 Upload files** to test your buckets
-5. **🔐 Test security** by trying to access files without proper permissions
-
----
-
-## 🔐 **Security Best Practices**
-
-### **✅ Do's**
-- **🔒 Enable encryption** for all buckets
-- **📊 Enable versioning** for important data
-- **🛡️ Use bucket policies** to enforce security
-- **🏷️ Tag resources** for cost tracking and organization
-- **📝 Enable access logging** for security monitoring
-
-### **❌ Don'ts**
-- **🚫 Don't make buckets public** unless absolutely necessary
-- **🚫 Don't disable encryption** for sensitive data
-- **🚫 Don't ignore access logs** - monitor for suspicious activity
-- **🚫 Don't forget lifecycle policies** - they can save significant costs
-- **🚫 Don't use root credentials** - create IAM users with specific permissions
+1. **Look at the main.tf** to see how S3 resources are created
+2. **Modify variables** to customize your storage setup
+3. **Deploy the module** to create your S3 infrastructure
+4. **Upload files** to test your bucket
+5. **Configure additional security** as needed
 
 ---
 
-## 💰 **Cost Optimization**
+## Security Best Practices
 
-### **💰 Storage Class Selection**
-- **Standard:** For frequently accessed data
-- **Standard-IA:** For infrequently accessed data (30+ days)
-- **Glacier:** For long-term archival data (90+ days)
-- **Intelligent Tiering:** Automatic cost optimization
+### Do's
+- Enable encryption for all buckets
+- Use bucket policies to restrict access
+- Enable versioning for important data
+- Use IAM roles instead of access keys
+- Regularly review access logs
 
-### **💡 Cost Saving Tips**
-- **📊 Use lifecycle policies** to move data to cheaper storage classes
-- **🗑️ Delete unused versions** if versioning is enabled
-- **📁 Organize data** to apply different policies to different types
-- **🌍 Choose appropriate regions** to minimize data transfer costs
-- **📝 Monitor usage** with AWS Cost Explorer
+### Don'ts
+- Don't make buckets publicly accessible unless necessary
+- Don't ignore bucket policies
+- Don't forget to monitor costs
+- Don't skip access logging
+- Don't use weak bucket names
 
 ---
 
-## 🔗 **Integration with Other Services**
+## Cost Considerations
 
-### **🛡️ GuardDuty**
-- **Monitor S3 access** for suspicious activity
-- **Detect data exfiltration** attempts
-- **Alert on unusual** access patterns
+### S3 Storage Costs
+- **Standard Storage:** $0.023 per GB per month
+- **Standard-IA:** $0.0125 per GB per month
+- **Glacier:** $0.004 per GB per month
+- **Intelligent Tiering:** $0.0025 per 1,000 objects per month
 
-### **📊 CloudWatch**
-- **Monitor bucket metrics** (requests, errors, latency)
-- **Set up alarms** for unusual activity
-- **Create dashboards** for storage monitoring
+### Data Transfer Costs
+- **Inbound:** FREE
+- **Outbound:** $0.09 per GB (first 1GB free)
+- **Between S3 and EC2:** FREE (same region)
 
-### **🔐 IAM Access Analyzer**
-- **Review S3 permissions** for security gaps
-- **Identify overly permissive** bucket policies
-- **Optimize access** based on actual usage
+### Cost Optimization Tips
+- Use appropriate storage classes
+- Enable Intelligent Tiering for unknown access patterns
+- Compress files before uploading
+- Use lifecycle policies to move old data to cheaper storage
+
+---
+
+## Integration with Other Services
+
+### EC2 Instances
+- Store application data and backups
+- Host static websites
+- Store log files and monitoring data
+
+### Lambda Functions
+- Process files uploaded to S3
+- Generate reports and analytics
+- Automate data workflows
+
+### CloudFront
+- Distribute S3 content globally
+- Reduce latency for users
+- Lower data transfer costs
+
+### AWS Glue
+- Catalog and analyze S3 data
+- Run ETL jobs on stored data
+- Prepare data for analytics
 
 ---
 
 <div align="center">
-  <p><em>🗄️ Your S3 storage is now configured! 📁</em></p>
+  <p><em>Your secure storage is now ready!</em></p>
 </div>
