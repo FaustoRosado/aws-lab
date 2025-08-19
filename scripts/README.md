@@ -1,27 +1,27 @@
-# 🔐 Setup Credentials Scripts - Complete Guide
+# Setup Credentials Scripts - Complete Guide
 
 This document explains how to use the credential setup scripts to securely configure your AWS credentials for the AWS Security Lab.
 
-## 📋 **What Are These Scripts?**
+## What Are These Scripts?
 
 The setup credentials scripts are **automated tools** that help you:
 
-- 🔑 **Create secure credential files** from templates
-- ✅ **Validate your AWS credentials** before using them
-- 🔍 **Check your configuration** for common issues
-- 🛡️ **Follow security best practices** automatically
-- 🌍 **Work on multiple platforms** (Windows, Mac, Linux)
+- **Create secure credential files** from templates
+- **Validate your AWS credentials** before using them
+- **Check your configuration** for common issues
+- **Follow security best practices** automatically
+- **Work on multiple platforms** (Windows, Mac, Linux)
 
-## 📁 **Available Scripts**
+## Available Scripts
 
 | Platform | Script | Description |
 |----------|--------|-------------|
 | **Windows** | `setup_credentials.ps1` | PowerShell script for Windows users |
 | **Mac/Linux** | `setup_credentials.sh` | Bash script for Unix-based systems |
 
-## 🚀 **Quick Start**
+## Quick Start
 
-### **Windows Users**
+### Windows Users
 ```powershell
 # Navigate to project root
 cd C:\Users\faust\aws-lab
@@ -33,7 +33,7 @@ cd C:\Users\faust\aws-lab
 .\scripts\setup_credentials.ps1 validate
 ```
 
-### **Mac/Linux Users**
+### Mac/Linux Users
 ```bash
 # Navigate to project root
 cd ~/aws-lab
@@ -48,16 +48,16 @@ chmod +x scripts/setup_credentials.sh
 ./scripts/setup_credentials.sh validate
 ```
 
-## 🔧 **Available Actions**
+## Available Actions
 
-### **`setup` - Interactive Credential Setup**
+### `setup` - Interactive Credential Setup
 Creates your `.env.local` file from the template and guides you through configuration.
 
 **What it does:**
-- ✅ Copies `env.template` to `.env.local`
-- 🔑 Opens the file for editing (if requested)
-- 🚨 Shows security warnings
-- 📝 Provides step-by-step instructions
+- Copies `env.template` to `.env.local`
+- Opens the file for editing (if requested)
+- Shows security warnings
+- Provides step-by-step instructions
 
 **Example:**
 ```bash
@@ -68,13 +68,13 @@ Creates your `.env.local` file from the template and guides you through configur
 ./scripts/setup_credentials.sh setup
 ```
 
-### **`check` - Configuration Verification**
+### `check` - Configuration Verification
 Examines your current setup and reports what's configured.
 
 **What it checks:**
-- 📁 Environment files (`.env.local`, `.env.development`, etc.)
-- 🔧 AWS CLI configuration files
-- ⚠️ Missing or incomplete configurations
+- Environment files (`.env.local`, `.env.development`, etc.)
+- AWS CLI configuration files
+- Missing or incomplete configurations
 
 **Example:**
 ```bash
@@ -85,14 +85,14 @@ Examines your current setup and reports what's configured.
 ./scripts/setup_credentials.sh check
 ```
 
-### **`validate` - Credential Testing**
+### `validate` - Credential Testing
 Tests your AWS credentials to ensure they work correctly.
 
 **What it tests:**
-- 🔐 AWS CLI installation and functionality
-- ✅ Credential validity and permissions
-- 📊 Account information retrieval
-- 🚨 Common configuration issues
+- AWS CLI installation and functionality
+- Credential validity and permissions
+- Account information retrieval
+- Common configuration issues
 
 **Example:**
 ```bash
@@ -103,7 +103,7 @@ Tests your AWS credentials to ensure they work correctly.
 ./scripts/setup_credentials.sh validate
 ```
 
-### **`help` - Usage Information**
+### `help` - Usage Information
 Shows detailed help and usage examples.
 
 **Example:**
@@ -115,9 +115,9 @@ Shows detailed help and usage examples.
 ./scripts/setup_credentials.sh help
 ```
 
-## 🔍 **How the Scripts Work**
+## How the Scripts Work
 
-### **Setup Process Flow**
+### Setup Process Flow
 ```
 1. Security Warning Display
    ↓
@@ -132,7 +132,7 @@ Shows detailed help and usage examples.
 6. Next Steps Guidance
 ```
 
-### **Validation Process Flow**
+### Validation Process Flow
 ```
 1. AWS CLI Check
    ↓
@@ -145,11 +145,11 @@ Shows detailed help and usage examples.
 5. Troubleshooting Guidance
 ```
 
-## 📚 **Detailed Usage Examples**
+## Detailed Usage Examples
 
-### **Complete Setup Workflow**
+### Complete Setup Workflow
 
-#### **Step 1: Initial Setup**
+#### Step 1: Initial Setup
 ```bash
 # Windows
 .\scripts\setup_credentials.ps1 setup
@@ -160,21 +160,21 @@ Shows detailed help and usage examples.
 
 **Expected Output:**
 ```
-🔐 AWS Security Lab - Credentials Setup
+AWS Security Lab - Credentials Setup
 =========================================
 
-🚨 SECURITY WARNING
+SECURITY WARNING
 ==================
-⚠️  NEVER share your AWS credentials with anyone!
-⚠️  NEVER commit credentials to GitHub!
-⚠️  NEVER use the same credentials across multiple accounts!
+NEVER share your AWS credentials with anyone!
+NEVER commit credentials to GitHub!
+NEVER use the same credentials across multiple accounts!
 
-🔑 Setting up AWS credentials for development environment...
+Setting up AWS credentials for development environment...
 
-📝 Creating .env.local from template...
-✅ Template copied successfully!
+Creating .env.local from template...
+Template copied successfully!
 
-🚨 IMPORTANT: You need to manually edit .env.local with your real AWS credentials!
+IMPORTANT: You need to manually edit .env.local with your real AWS credentials!
 
 Steps:
 1. Open .env.local in your text editor
@@ -183,16 +183,16 @@ Steps:
 4. Update other values as needed
 5. Save the file
 
-⚠️  NEVER commit .env.local to git - it's already in .gitignore
+NEVER commit .env.local to git - it's already in .gitignore
 
 Would you like to open .env.local now? (y/n): y
-✅ File opened in Notepad
+File opened in Notepad
 
-🎯 After editing your credentials, run:
+After editing your credentials, run:
   .\setup_credentials.ps1 validate
 ```
 
-#### **Step 2: Edit Credentials**
+#### Step 2: Edit Credentials
 The script will open your `.env.local` file. Edit these key values:
 
 ```bash
@@ -205,7 +205,7 @@ AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
 AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 
-#### **Step 3: Validate Setup**
+#### Step 3: Validate Setup
 ```bash
 # Windows
 .\scripts\setup_credentials.ps1 validate
@@ -216,21 +216,21 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 
 **Expected Output:**
 ```
-🔍 Validating AWS credentials...
+Validating AWS credentials...
 
-✅ AWS CLI found: aws-cli/2.28.11 Python/3.11.8 Windows/10 exe/AMD64
-🔐 Testing AWS credentials...
-✅ AWS credentials are valid!
+AWS CLI found: aws-cli/2.28.11 Python/3.11.8 Windows/10 exe/AMD64
+Testing AWS credentials...
+AWS credentials are valid!
 
 Account Information:
   Account ID: 123456789012
   User ID: AIDACKCEVSQ6C2EXAMPLE
   ARN: arn:aws:iam::123456789012:user/YourUserName
 
-🎉 You're ready to use the AWS Security Lab!
+You're ready to use the AWS Security Lab!
 ```
 
-### **Environment-Specific Setup**
+### Environment-Specific Setup
 
 You can specify different environments for different use cases:
 
@@ -247,28 +247,28 @@ You can specify different environments for different use cases:
 
 This creates environment-specific files like `.env.development`, `.env.production`, etc.
 
-## 🛡️ **Security Features**
+## Security Features
 
-### **Built-in Security Measures**
-- 🚨 **Security warnings** displayed before setup
-- ⚠️ **Credential validation** prevents invalid configurations
-- 🔒 **Template-based approach** prevents credential exposure
-- 📁 **Automatic Git exclusion** via `.gitignore`
+### Built-in Security Measures
+- **Security warnings** displayed before setup
+- **Credential validation** prevents invalid configurations
+- **Template-based approach** prevents credential exposure
+- **Automatic Git exclusion** via `.gitignore`
 
-### **Security Best Practices Enforced**
-- ✅ **No hardcoded credentials** in scripts
-- ✅ **Environment file isolation** from version control
-- ✅ **Credential validation** before lab execution
-- ✅ **Clear security warnings** and reminders
+### Security Best Practices Enforced
+- **No hardcoded credentials** in scripts
+- **Environment file isolation** from version control
+- **Credential validation** before lab execution
+- **Clear security warnings** and reminders
 
-## 🔍 **Troubleshooting Guide**
+## Troubleshooting Guide
 
-### **Common Issues and Solutions**
+### Common Issues and Solutions
 
-#### **Issue: "Template file not found"**
+#### Issue: "Template file not found"
 **Symptoms:**
 ```
-❌ Template file 'env.template' not found!
+Template file 'env.template' not found!
 Please ensure you're running this script from the project root directory.
 ```
 
@@ -288,10 +288,10 @@ ls  # Mac/Linux
 Get-ChildItem  # Windows PowerShell
 ```
 
-#### **Issue: "AWS CLI not found"**
+#### Issue: "AWS CLI not found"
 **Symptoms:**
 ```
-❌ AWS CLI not found!
+AWS CLI not found!
 Please install AWS CLI first.
 ```
 
@@ -312,10 +312,10 @@ brew install awscli
 sudo apt update && sudo apt install awscli
 ```
 
-#### **Issue: "AWS credentials validation failed"**
+#### Issue: "AWS credentials validation failed"
 **Symptoms:**
 ```
-❌ AWS credentials validation failed!
+AWS credentials validation failed!
 Error: [Error details]
 ```
 
@@ -337,7 +337,7 @@ aws configure list
 aws sts get-caller-identity --profile default
 ```
 
-#### **Issue: "File not ignored by Git"**
+#### Issue: "File not ignored by Git"
 **Symptoms:**
 - `.env.local` appears in `git status`
 - File is staged for commit
@@ -362,9 +362,9 @@ git reset HEAD .env.local
 git check-ignore .env.local
 ```
 
-### **Advanced Troubleshooting**
+### Advanced Troubleshooting
 
-#### **Permission Issues**
+#### Permission Issues
 ```bash
 # Mac/Linux: Check file permissions
 ls -la scripts/setup_credentials.sh
@@ -379,7 +379,7 @@ Get-ExecutionPolicy
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-#### **Environment Variable Issues**
+#### Environment Variable Issues
 ```bash
 # Check if environment variables are loaded
 echo $AWS_ACCESS_KEY_ID  # Mac/Linux
@@ -390,9 +390,9 @@ source .env.local  # Mac/Linux
 Get-Content .env.local | ForEach-Object { ... }  # Windows PowerShell
 ```
 
-## 📚 **Integration with Other Tools**
+## Integration with Other Tools
 
-### **Main Lab Script Integration**
+### Main Lab Script Integration
 After setting up credentials, you can use the main lab script:
 
 ```bash
@@ -407,7 +407,7 @@ After setting up credentials, you can use the main lab script:
 ./scripts/setup_lab.sh deploy
 ```
 
-### **Terraform Integration**
+### Terraform Integration
 The scripts work seamlessly with Terraform:
 
 ```bash
@@ -421,27 +421,27 @@ terraform plan
 terraform apply
 ```
 
-## 🎯 **Best Practices**
+## Best Practices
 
-### **Script Usage**
-- ✅ **Use the setup action first** to create your configuration
-- ✅ **Validate credentials** before running the lab
-- ✅ **Check configuration** if you encounter issues
-- ✅ **Use help action** when unsure about usage
+### Script Usage
+- **Use the setup action first** to create your configuration
+- **Validate credentials** before running the lab
+- **Check configuration** if you encounter issues
+- **Use help action** when unsure about usage
 
-### **Security**
-- ✅ **Never share your credentials** with anyone
-- ✅ **Rotate access keys** every 90 days
-- ✅ **Use IAM users** with minimal permissions
-- ✅ **Enable MFA** on your AWS account
+### Security
+- **Never share your credentials** with anyone
+- **Rotate access keys** every 90 days
+- **Use IAM users** with minimal permissions
+- **Enable MFA** on your AWS account
 
-### **Configuration**
-- ✅ **Use environment-specific files** for different scenarios
-- ✅ **Keep sensitive values** out of version control
-- ✅ **Validate your setup** before proceeding
-- ✅ **Follow the provided instructions** carefully
+### Configuration
+- **Use environment-specific files** for different scenarios
+- **Keep sensitive values** out of version control
+- **Validate your setup** before proceeding
+- **Follow the provided instructions** carefully
 
-## 🚀 **Next Steps**
+## Next Steps
 
 After successfully setting up your credentials:
 
@@ -450,7 +450,7 @@ After successfully setting up your credentials:
 3. **Monitor your AWS usage** for cost control
 4. **Clean up resources** when finished
 
-## 📚 **Related Documentation**
+## Related Documentation
 
 - **`env.template.README.md`** - Complete template guide
 - **`docs/SECURITY_AND_CREDENTIALS.md`** - Security best practices
@@ -458,37 +458,37 @@ After successfully setting up your credentials:
 - **`docs/QUICK_START.md`** - Fast deployment guide
 - **`README.md`** - Main project overview
 
-## 🆘 **Getting Help**
+## Getting Help
 
-### **Script Issues**
+### Script Issues
 1. **Check this README** for troubleshooting steps
 2. **Run the help action** for usage information
 3. **Review error messages** carefully
 4. **Check file permissions** and locations
 
-### **AWS Issues**
+### AWS Issues
 1. **Verify your credentials** using the validation action
 2. **Check IAM permissions** for your user
 3. **Review AWS documentation** for service limits
 4. **Contact AWS support** if needed
 
-### **Lab Issues**
+### Lab Issues
 1. **Use the main lab script** for infrastructure management
 2. **Follow the lab checklist** for step-by-step guidance
 3. **Check the documentation** for detailed explanations
 4. **Create GitHub issues** for bugs or improvements
 
-## 🎉 **You're Ready!**
+## You're Ready!
 
 With these scripts, you have everything you need to:
 
-- 🔑 **Set up secure credentials** quickly and safely
-- ✅ **Validate your configuration** before starting
-- 🔍 **Troubleshoot issues** when they arise
-- 🛡️ **Follow security best practices** automatically
+- **Set up secure credentials** quickly and safely
+- **Validate your configuration** before starting
+- **Troubleshoot issues** when they arise
+- **Follow security best practices** automatically
 
 **Remember**: These scripts are designed to make setup easy while keeping you secure. Take your time to understand each step, and don't hesitate to use the help action if you need guidance!
 
 ---
 
-**Happy learning! 🚀🔒**
+**Happy learning!**

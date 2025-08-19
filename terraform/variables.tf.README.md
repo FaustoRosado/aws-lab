@@ -1,40 +1,40 @@
-# 📝 Variables.tf - The Configuration Control Center
+# Variables.tf - The Configuration Control Center
 
-## 📚 **What is variables.tf?**
+## What is variables.tf?
 
 **variables.tf** is like the **control panel** of your infrastructure - it's where you set all the knobs, switches, and dials that control how your infrastructure behaves.
 
 Think of it as:
-- **🎛️ A mixing board** for a sound engineer
-- **⚙️ A dashboard** for a pilot
-- **🎮 A settings menu** for a video game
+- **A mixing board** for a sound engineer
+- **A dashboard** for a pilot
+- **A settings menu** for a video game
 
 In Terraform terms, `variables.tf` defines **all the customizable settings** that make your infrastructure flexible and reusable.
 
 ---
 
-## 🏗️ **Why Variables Matter for Learning**
+## Why Variables Matter for Learning
 
-### **🧩 Understanding Configuration Management**
+### Understanding Configuration Management
 - **Learn how to make** infrastructure flexible
 - **Understand the difference** between hardcoded and configurable values
 - **See how to create** reusable infrastructure templates
 
-### **🔧 Building Reusable Components**
+### Building Reusable Components
 - **Same infrastructure** can work in different environments
 - **Easy to customize** without changing the core code
 - **Perfect for learning** different AWS regions and configurations
 
-### **📚 Progressive Learning Path**
+### Progressive Learning Path
 - **Start with defaults** - Use the provided values
 - **Modify variables** - See how changes affect your infrastructure
 - **Create your own** - Build custom configurations
 
 ---
 
-## 🔍 **How Variables Work (Step by Step)**
+## How Variables Work (Step by Step)
 
-### **🎯 Step 1: Variable Declaration**
+### Step 1: Variable Declaration
 ```hcl
 variable "aws_region" {
   description = "AWS region to deploy resources"
@@ -54,7 +54,7 @@ variable "aws_region" {
 - **Type system** - Understand Terraform's data types
 - **Documentation** - See how descriptions help others understand your code
 
-### **🌍 Step 2: Using Variables in Resources**
+### Step 2: Using Variables in Resources
 ```hcl
 # In main.tf
 provider "aws" {
@@ -79,11 +79,11 @@ resource "aws_vpc" "main" {
 
 ---
 
-## 📋 **All Variables Explained**
+## All Variables Explained
 
-### **🌍 AWS Configuration Variables**
+### AWS Configuration Variables
 
-#### **AWS Region**
+#### AWS Region
 ```hcl
 variable "aws_region" {
   description = "AWS region to deploy resources"
@@ -102,7 +102,7 @@ variable "aws_region" {
 - **Service availability** - Learn which services exist where
 - **Cost optimization** - See how region choice affects pricing
 
-#### **Environment Name**
+#### Environment Name
 ```hcl
 variable "environment" {
   description = "Environment name (dev, staging, prod)"
@@ -121,9 +121,9 @@ variable "environment" {
 - **Resource tagging** - Learn AWS tagging best practices
 - **Cost management** - See how to track spending by project
 
-### **🌐 Network Configuration Variables**
+### Network Configuration Variables
 
-#### **VPC CIDR Block**
+#### VPC CIDR Block
 ```hcl
 variable "vpc_cidr" {
   description = "Main VPC network range"
@@ -142,7 +142,7 @@ variable "vpc_cidr" {
 - **Network planning** - Understand how to size networks
 - **IP management** - See how to avoid IP conflicts
 
-#### **Availability Zones**
+#### Availability Zones
 ```hcl
 variable "availability_zones" {
   description = "AWS availability zones"
@@ -161,7 +161,7 @@ variable "availability_zones" {
 - **List data type** - Learn Terraform's list syntax
 - **Disaster recovery** - See how to build resilient infrastructure
 
-#### **Subnet CIDR Blocks**
+#### Subnet CIDR Blocks
 ```hcl
 variable "public_subnet_cidrs" {
   description = "IP ranges for public subnets"
@@ -186,9 +186,9 @@ variable "private_subnet_cidrs" {
 - **IP allocation** - Learn to plan IP address ranges
 - **Network design** - See how to organize infrastructure
 
-### **💻 Compute Configuration Variables**
+### Compute Configuration Variables
 
-#### **Instance Type**
+#### Instance Type
 ```hcl
 variable "instance_type" {
   description = "EC2 instance type"
@@ -207,7 +207,7 @@ variable "instance_type" {
 - **Cost optimization** - Learn to balance performance and cost
 - **Resource planning** - See how to size resources appropriately
 
-#### **Key Pair Name**
+#### Key Pair Name
 ```hcl
 variable "key_pair_name" {
   description = "Name for the SSH key pair"
@@ -226,9 +226,9 @@ variable "key_pair_name" {
 - **AWS key management** - Learn how AWS handles SSH keys
 - **Access control** - See how to secure server access
 
-### **🔒 Security Configuration Variables**
+### Security Configuration Variables
 
-#### **Enable Security Services**
+#### Enable Security Services
 ```hcl
 variable "enable_guardduty" {
   description = "Enable AWS GuardDuty"
@@ -255,9 +255,9 @@ variable "enable_security_hub" {
 
 ---
 
-## 🎨 **Customizing Your Infrastructure**
+## Customizing Your Infrastructure
 
-### **🌍 Change the Region**
+### Change the Region
 ```hcl
 variable "aws_region" {
   description = "AWS region to deploy resources"
@@ -271,7 +271,7 @@ variable "aws_region" {
 - **Different pricing** may apply
 - **Some services** may not be available
 
-### **🏠 Change Network Size**
+### Change Network Size
 ```hcl
 variable "vpc_cidr" {
   description = "Main VPC network range"
@@ -291,7 +291,7 @@ variable "public_subnet_cidrs" {
 - **Subnets will use** 172.16.1.0/24 and 172.16.2.0/24
 - **Avoids conflicts** with existing networks
 
-### **💪 Change Server Power**
+### Change Server Power
 ```hcl
 variable "instance_type" {
   description = "EC2 instance type"
@@ -307,9 +307,9 @@ variable "instance_type" {
 
 ---
 
-## 🔄 **Environment-Specific Deployments**
+## Environment-Specific Deployments
 
-### **🚀 Development Environment**
+### Development Environment
 ```bash
 terraform apply -var="environment=dev" -var="instance_type=t3.micro"
 ```
@@ -319,7 +319,7 @@ terraform apply -var="environment=dev" -var="instance_type=t3.micro"
 - **All resources tagged** with "dev"
 - **Minimal cost** for learning and testing
 
-### **🏭 Production Environment**
+### Production Environment
 ```bash
 terraform apply -var="environment=prod" -var="instance_type=t3.medium"
 ```
@@ -329,7 +329,7 @@ terraform apply -var="environment=prod" -var="instance_type=t3.medium"
 - **All resources tagged** with "prod"
 - **Better performance** for real users
 
-### **🧪 Staging Environment**
+### Staging Environment
 ```bash
 terraform apply -var="environment=staging" -var="instance_type=t3.small"
 ```
@@ -341,9 +341,9 @@ terraform apply -var="environment=staging" -var="instance_type=t3.small"
 
 ---
 
-## 🚨 **Common Mistakes to Avoid**
+## Common Mistakes to Avoid
 
-### **❌ 1. Missing Variable Declarations**
+### 1. Missing Variable Declarations
 **Problem:** Using a variable that isn't declared
 ```hcl
 # In main.tf
@@ -362,7 +362,7 @@ variable "unknown_variable" {
 }
 ```
 
-### **❌ 2. Wrong Variable Types**
+### 2. Wrong Variable Types
 **Problem:** Using a string where a number is expected
 ```hcl
 variable "instance_count" {
@@ -381,7 +381,7 @@ variable "instance_count" {
 }
 ```
 
-### **❌ 3. Missing Default Values**
+### 3. Missing Default Values
 **Problem:** No default value for required variables
 ```hcl
 variable "aws_region" {
@@ -402,9 +402,9 @@ variable "aws_region" {
 
 ---
 
-## 🔧 **Troubleshooting Variable Issues**
+## Troubleshooting Variable Issues
 
-### **🚨 Error: "Variable not declared"**
+### Error: "Variable not declared"
 **Problem:** Using a variable that doesn't exist
 ```hcl
 resource "aws_instance" "web" {
@@ -417,7 +417,7 @@ resource "aws_instance" "web" {
 grep -r "var\." terraform/
 ```
 
-### **🚨 Error: "Invalid value for variable"**
+### Error: "Invalid value for variable"
 **Problem:** Variable value doesn't match the expected type
 ```hcl
 variable "instance_count" {
@@ -432,7 +432,7 @@ variable "instance_count" {
 terraform apply -var="instance_count=3"  # Number, not string
 ```
 
-### **🚨 Error: "Required variable not set"**
+### Error: "Required variable not set"
 **Problem:** No default value and no value provided
 ```hcl
 variable "aws_region" {
@@ -455,59 +455,56 @@ terraform apply -var="aws_region=us-west-2"
 
 ---
 
-## 🎯 **Learning Benefits of Variables**
+## Learning Benefits of Variables
 
-### **🧩 1. Configuration Management**
+### 1. Configuration Management
 - **Learn how to make** infrastructure flexible
 - **Understand the difference** between code and configuration
 - **See how to create** reusable templates
 
-### **🔄 2. Environment Management**
+### 2. Environment Management
 - **Learn how to deploy** the same infrastructure in different environments
 - **Understand environment-specific** configurations
 - **See how to manage** multiple deployments
 
-### **📚 3. Best Practices**
+### 3. Best Practices
 - **Learn Terraform variable** syntax and types
 - **Understand when to use** different variable types
 - **See how to document** your variables properly
 
-### **🔧 4. Troubleshooting Skills**
+### 4. Troubleshooting Skills
 - **Learn how to debug** variable-related issues
 - **Understand common mistakes** and how to avoid them
 - **See how to validate** variable values
 
 ---
 
-## 🚀 **Next Steps**
+## Next Steps
 
-1. **🔍 Study each variable** to understand what it controls
-2. **📝 Modify variables** to see how changes affect your infrastructure
-3. **🌍 Try different regions** to understand AWS global infrastructure
-4. **💪 Experiment with instance types** to understand performance vs. cost
+1. **Study each variable** to understand what it controls
+2. **Modify variables** to see how changes affect your infrastructure
+3. **Try different regions** to understand AWS global infrastructure
+4. **Experiment with instance types** to understand performance vs. cost
 
 ---
 
-## 💡 **Pro Tips for Learning**
+## Pro Tips for Learning
 
-### **🎯 Start with Defaults**
+### Start with Defaults
 - **Use the provided defaults** first to get familiar
 - **Understand what each variable** controls before changing it
 - **Test changes** in a safe environment
 
-### **📝 Document Your Changes**
+### Document Your Changes
 - **Update descriptions** to reflect your customizations
 - **Add comments** explaining why you changed values
 - **Keep a log** of what you've tried
 
-### **🔍 Read the Error Messages**
+### Read the Error Messages
 - **Terraform errors** are excellent learning opportunities
 - **Variable errors** teach you about types and validation
 - **Use errors** to understand what Terraform expects
 
 ---
 
-<div align="center">
-  <p><em>📝 Your variables.tf is the control panel of your infrastructure! 🎛️</em></p>
-  <p><em>Master the controls, and you'll master your infrastructure! 🚀</em></p>
-</div>
+**Your variables.tf is the control panel of your infrastructure! Master the controls, and you'll master your infrastructure!**

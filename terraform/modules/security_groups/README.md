@@ -1,44 +1,44 @@
-# 🛡️ Security Groups Module - Firewall Rules
+# Security Groups Module - Firewall Rules
 
-## 📚 **What are Security Groups?**
+## What are Security Groups?
 
 **Security Groups** are like **firewalls** for your AWS resources. They control what network traffic can come in and go out of your instances, subnets, and other resources.
 
-### **🏠 Real-World Analogy**
+### Real-World Analogy
 
-- **🛡️ Security Group** = A security guard at your building entrance
-- **🚪 Inbound Rules** = Who can come into your building
-- **🚪 Outbound Rules** = Who can leave your building
-- **🔑 Port Numbers** = Which doors/entrances are open
-- **🌐 IP Addresses** = Which people/places are allowed
+- **Security Group** = A security guard at your building entrance
+- **Inbound Rules** = Who can come into your building
+- **Outbound Rules** = Who can leave your building
+- **Port Numbers** = Which doors/entrances are open
+- **IP Addresses** = Which people/places are allowed
 
 ---
 
-## 🎯 **What This Module Creates**
+## What This Module Creates
 
 This module creates **three security groups** with different security levels:
 
-- **🌐 Public EC2 Security Group** - Allows web traffic (HTTP/HTTPS) and SSH
-- **🏠 Private EC2 Security Group** - Allows only internal traffic and SSH
-- **🔗 VPC Endpoints Security Group** - Allows internal VPC communication
+- **Public EC2 Security Group** - Allows web traffic (HTTP/HTTPS) and SSH
+- **Private EC2 Security Group** - Allows only internal traffic and SSH
+- **VPC Endpoints Security Group** - Allows internal VPC communication
 
 ---
 
-## 🏗️ **Module Structure**
+## Module Structure
 
 ```
 security_groups/
-├── main.tf      # 🎯 Creates security groups with rules
-├── variables.tf # 📝 What the module needs as input
-├── outputs.tf   # 📤 What the module provides to others
-└── README.md    # 📖 This file!
+├── main.tf      # Creates security groups with rules
+├── variables.tf # What the module needs as input
+├── outputs.tf   # What the module provides to others
+└── README.md    # This file!
 ```
 
 ---
 
-## 📝 **Input Variables Explained**
+## Input Variables Explained
 
-### **🌐 VPC Configuration**
+### VPC Configuration
 
 ```hcl
 variable "vpc_id" {
@@ -49,7 +49,7 @@ variable "vpc_id" {
 
 **What this means:** Your security groups will be created in the VPC created by the VPC module
 
-### **🏷️ Environment Tagging**
+### Environment Tagging
 
 ```hcl
 variable "environment" {
@@ -60,7 +60,7 @@ variable "environment" {
 
 **What this means:** All security groups get tagged with your environment (dev, staging, prod)
 
-### **🌍 VPC CIDR Blocks**
+### VPC CIDR Blocks
 
 ```hcl
 variable "vpc_cidr_blocks" {
@@ -74,9 +74,9 @@ variable "vpc_cidr_blocks" {
 
 ---
 
-## 🔍 **How It Works (Step by Step)**
+## How It Works (Step by Step)
 
-### **Step 1: Create Public EC2 Security Group**
+### Step 1: Create Public EC2 Security Group
 
 ```hcl
 resource "aws_security_group" "public_ec2" {
@@ -84,7 +84,7 @@ resource "aws_security_group" "public_ec2" {
   description = "Security group for public EC2 instances (web servers)"
   vpc_id      = var.vpc_id
   
-  # 🚪 INBOUND RULES - What traffic can come IN
+  # INBOUND RULES - What traffic can come IN
   
   # Allow SSH from anywhere (for lab purposes)
   ingress {
@@ -113,7 +113,7 @@ resource "aws_security_group" "public_ec2" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   
-  # 🚪 OUTBOUND RULES - What traffic can go OUT
+  # OUTBOUND RULES - What traffic can go OUT
   
   # Allow all outbound traffic
   egress {
@@ -138,7 +138,7 @@ resource "aws_security_group" "public_ec2" {
 - **Allows HTTPS (port 443)** from anywhere (for secure web traffic)
 - **Allows all outbound traffic** (instances can reach internet)
 
-### **Step 2: Create Private EC2 Security Group**
+### Step 2: Create Private EC2 Security Group
 
 ```hcl
 resource "aws_security_group" "private_ec2" {
@@ -146,7 +146,7 @@ resource "aws_security_group" "private_ec2" {
   description = "Security group for private EC2 instances (database servers)"
   vpc_id      = var.vpc_id
   
-  # 🚪 INBOUND RULES - What traffic can come IN
+  # INBOUND RULES - What traffic can come IN
   
   # Allow SSH from VPC only
   ingress {
@@ -166,7 +166,7 @@ resource "aws_security_group" "private_ec2" {
     cidr_blocks = var.vpc_cidr_blocks  # Only from your VPC
   }
   
-  # 🚪 OUTBOUND RULES - What traffic can go OUT
+  # OUTBOUND RULES - What traffic can go OUT
   
   # Allow all outbound traffic
   egress {
@@ -190,7 +190,7 @@ resource "aws_security_group" "private_ec2" {
 - **Allows MySQL (port 3306)** only from within your VPC
 - **Allows all outbound traffic** (for updates, etc.)
 
-### **Step 3: Create VPC Endpoints Security Group**
+### Step 3: Create VPC Endpoints Security Group
 
 ```hcl
 resource "aws_security_group" "vpc_endpoints" {
@@ -198,7 +198,7 @@ resource "aws_security_group" "vpc_endpoints" {
   description = "Security group for VPC endpoints"
   vpc_id      = var.vpc_id
   
-  # 🚪 INBOUND RULES - What traffic can come IN
+  # INBOUND RULES - What traffic can come IN
   
   # Allow HTTPS from VPC only
   ingress {
@@ -209,7 +209,7 @@ resource "aws_security_group" "vpc_endpoints" {
     cidr_blocks = var.vpc_cidr_blocks
   }
   
-  # 🚪 OUTBOUND RULES - What traffic can go OUT
+  # OUTBOUND RULES - What traffic can go OUT
   
   # Allow all outbound traffic
   egress {
@@ -234,22 +234,22 @@ resource "aws_security_group" "vpc_endpoints" {
 
 ---
 
-## 🔐 **Security Rules Explained**
+## Security Rules Explained
 
-### **🚪 Port Numbers**
+### Port Numbers
 
 - **Port 22** = SSH (Secure Shell) - for remote access
 - **Port 80** = HTTP - for web traffic
 - **Port 443** = HTTPS - for secure web traffic
 - **Port 3306** = MySQL - for database connections
 
-### **🌐 CIDR Blocks**
+### CIDR Blocks
 
 - **`0.0.0.0/0`** = Anywhere on the internet (least secure)
 - **`10.0.0.0/16`** = Only from your VPC (more secure)
 - **`10.0.1.0/24`** = Only from a specific subnet (most secure)
 
-### **📡 Protocols**
+### Protocols
 
 - **`tcp`** = Transmission Control Protocol (reliable, ordered)
 - **`udp`** = User Datagram Protocol (fast, unordered)
@@ -257,9 +257,9 @@ resource "aws_security_group" "vpc_endpoints" {
 
 ---
 
-## 📤 **What the Module Provides (Outputs)**
+## What the Module Provides (Outputs)
 
-### **🆔 Security Group IDs**
+### Security Group IDs
 
 ```hcl
 output "public_ec2_sg_id" {
@@ -280,7 +280,7 @@ output "vpc_endpoints_sg_id" {
 
 **Used by:** EC2 module to assign security groups to instances
 
-### **🗺️ Security Group Map**
+### Security Group Map
 
 ```hcl
 output "security_group_ids" {
@@ -297,9 +297,9 @@ output "security_group_ids" {
 
 ---
 
-## 🎨 **Customizing Your Security Groups**
+## Customizing Your Security Groups
 
-### **🔒 Make Public Group More Secure**
+### Make Public Group More Secure
 
 ```hcl
 # Only allow SSH from your IP address
@@ -312,7 +312,7 @@ ingress {
 }
 ```
 
-### **🌍 Allow Specific Countries/Regions**
+### Allow Specific Countries/Regions
 
 ```hcl
 # Allow HTTP only from specific IP ranges
@@ -329,7 +329,7 @@ ingress {
 }
 ```
 
-### **🔐 Add More Database Ports**
+### Add More Database Ports
 
 ```hcl
 # Allow PostgreSQL connections
@@ -344,75 +344,73 @@ ingress {
 
 ---
 
-## 🚨 **Common Questions**
+## Common Questions
 
-### **❓ "Why does the public group allow SSH from anywhere?"**
+### "Why does the public group allow SSH from anywhere?"
 
-- **🎯 Lab Purpose:** This is a security lab for learning
-- **🔒 Production Warning:** In real production, you'd restrict SSH to specific IPs
-- **🛡️ Security Note:** The private group is more restrictive
+- **Lab Purpose:** This is a security lab for learning
+- **Production Warning:** In real production, you'd restrict SSH to specific IPs
+- **Security Note:** The private group is more restrictive
 
-### **❓ "What's the difference between ingress and egress?"**
+### "What's the difference between ingress and egress?"
 
-- **🚪 Ingress:** Traffic coming **INTO** your resource (inbound)
-- **🚪 Egress:** Traffic going **OUT OF** your resource (outbound)
+- **Ingress:** Traffic coming **INTO** your resource (inbound)
+- **Egress:** Traffic going **OUT OF** your resource (outbound)
 
-### **❓ "Why do I need outbound rules?"**
+### "Why do I need outbound rules?"
 
-- **🔄 Updates:** Instances need to download security updates
-- **🌐 Internet:** Web servers need to make API calls
-- **📡 Communication:** Instances need to talk to AWS services
+- **Updates:** Instances need to download security updates
+- **Internet:** Web servers need to make API calls
+- **Communication:** Instances need to talk to AWS services
 
-### **❓ "Can I have multiple security groups on one instance?"**
+### "Can I have multiple security groups on one instance?"
 
 **Yes!** You can assign multiple security groups to an instance:
-- **➕ Additive:** Rules from all groups are combined
-- **🔒 Most Restrictive:** If any group blocks traffic, it's blocked
-- **📋 Best Practice:** Use multiple groups for different purposes
+- **Additive:** Rules from all groups are combined
+- **Most Restrictive:** If any group blocks traffic, it's blocked
+- **Best Practice:** Use multiple groups for different purposes
 
 ---
 
-## 🔧 **Troubleshooting**
+## Troubleshooting
 
-### **🚨 Error: "Security group not found"**
+### Error: "Security group not found"
 **Solution:** Make sure the VPC module runs before this one
 
-### **🚨 Error: "Invalid CIDR block"**
+### Error: "Invalid CIDR block"
 **Solution:** Check that your VPC CIDR blocks are valid IP ranges
 
-### **🚨 Error: "Port already in use"**
+### Error: "Port already in use"
 **Solution:** Each port can only be used once per security group
 
-### **🚨 Error: "Cannot delete security group"**
+### Error: "Cannot delete security group"
 **Solution:** Remove all references to the security group first
 
 ---
 
-## 🎯 **Next Steps**
+## Next Steps
 
-1. **🔍 Look at the main.tf** to see how security groups are created
-2. **📝 Modify the rules** to add/remove access as needed
-3. **🚀 Deploy the module** to see your firewall rules in action
-4. **🔗 Test connectivity** to ensure your rules work correctly
-
----
-
-## 🔐 **Security Best Practices**
-
-### **✅ Do's**
-- **🔒 Restrict SSH access** to specific IPs in production
-- **🏷️ Use descriptive names** for security groups
-- **📝 Document your rules** with clear descriptions
-- **🔄 Review rules regularly** for security gaps
-
-### **❌ Don'ts**
-- **🚫 Don't use 0.0.0.0/0** for SSH in production
-- **🚫 Don't forget outbound rules** (instances need internet access)
-- **🚫 Don't mix public/private rules** in the same group
-- **🚫 Don't ignore security group limits** (5 per network interface)
+1. **Look at the main.tf** to see how security groups are created
+2. **Modify the rules** to add/remove access as needed
+3. **Deploy the module** to see your firewall rules in action
+4. **Test connectivity** to ensure your rules work correctly
 
 ---
 
-<div align="center">
-  <p><em>🛡️ Your firewall rules are ready to protect! 🔒</em></p>
-</div>
+## Security Best Practices
+
+### Do's
+- **Restrict SSH access** to specific IPs in production
+- **Use descriptive names** for security groups
+- **Document your rules** with clear descriptions
+- **Review rules regularly** for security gaps
+
+### Don'ts
+- **Don't use 0.0.0.0/0** for SSH in production
+- **Don't forget outbound rules** (instances need internet access)
+- **Don't mix public/private rules** in the same group
+- **Don't ignore security group limits** (5 per network interface)
+
+---
+
+**Your firewall rules are ready to protect your infrastructure!**

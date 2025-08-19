@@ -1,40 +1,40 @@
-# 📤 Outputs.tf - The Information Highway
+# Outputs.tf - The Information Highway
 
-## 📚 **What is outputs.tf?**
+## What is outputs.tf?
 
 **outputs.tf** is like the **information highway** of your infrastructure - it's where you define what information gets shared with the outside world and how different parts of your infrastructure communicate with each other.
 
 Think of it as:
-- **🛣️ A highway system** connecting different cities
-- **📡 A radio station** broadcasting information
-- **🔗 A bridge** between different parts of your infrastructure
+- **A highway system** connecting different cities
+- **A radio station** broadcasting information
+- **A bridge** between different parts of your infrastructure
 
 In Terraform terms, `outputs.tf` defines **what values are exposed** after your infrastructure is created, making them available for other modules, scripts, or human consumption.
 
 ---
 
-## 🏗️ **Why Outputs Matter for Learning**
+## Why Outputs Matter for Learning
 
-### **🔗 Understanding Data Flow**
+### Understanding Data Flow
 - **Learn how modules** share information with each other
 - **Understand the concept** of outputs becoming inputs
 - **See how infrastructure** components communicate
 
-### **📊 Infrastructure Visibility**
+### Infrastructure Visibility
 - **Get important information** about your deployed resources
 - **Understand resource relationships** and dependencies
 - **Learn how to monitor** your infrastructure
 
-### **🧩 Module Integration**
+### Module Integration
 - **See how modules** work together as a system
 - **Understand the dependency chain** between resources
 - **Learn best practices** for modular design
 
 ---
 
-## 🔍 **How Outputs Work (Step by Step)**
+## How Outputs Work (Step by Step)
 
-### **🎯 Step 1: Module Creates Output**
+### Step 1: Module Creates Output
 ```hcl
 # In modules/vpc/outputs.tf
 output "vpc_id" {
@@ -53,7 +53,7 @@ output "vpc_id" {
 - **Resource references** - Understand how to get values from resources
 - **Documentation** - See how descriptions help others understand outputs
 
-### **🔄 Step 2: Main Configuration Uses Output**
+### Step 2: Main Configuration Uses Output
 ```hcl
 # In main.tf
 module "security_groups" {
@@ -74,7 +74,7 @@ module "security_groups" {
 - **Dependency management** - Understand why order matters
 - **Data flow** - See how information moves between modules
 
-### **📤 Step 3: Root Outputs Expose Information**
+### Step 3: Root Outputs Expose Information
 ```hcl
 # In outputs.tf (root level)
 output "vpc_id" {
@@ -95,11 +95,11 @@ output "vpc_id" {
 
 ---
 
-## 📋 **All Outputs Explained**
+## All Outputs Explained
 
-### **🌐 Network Outputs**
+### Network Outputs
 
-#### **VPC Information**
+#### VPC Information
 ```hcl
 output "vpc_id" {
   description = "ID of the main VPC"
@@ -121,7 +121,7 @@ output "vpc_cidr_block" {
 - **Network planning** - Understand how to use VPC information
 - **Security configuration** - See how VPC details affect security rules
 
-#### **Subnet Information**
+#### Subnet Information
 ```hcl
 output "public_subnet_ids" {
   description = "IDs of the public subnets"
@@ -143,9 +143,9 @@ output "private_subnet_ids" {
 - **Network segmentation** - Understand public vs. private subnets
 - **Resource organization** - See how to organize infrastructure logically
 
-### **💻 Compute Outputs**
+### Compute Outputs
 
-#### **EC2 Instance Information**
+#### EC2 Instance Information
 ```hcl
 output "public_web_instance_id" {
   description = "ID of the public web server"
@@ -178,7 +178,7 @@ output "private_db_private_ip" {
 - **Network connectivity** - Understand how to connect to instances
 - **Automation** - See how outputs enable automated management
 
-#### **SSH Key Information**
+#### SSH Key Information
 ```hcl
 output "key_pair_name" {
   description = "Name of the SSH key pair"
@@ -195,9 +195,9 @@ output "key_pair_name" {
 - **Key management** - Understand AWS key pair concepts
 - **Security practices** - See how to secure infrastructure access
 
-### **🛡️ Security Outputs**
+### Security Outputs
 
-#### **Security Group Information**
+#### Security Group Information
 ```hcl
 output "public_ec2_sg_id" {
   description = "ID of the public EC2 security group"
@@ -219,9 +219,9 @@ output "private_ec2_sg_id" {
 - **Security auditing** - Understand how to review security configurations
 - **Compliance** - See how to track security settings
 
-### **🔍 Security Service Outputs**
+### Security Service Outputs
 
-#### **GuardDuty Information**
+#### GuardDuty Information
 ```hcl
 output "guardduty_detector_id" {
   description = "ID of the GuardDuty detector"
@@ -243,7 +243,7 @@ output "guardduty_detector_arn" {
 - **Service integration** - Understand how security tools work together
 - **Monitoring setup** - See how to configure security monitoring
 
-#### **Security Hub Information**
+#### Security Hub Information
 ```hcl
 output "security_hub_account_id" {
   description = "Security Hub account ID"
@@ -265,9 +265,9 @@ output "security_hub_arn" {
 - **Policy management** - Understand how to manage security policies
 - **Security governance** - See how to govern security practices
 
-### **📊 Monitoring Outputs**
+### Monitoring Outputs
 
-#### **CloudWatch Information**
+#### CloudWatch Information
 ```hcl
 output "security_lab_log_group" {
   description = "CloudWatch log group for security lab"
@@ -289,9 +289,9 @@ output "security_dashboard" {
 - **Dashboards** - Understand how to visualize infrastructure data
 - **Observability** - See how to make infrastructure observable
 
-### **👤 IAM Outputs**
+### IAM Outputs
 
-#### **Role Information**
+#### Role Information
 ```hcl
 output "ec2_role_arn" {
   description = "ARN of the EC2 instance role"
@@ -315,9 +315,9 @@ output "ec2_instance_profile_arn" {
 
 ---
 
-## 🔄 **The Data Flow Chain**
+## The Data Flow Chain
 
-### **📊 Visual Representation**
+### Visual Representation
 ```
 VPC Module → Security Groups Module → EC2 Module
     ↓              ↓                    ↓
@@ -325,14 +325,14 @@ VPC Module → Security Groups Module → EC2 Module
   subnet_ids  security_group_ids  instance_info
 ```
 
-### **🔗 How Information Flows**
+### How Information Flows
 
 1. **VPC Module creates resources** and outputs their IDs
 2. **Security Groups Module** uses VPC ID to create firewall rules
 3. **EC2 Module** uses VPC ID, subnet IDs, and security group IDs
 4. **Root outputs** expose all important information to the outside world
 
-### **🎯 Why This Order Matters**
+### Why This Order Matters
 
 - **VPC must exist** before security groups can reference it
 - **Security groups must exist** before EC2 instances can use them
@@ -340,9 +340,9 @@ VPC Module → Security Groups Module → EC2 Module
 
 ---
 
-## 🎨 **Customizing Your Outputs**
+## Customizing Your Outputs
 
-### **📝 Add New Outputs**
+### Add New Outputs
 ```hcl
 # Add a new output for monitoring
 output "web_server_url" {
@@ -356,7 +356,7 @@ output "web_server_url" {
 - **Combines multiple outputs** to create useful information
 - **Makes infrastructure** easier to use
 
-### **🔍 Filter Outputs**
+### Filter Outputs
 ```hcl
 # Only show production outputs in production
 output "production_info" {
@@ -373,7 +373,7 @@ output "production_info" {
 - **Reduces information clutter** in non-production environments
 - **Shows advanced Terraform** features
 
-### **📊 Group Related Outputs**
+### Group Related Outputs
 ```hcl
 # Group all network information
 output "network_info" {
@@ -394,9 +394,9 @@ output "network_info" {
 
 ---
 
-## 🚨 **Common Mistakes to Avoid**
+## Common Mistakes to Avoid
 
-### **❌ 1. Circular Dependencies**
+### 1. Circular Dependencies
 **Problem:** Modules trying to output values that depend on each other
 ```hcl
 # Module A outputs something Module B needs
@@ -410,7 +410,7 @@ output "network_info" {
 # Clear, one-way flow with no circles
 ```
 
-### **❌ 2. Missing Outputs**
+### 2. Missing Outputs
 **Problem:** Trying to use a module output that doesn't exist
 ```hcl
 # In main.tf
@@ -427,7 +427,7 @@ output "vpc_id" {
 }
 ```
 
-### **❌ 3. Sensitive Information in Outputs**
+### 3. Sensitive Information in Outputs
 **Problem:** Exposing sensitive information like passwords or keys
 ```hcl
 output "database_password" {
@@ -444,9 +444,9 @@ output "database_endpoint" {
 
 ---
 
-## 🔧 **Troubleshooting Output Issues**
+## Troubleshooting Output Issues
 
-### **🚨 Error: "Output not found"**
+### Error: "Output not found"
 **Problem:** Trying to use an output that doesn't exist
 ```hcl
 vpc_id = module.vpc.vpc_id  # vpc_id output doesn't exist
@@ -457,7 +457,7 @@ vpc_id = module.vpc.vpc_id  # vpc_id output doesn't exist
 cat terraform/modules/vpc/outputs.tf
 ```
 
-### **🚨 Error: "Invalid output reference"**
+### Error: "Invalid output reference"
 **Problem:** Incorrect syntax for referencing module outputs
 ```hcl
 vpc_id = module.vpc.vpc_id  # Correct
@@ -469,7 +469,7 @@ vpc_id = module.vpc["vpc_id"]  # Wrong syntax
 vpc_id = module.vpc.vpc_id  # Use dot notation
 ```
 
-### **🚨 Error: "Output value not available"**
+### Error: "Output value not available"
 **Problem:** Trying to use an output before the resource is created
 ```hcl
 output "instance_ip" {
@@ -487,59 +487,56 @@ output "instance_ip" {
 
 ---
 
-## 🎯 **Learning Benefits of Outputs**
+## Learning Benefits of Outputs
 
-### **🧩 1. Understanding Data Flow**
+### 1. Understanding Data Flow
 - **Learn how modules** communicate with each other
 - **Understand the concept** of outputs becoming inputs
 - **See how infrastructure** components share information
 
-### **🔗 2. Module Integration**
+### 2. Module Integration
 - **Learn how to design** modules that work together
 - **Understand dependency management** between resources
 - **See best practices** for modular infrastructure
 
-### **📊 3. Infrastructure Visibility**
+### 3. Infrastructure Visibility
 - **Learn how to expose** important information about your infrastructure
 - **Understand how to monitor** and manage resources
 - **See how outputs enable** automation and integration
 
-### **🔧 4. Troubleshooting Skills**
+### 4. Troubleshooting Skills
 - **Learn how to debug** output-related issues
 - **Understand common mistakes** and how to avoid them
 - **See how to validate** that outputs are working correctly
 
 ---
 
-## 🚀 **Next Steps**
+## Next Steps
 
-1. **🔍 Study each output** to understand what information it provides
-2. **📝 Modify outputs** to see how changes affect information flow
-3. **🧩 Add new outputs** to expose additional information
-4. **🔗 Understand dependencies** by seeing how outputs connect modules
+1. **Study each output** to understand what information it provides
+2. **Modify outputs** to see how changes affect information flow
+3. **Add new outputs** to expose additional information
+4. **Understand dependencies** by seeing how outputs connect modules
 
 ---
 
-## 💡 **Pro Tips for Learning**
+## Pro Tips for Learning
 
-### **🎯 Start with Basic Outputs**
+### Start with Basic Outputs
 - **Use the provided outputs** first to understand the concept
 - **Understand what each output** provides before modifying it
 - **Test changes** to see how they affect information flow
 
-### **📝 Document Your Outputs**
+### Document Your Outputs
 - **Write clear descriptions** explaining what each output provides
 - **Add comments** explaining why outputs are needed
 - **Keep a log** of how outputs are used
 
-### **🔍 Use Outputs for Debugging**
+### Use Outputs for Debugging
 - **Output resource IDs** to help with troubleshooting
 - **Output configuration values** to verify settings
 - **Use outputs** to understand what Terraform actually created
 
 ---
 
-<div align="center">
-  <p><em>📤 Your outputs.tf is the information highway of your infrastructure! 🛣️</em></p>
-  <p><em>Build good highways, and information will flow smoothly! 🚀</em></p>
-</div>
+**Your outputs.tf is the information highway of your infrastructure! Build good highways, and information will flow smoothly!**
