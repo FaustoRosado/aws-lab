@@ -1,6 +1,6 @@
-# 🏗️ Terraform Infrastructure as Code Guide
+# Terraform Infrastructure as Code Guide
 
-## 📚 **What is Terraform?**
+## What is Terraform?
 
 **Terraform** is an **Infrastructure as Code (IaC)** tool that lets you define and manage your cloud infrastructure using simple, declarative configuration files. Instead of manually clicking through AWS console, you write code to describe what you want, and Terraform makes it happen!
 
@@ -8,69 +8,69 @@ Think of it like a **recipe book for your cloud infrastructure** - you write the
 
 ---
 
-## 🎯 **Why Use Terraform?**
+## Why Use Terraform?
 
-- **🚀 Speed** - Deploy entire infrastructure in minutes, not hours
-- **🔄 Consistency** - Same infrastructure every time, no human errors
-- **📝 Documentation** - Your infrastructure is self-documenting code
-- **🔄 Version Control** - Track changes, rollback, collaborate with teams
-- **💰 Cost Control** - Easy to destroy and recreate resources
-- **🌍 Multi-Cloud** - Same tool for AWS, Azure, Google Cloud
+- **Speed** - Deploy entire infrastructure in minutes, not hours
+- **Consistency** - Same infrastructure every time, no human errors
+- **Documentation** - Your infrastructure is self-documenting code
+- **Version Control** - Track changes, rollback, collaborate with teams
+- **Cost Control** - Easy to destroy and recreate resources
+- **Multi-Cloud** - Same tool for AWS, Azure, Google Cloud
 
 ---
 
-## 🏗️ **Project Structure Explained**
+## Project Structure Explained
 
 ```
 terraform/
-├── main.tf              # 🎯 Main configuration - orchestrates everything
-├── variables.tf         # 📝 Input variables - customizable settings
-├── outputs.tf          # 📤 Output values - what gets returned
-├── modules/            # 🧩 Reusable building blocks
-│   ├── vpc/           # 🌐 Network foundation
-│   ├── ec2/           # 💻 Virtual servers
-│   ├── security_groups/ # 🛡️ Firewall rules
-│   ├── s3/            # 📦 File storage
-│   ├── guardduty/     # 🔍 Security monitoring
-│   ├── security_hub/  # 🚨 Security compliance
-│   ├── cloudwatch/    # 📊 Monitoring & alerts
-│   └── iam/           # 👤 User permissions
-└── README.md          # 📖 This file!
+├── main.tf              # Main configuration - orchestrates everything
+├── variables.tf         # Input variables - customizable settings
+├── outputs.tf          # Output values - what gets returned
+├── modules/            # Reusable building blocks
+│   ├── vpc/           # Network foundation
+│   ├── ec2/           # Virtual servers
+│   ├── security_groups/ # Firewall rules
+│   ├── s3/            # File storage
+│   ├── guardduty/     # Security monitoring
+│   ├── security_hub/  # Security compliance
+│   ├── cloudwatch/    # Monitoring & alerts
+│   └── iam/           # User permissions
+└── README.md          # This file!
 ```
 
 ---
 
-## 🧩 **What are Terraform Modules?**
+## What are Terraform Modules?
 
 **Modules** are like **Lego blocks** for your infrastructure. Each module is a self-contained package that creates a specific set of resources.
 
-### **🎯 Why Use Modules?**
+### Why Use Modules?
 
-- **♻️ Reusability** - Use the same module in different projects
-- **🧹 Organization** - Keep related resources together
-- **👥 Teamwork** - Different team members can work on different modules
-- **🧪 Testing** - Test modules independently
-- **📚 Learning** - Easier to understand what each part does
+- **Reusability** - Use the same module in different projects
+- **Organization** - Keep related resources together
+- **Teamwork** - Different team members can work on different modules
+- **Testing** - Test modules independently
+- **Learning** - Easier to understand what each part does
 
-### **🔍 Module Structure Example**
+### Module Structure Example
 
 Each module follows this pattern:
 ```
 module_name/
-├── main.tf      # 🎯 Creates the actual resources
-├── variables.tf # 📝 What the module needs as input
-└── outputs.tf   # 📤 What the module provides to others
+├── main.tf      # Creates the actual resources
+├── variables.tf # What the module needs as input
+└── outputs.tf   # What the module provides to others
 ```
 
 ---
 
-## 📝 **Variables: The ${var.environment} Magic**
+## Variables: The ${var.environment} Magic
 
-### **🔍 What is ${var.environment}?**
+### What is ${var.environment}?
 
 `${var.environment}` is a **variable reference** in Terraform. It's like a **placeholder** that gets replaced with an actual value when you run Terraform.
 
-### **📖 Variable Syntax Breakdown**
+### Variable Syntax Breakdown
 
 ```hcl
 # This is a variable declaration
@@ -89,7 +89,7 @@ resource "aws_instance" "example" {
 }
 ```
 
-### **🎯 What Happens When You Run It?**
+### What Happens When You Run It?
 
 If you set `environment = "prod"`, Terraform will create:
 ```hcl
@@ -109,40 +109,40 @@ tags = {
 
 ---
 
-## 🚀 **How to Use This Project**
+## How to Use This Project
 
-### **📋 Prerequisites**
+### Prerequisites
 
 1. **Install Terraform** - Download from [terraform.io](https://terraform.io)
 2. **Install AWS CLI** - Download from [aws.amazon.com](https://aws.amazon.com)
 3. **Configure AWS Credentials** - Run `aws configure`
 
-### **🔧 Step-by-Step Deployment**
+### Step-by-Step Deployment
 
-#### **Step 1: Navigate to Terraform Directory**
+#### Step 1: Navigate to Terraform Directory
 ```bash
 cd terraform
 ```
 
-#### **Step 2: Initialize Terraform**
+#### Step 2: Initialize Terraform
 ```bash
 terraform init
 ```
 **What this does:** Downloads required providers (AWS, etc.) and sets up your working directory.
 
-#### **Step 3: Plan Your Deployment**
+#### Step 3: Plan Your Deployment
 ```bash
 terraform plan
 ```
 **What this does:** Shows you exactly what Terraform will create, modify, or delete. **Always run this first!**
 
-#### **Step 4: Apply Your Infrastructure**
+#### Step 4: Apply Your Infrastructure
 ```bash
 terraform apply
 ```
 **What this does:** Actually creates your AWS resources. Type `yes` when prompted.
 
-#### **Step 5: Destroy When Done (Optional)**
+#### Step 5: Destroy When Done (Optional)
 ```bash
 terraform destroy
 ```
@@ -150,9 +150,9 @@ terraform destroy
 
 ---
 
-## 🎨 **Customizing Your Infrastructure**
+## Customizing Your Infrastructure
 
-### **📝 Editing Variables**
+### Editing Variables
 
 Open `variables.tf` and modify these values:
 
@@ -176,7 +176,7 @@ variable "instance_type" {
 }
 ```
 
-### **🌍 Environment-Specific Deployments**
+### Environment-Specific Deployments
 
 Create different configurations for different environments:
 
@@ -192,11 +192,11 @@ terraform apply -var="environment=prod" -var="instance_type=t3.medium"
 
 ---
 
-## 🧹 **Clean Infrastructure Code Principles**
+## Clean Infrastructure Code Principles
 
-### **🎯 1. Use Meaningful Names**
+### 1. Use Meaningful Names
 
-**❌ Bad:**
+**Bad:**
 ```hcl
 resource "aws_instance" "server" {
   tags = {
@@ -205,7 +205,7 @@ resource "aws_instance" "server" {
 }
 ```
 
-**✅ Good:**
+**Good:**
 ```hcl
 resource "aws_instance" "web_server" {
   tags = {
@@ -217,9 +217,9 @@ resource "aws_instance" "web_server" {
 }
 ```
 
-### **🎯 2. Use Variables for Everything**
+### 2. Use Variables for Everything
 
-**❌ Bad:**
+**Bad:**
 ```hcl
 resource "aws_security_group" "web" {
   name        = "web-sg"
@@ -228,7 +228,7 @@ resource "aws_security_group" "web" {
 }
 ```
 
-**✅ Good:**
+**Good:**
 ```hcl
 resource "aws_security_group" "web" {
   name        = "${var.environment}-web-sg"
@@ -237,9 +237,9 @@ resource "aws_security_group" "web" {
 }
 ```
 
-### **🎯 3. Use Modules for Reusability**
+### 3. Use Modules for Reusability
 
-**❌ Bad:**
+**Bad:**
 ```hcl
 # Copy-pasting the same security group code everywhere
 resource "aws_security_group" "web1" { ... }
@@ -247,7 +247,7 @@ resource "aws_security_group" "web2" { ... }
 resource "aws_security_group" "web3" { ... }
 ```
 
-**✅ Good:**
+**Good:**
 ```hcl
 # Create a reusable security group module
 module "web_security_group" {
@@ -259,9 +259,9 @@ module "web_security_group" {
 }
 ```
 
-### **🎯 4. Use Data Sources for Dynamic Values**
+### 4. Use Data Sources for Dynamic Values
 
-**❌ Bad:**
+**Bad:**
 ```hcl
 # Hardcoded AMI ID (will break when AWS updates)
 resource "aws_instance" "web" {
@@ -269,7 +269,7 @@ resource "aws_instance" "web" {
 }
 ```
 
-**✅ Good:**
+**Good:**
 ```hcl
 # Dynamically get the latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux_2" {
@@ -289,12 +289,12 @@ resource "aws_instance" "web" {
 
 ---
 
-## 🔍 **Understanding the Main Configuration**
+## Understanding the Main Configuration
 
-### **📖 main.tf Breakdown**
+### main.tf Breakdown
 
 ```hcl
-# 🎯 Terraform and AWS Provider Configuration
+# Terraform and AWS Provider Configuration
 terraform {
   required_version = ">= 1.0"
   required_providers {
@@ -305,12 +305,12 @@ terraform {
   }
 }
 
-# 🌍 AWS Provider Configuration
+# AWS Provider Configuration
 provider "aws" {
   region = var.aws_region
 }
 
-# 🧩 VPC Module - Creates your network foundation
+# VPC Module - Creates your network foundation
 module "vpc" {
   source = "./modules/vpc"
   
@@ -321,7 +321,7 @@ module "vpc" {
   private_subnet_cidrs = var.private_subnet_cidrs
 }
 
-# 🧩 Security Groups Module - Creates firewall rules
+# Security Groups Module - Creates firewall rules
 module "security_groups" {
   source = "./modules/security_groups"
   
@@ -329,7 +329,7 @@ module "security_groups" {
   environment = var.environment
 }
 
-# 🧩 EC2 Module - Creates your virtual servers
+# EC2 Module - Creates your virtual servers
 module "ec2" {
   source = "./modules/ec2"
   
@@ -345,70 +345,67 @@ module "ec2" {
 
 ---
 
-## 🚨 **Common Mistakes to Avoid**
+## Common Mistakes to Avoid
 
-### **❌ 1. Not Running `terraform plan`**
+### 1. Not Running `terraform plan`
 **Always** run `terraform plan` before `terraform apply` to see what will happen!
 
-### **❌ 2. Hardcoding Values**
+### 2. Hardcoding Values
 Don't hardcode IDs, names, or other values. Use variables instead.
 
-### **❌ 3. Not Using Tags**
+### 3. Not Using Tags
 Always tag your resources for cost tracking and organization.
 
-### **❌ 4. Ignoring State Files**
+### 4. Ignoring State Files
 Don't delete `.tfstate` files - they track your infrastructure!
 
-### **❌ 5. Running Terraform from Multiple Places**
+### 5. Running Terraform from Multiple Places
 Only run Terraform from one location to avoid conflicts.
 
 ---
 
-## 🔧 **Troubleshooting Common Issues**
+## Troubleshooting Common Issues
 
-### **🚨 Error: "Provider configuration not found"**
+### Error: "Provider configuration not found"
 **Solution:** Run `terraform init` to download providers.
 
-### **🚨 Error: "Access denied"**
+### Error: "Access denied"
 **Solution:** Check your AWS credentials with `aws sts get-caller-identity`.
 
-### **🚨 Error: "Resource already exists"**
+### Error: "Resource already exists"
 **Solution:** Import existing resources or destroy them first.
 
-### **🚨 Error: "Invalid region"**
+### Error: "Invalid region"
 **Solution:** Check your `aws_region` variable in `variables.tf`.
 
 ---
 
-## 📚 **Learning Resources**
+## Learning Resources
 
-- **📖 Official Docs:** [terraform.io/docs](https://terraform.io/docs)
-- **🎥 HashiCorp Learn:** [learn.hashicorp.com](https://learn.hashicorp.com)
-- **🐙 GitHub Examples:** [github.com/hashicorp/terraform](https://github.com/hashicorp/terraform)
-- **💬 Community:** [discuss.hashicorp.com](https://discuss.hashicorp.com)
-
----
-
-## 🎯 **Next Steps**
-
-1. **🚀 Deploy this infrastructure** using the steps above
-2. **🔍 Explore the modules** to understand how they work
-3. **📝 Modify variables** to customize your setup
-4. **🧩 Create your own modules** for new resources
-5. **📚 Read the official Terraform documentation**
+- **Official Docs:** [terraform.io/docs](https://terraform.io/docs)
+- **HashiCorp Learn:** [learn.hashicorp.com](https://learn.hashicorp.com)
+- **GitHub Examples:** [github.com/hashicorp/terraform](https://github.com/hashicorp/terraform)
+- **Community:** [discuss.hashicorp.com](https://discuss.hashicorp.com)
 
 ---
 
-## 🆘 **Need Help?**
+## Next Steps
 
-- **📖 Check this README** first
-- **🔍 Look at the module READMEs** in each module folder
-- **💬 Ask questions** in the project discussions
-- **🐛 Report issues** if you find bugs
+1. **Deploy this infrastructure** using the steps above
+2. **Explore the modules** to understand how they work
+3. **Modify variables** to customize your setup
+4. **Create your own modules** for new resources
+5. **Read the official Terraform documentation**
 
 ---
 
-<div align="center">
-  <p><em>🏗️ Happy Infrastructure Building! 🚀</em></p>
-  <p><em>Remember: Infrastructure as Code is a journey, not a destination!</em></p>
-</div>
+## Need Help?
+
+- **Check this README** first
+- **Look at the module READMEs** in each module folder
+- **Ask questions** in the project discussions
+- **Report issues** if you find bugs
+
+---
+
+**Happy Infrastructure Building! Remember: Infrastructure as Code is a journey, not a destination!**
