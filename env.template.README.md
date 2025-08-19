@@ -1,192 +1,114 @@
-# 🔐 Environment Template (`env.template`) - Complete Guide
+# Environment Template Guide
 
-This document explains how to use the `env.template` file to securely configure your AWS Security Lab environment variables.
+This guide explains how to use the `env.template` file to configure your AWS Security Lab environment.
 
-## 📋 **What is `env.template`?**
+## What is env.template?
 
-`env.template` is a **safe template file** that contains placeholder values for all the configuration options needed to run the AWS Security Lab. It's designed to be:
+The `env.template` file is a **safe template** that contains placeholder values for all the configuration options needed to run the AWS Security Lab. It's designed to be copied and customized for your specific environment without exposing sensitive information.
 
-- ✅ **Safe to commit** to GitHub (contains no real credentials)
-- ✅ **Comprehensive** (covers all configuration options)
-- ✅ **Educational** (explains what each setting does)
-- ✅ **Cross-platform** (works on Windows, Mac, and Linux)
+## How to Use
 
-## 🚨 **IMPORTANT SECURITY WARNING**
-
-**NEVER put your real AWS credentials in this file!**
-
-- ❌ This file is committed to GitHub
-- ❌ It's visible to everyone who can see your repository
-- ❌ Real credentials would be exposed to the internet
-- ❌ This could lead to unauthorized AWS access and charges
-
-## 🔧 **How to Use This Template**
-
-### **Step 1: Copy the Template**
+### Step 1: Copy the Template
 ```bash
-# Windows (PowerShell)
-Copy-Item env.template .env.local
-
-# Mac/Linux (Bash)
-cp env.template .env.local
+# Copy the template to create your environment file
+cp env.template .env.lab
 ```
 
-### **Step 2: Edit with Your Real Values**
-Open `.env.local` in your text editor and replace the placeholder values:
+### Step 2: Edit Your Environment File
+Open `.env.lab` in your preferred text editor and replace the placeholder values with your actual configuration.
 
+### Step 3: Never Commit Environment Files
+Environment files containing real credentials should never be committed to version control. They're already included in `.gitignore`.
+
+## Configuration Sections
+
+### AWS Credentials
 ```bash
-# BEFORE (template - safe to commit)
-AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY_ID_HERE
-AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY_HERE
+# Your AWS Access Key ID (get this from AWS IAM)
+AWS_ACCESS_KEY_ID=your_access_key_id_here
 
-# AFTER (your real file - NEVER commit)
-AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+# Your AWS Secret Access Key (get this from AWS IAM)
+AWS_SECRET_ACCESS_KEY=your_secret_access_key_here
+
+# Your AWS Account ID (12-digit number)
+AWS_ACCOUNT_ID=123456789012
 ```
 
-### **Step 3: Verify It's Ignored**
-The `.env.local` file is automatically excluded from Git by `.gitignore`, so it won't be committed accidentally.
+**What this means:** These are your AWS account credentials for programmatic access.
 
-## 📚 **Configuration Sections Explained**
-
-### **🌍 AWS Credentials Section**
+### AWS Configuration
 ```bash
-# Your AWS Access Key ID (starts with AKIA)
-AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY_ID_HERE
-
-# Your AWS Secret Access Key (very long string)
-AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY_HERE
-
-# AWS Session Token (if using temporary credentials)
-# AWS_SESSION_TOKEN=YOUR_SESSION_TOKEN_HERE
-```
-
-**What these do:**
-- **Access Key ID**: Identifies your AWS account/user
-- **Secret Access Key**: Authenticates your requests to AWS
-- **Session Token**: Used for temporary credentials (optional)
-
-**How to get them:**
-1. Go to AWS Console → IAM → Users → Your User
-2. Security credentials tab → Create access key
-3. Download the CSV file with your keys
-
-### **🌍 AWS Configuration Section**
-```bash
-# AWS Region (e.g., us-east-1, us-west-2, eu-west-1)
+# AWS region where you want to deploy resources
 AWS_DEFAULT_REGION=us-east-1
 
-# AWS Output Format (json, text, table)
+# AWS CLI profile name (if using multiple profiles)
+AWS_PROFILE=default
+
+# AWS CLI output format
 AWS_OUTPUT_FORMAT=json
-
-# AWS Profile (if using multiple profiles)
-# AWS_PROFILE=default
 ```
 
-**What these do:**
-- **Region**: Where your AWS resources will be created
-- **Output Format**: How AWS CLI displays information
-- **Profile**: Which AWS profile to use (if you have multiple)
+**What this means:** Basic AWS CLI configuration settings.
 
-**Recommended settings:**
-- **Region**: Use `us-east-1` for best compatibility
-- **Output Format**: Use `json` for scripting
-- **Profile**: Leave as `default` unless you have multiple accounts
-
-### **🏗️ Lab Configuration Section**
+### Lab Configuration
 ```bash
-# Lab Environment (development, staging, production)
-LAB_ENVIRONMENT=development
+# Environment name (used for resource naming and tagging)
+ENVIRONMENT=lab
 
-# Lab Name (for resource tagging)
-LAB_NAME=aws-security-lab
+# Project name (used for resource naming)
+PROJECT_NAME=aws-security-lab
 
-# Lab Owner (your name or team)
-LAB_OWNER=YOUR_NAME_HERE
+# Your name or username (for resource ownership)
+OWNER=your_name_here
+
+# Lab description
+LAB_DESCRIPTION=EC2 Compromise and Remediation Lab
 ```
 
-**What these do:**
-- **Environment**: Helps organize resources and costs
-- **Lab Name**: Tags all AWS resources for easy identification
-- **Lab Owner**: Helps with cost tracking and resource management
+**What this means:** These values are used to name and tag your AWS resources.
 
-**Recommended settings:**
-- **Environment**: Use `development` for learning
-- **Lab Name**: Keep as `aws-security-lab`
-- **Lab Owner**: Put your name or team name
-
-### **🔒 Security Settings Section**
+### Security Settings
 ```bash
-# Enable detailed logging (true/false)
-ENABLE_DEBUG_LOGGING=false
+# Enable MFA for AWS operations (true/false)
+ENABLE_MFA=true
 
-# Enable credential validation (true/false)
-ENABLE_CREDENTIAL_VALIDATION=true
+# Require encryption for data at rest (true/false)
+REQUIRE_ENCRYPTION=true
 
-# Maximum lab runtime in hours (for cost control)
-MAX_LAB_RUNTIME_HOURS=24
+# Enable CloudTrail logging (true/false)
+ENABLE_CLOUDTRAIL=true
+
+# Enable VPC Flow Logs (true/false)
+ENABLE_VPC_FLOW_LOGS=true
 ```
 
-**What these do:**
-- **Debug Logging**: Shows detailed information during lab execution
-- **Credential Validation**: Checks your AWS credentials before starting
-- **Max Runtime**: Automatically stops the lab after specified hours
+**What this means:** Security configuration options for your lab environment.
 
-**Recommended settings:**
-- **Debug Logging**: `false` for normal use, `true` for troubleshooting
-- **Credential Validation**: Always `true`
-- **Max Runtime**: `24` hours for safety
-
-### **📊 Monitoring and Alerting Section**
+### Monitoring and Alerting
 ```bash
 # Enable CloudWatch monitoring (true/false)
-ENABLE_CLOUDWATCH_MONITORING=true
+ENABLE_MONITORING=true
 
-# Enable billing alerts (true/false)
-ENABLE_BILLING_ALERTS=true
+# Enable SNS notifications (true/false)
+ENABLE_SNS_NOTIFICATIONS=true
 
-# Billing alert threshold in USD
-BILLING_ALERT_THRESHOLD_USD=50.00
+# Email address for security alerts
+SECURITY_ALERT_EMAIL=security@yourcompany.com
+
+# Enable cost monitoring (true/false)
+ENABLE_COST_MONITORING=true
 ```
 
-**What these do:**
-- **CloudWatch Monitoring**: Tracks performance and security metrics
-- **Billing Alerts**: Warns you when costs exceed threshold
-- **Alert Threshold**: Dollar amount that triggers billing warnings
+**What this means:** Configuration for monitoring, alerting, and cost tracking.
 
-**Recommended settings:**
-- **CloudWatch**: Always `true` for security labs
-- **Billing Alerts**: Always `true` for cost control
-- **Threshold**: Set to `50.00` or your comfort level
-
-### **🎯 Lab-Specific Settings Section**
+### Lab-Specific Settings
 ```bash
-# Web server instance type (t2.micro, t3.micro, etc.)
-WEB_SERVER_INSTANCE_TYPE=t2.micro
+# EC2 instance type for web server
+WEB_SERVER_INSTANCE_TYPE=t3.micro
 
-# Database server instance type
-DB_SERVER_INSTANCE_TYPE=t2.micro
+# EC2 instance type for database server
+DATABASE_SERVER_INSTANCE_TYPE=t3.micro
 
-# Enable GuardDuty (true/false)
-ENABLE_GUARDDUTY=true
-
-# Enable Security Hub (true/false)
-ENABLE_SECURITY_HUB=true
-
-# Enable CloudWatch (true/false)
-ENABLE_CLOUDWATCH=true
-```
-
-**What these do:**
-- **Instance Types**: Determines the size and cost of your EC2 instances
-- **Security Services**: Controls which AWS security services are enabled
-
-**Recommended settings:**
-- **Instance Types**: Use `t2.micro` or `t3.micro` (free tier eligible)
-- **Security Services**: All should be `true` for the full lab experience
-
-### **🌐 Network Configuration Section**
-```bash
 # VPC CIDR block
 VPC_CIDR=10.0.0.0/16
 
@@ -194,138 +116,141 @@ VPC_CIDR=10.0.0.0/16
 PUBLIC_SUBNET_CIDRS=["10.0.1.0/24","10.0.2.0/24"]
 
 # Private subnet CIDR blocks
-PRIVATE_SUBNET_CIDRS=["10.0.10.0/24","10.0.11.0/24"]
+PRIVATE_SUBNET_CIDRS=["10.0.10.0/24","10.0.20.0/24"]
 ```
 
-**What these do:**
-- **VPC CIDR**: Defines the IP address range for your virtual network
-- **Subnet CIDRs**: Divides your network into public and private areas
+**What this means:** Infrastructure configuration for your lab resources.
 
-**Recommended settings:**
-- **VPC CIDR**: Keep as `10.0.0.0/16` (standard lab configuration)
-- **Subnet CIDRs**: Keep as shown (provides good network segmentation)
-
-### **🔑 SSH Configuration Section**
+### Network Configuration
 ```bash
-# SSH key name (will be created if it doesn't exist)
+# Enable DNS hostnames (true/false)
+ENABLE_DNS_HOSTNAMES=true
+
+# Enable DNS resolution (true/false)
+ENABLE_DNS_RESOLUTION=true
+
+# Enable auto-assign public IPs (true/false)
+ENABLE_AUTO_ASSIGN_PUBLIC_IPS=true
+```
+
+**What this means:** Network configuration options for your VPC.
+
+### SSH Configuration
+```bash
+# SSH key pair name
 SSH_KEY_NAME=lab-key
 
 # SSH username for EC2 instances
 SSH_USERNAME=ec2-user
 
-# SSH port (usually 22)
+# SSH port (default: 22)
 SSH_PORT=22
 ```
 
-**What these do:**
-- **SSH Key**: Allows you to connect to your EC2 instances
-- **Username**: The user account on your EC2 instances
-- **Port**: The network port for SSH connections
+**What this means:** SSH access configuration for your EC2 instances.
 
-**Recommended settings:**
-- **SSH Key**: Keep as `lab-key`
-- **Username**: Keep as `ec2-user` (standard for Amazon Linux)
-- **Port**: Keep as `22` (standard SSH port)
-
-## 🚀 **Quick Setup Commands**
-
-### **Using the Setup Script (Recommended)**
+### Logging Configuration
 ```bash
-# Windows
-.\scripts\setup_credentials.ps1 setup
+# Log level (debug, info, warn, error)
+LOG_LEVEL=info
 
-# Mac/Linux
-./scripts/setup_credentials.sh setup
+# Enable detailed logging (true/false)
+ENABLE_DETAILED_LOGGING=false
+
+# Log retention period in days
+LOG_RETENTION_DAYS=30
+
+# Enable log encryption (true/false)
+ENABLE_LOG_ENCRYPTION=true
 ```
 
-### **Manual Setup**
+**What this means:** Logging and debugging configuration options.
+
+### Cost Optimization
 ```bash
-# Copy template
-cp env.template .env.local
+# Maximum lab runtime in hours
+MAX_LAB_RUNTIME_HOURS=24
 
-# Edit with your credentials
-# (Use your preferred text editor)
+# Enable auto-shutdown (true/false)
+ENABLE_AUTO_SHUTDOWN=true
 
-# Validate your setup
-# Windows: .\scripts\setup_credentials.ps1 validate
-# Mac/Linux: ./scripts/setup_credentials.sh validate
+# Shutdown time (24-hour format, e.g., 18:00)
+SHUTDOWN_TIME=18:00
+
+# Cost alert threshold in USD
+COST_ALERT_THRESHOLD=50.00
 ```
 
-## 🔍 **Verification Steps**
+**What this means:** Cost control and optimization settings.
 
-After setting up your `.env.local` file:
+### Emergency Settings
+```bash
+# Emergency shutdown email
+EMERGENCY_EMAIL=admin@yourcompany.com
 
-1. **Check file exists**: Verify `.env.local` is in your project root
-2. **Verify credentials**: Run the validation script
-3. **Test AWS connection**: Ensure you can access AWS services
-4. **Check Git status**: Confirm `.env.local` is not staged for commit
+# Enable emergency shutdown (true/false)
+ENABLE_EMERGENCY_SHUTDOWN=true
 
-## 🆘 **Troubleshooting**
+# Emergency shutdown threshold (CPU percentage)
+EMERGENCY_CPU_THRESHOLD=90
+```
 
-### **Common Issues**
+**What this means:** Emergency response configuration for critical situations.
 
-#### **"Template file not found"**
-- Ensure you're in the project root directory
-- Check that `env.template` exists
-- Verify file permissions
+## Security Best Practices
 
-#### **"Credentials validation failed"**
-- Check your AWS Access Key ID and Secret Access Key
-- Verify your AWS account is active
-- Ensure your IAM user has necessary permissions
-- Check if your access keys have expired
+### Credential Management
+- **Never share** your AWS credentials
+- **Rotate access keys** every 90 days
+- **Use IAM roles** when possible
+- **Enable MFA** on your AWS account
 
-#### **"File not ignored by Git"**
-- Verify `.gitignore` contains `.env.local`
-- Check that `.env.local` is not already tracked
-- Run `git status` to see what's staged
+### Environment Isolation
+- **Separate environments** for different purposes
+- **Use different AWS accounts** for production vs. lab
+- **Isolate resources** in dedicated VPCs
+- **Tag resources** for cost tracking
 
-### **Getting Help**
+### Monitoring and Alerting
+- **Enable CloudTrail** for audit logging
+- **Set up cost alerts** to avoid surprises
+- **Monitor resource usage** regularly
+- **Review security findings** from GuardDuty
 
-1. **Check the logs**: Look for error messages in the setup script output
-2. **Verify AWS setup**: Use `aws sts get-caller-identity` to test credentials
-3. **Review permissions**: Ensure your IAM user has the required policies
-4. **Check documentation**: See `docs/SECURITY_AND_CREDENTIALS.md` for more details
+## Troubleshooting
 
-## 📚 **Related Documentation**
+### Common Issues
 
-- **`docs/SECURITY_AND_CREDENTIALS.md`** - Complete security guide
-- **`docs/SETUP_GUIDE.md`** - Detailed setup instructions
-- **`docs/QUICK_START.md`** - Fast deployment guide
-- **`scripts/setup_credentials.ps1`** - Windows setup script
-- **`scripts/setup_credentials.sh`** - Mac/Linux setup script
+#### Environment File Not Found
+**Problem:** Scripts can't find your environment file
+**Solution:** Ensure you've copied `env.template` to `.env.lab` or similar
 
-## 🎯 **Best Practices**
+#### Invalid Credentials
+**Problem:** AWS CLI commands fail with authentication errors
+**Solution:** Verify your access key and secret key are correct
 
-### **Security**
-- ✅ Use IAM users with minimal required permissions
-- ✅ Rotate your access keys every 90 days
-- ✅ Enable MFA on your AWS account
-- ✅ Monitor your AWS usage regularly
+#### Permission Errors
+**Problem:** AWS operations fail with permission errors
+**Solution:** Ensure your IAM user has the required permissions
 
-### **Configuration**
-- ✅ Use environment-specific files for different scenarios
-- ✅ Keep sensitive values out of version control
-- ✅ Validate your configuration before running the lab
-- ✅ Use descriptive names for your resources
+#### Region Mismatch
+**Problem:** Resources created in wrong region
+**Solution:** Check your `AWS_DEFAULT_REGION` setting
 
-### **Cost Control**
-- ✅ Set billing alerts at reasonable thresholds
-- ✅ Use free tier eligible instance types
-- ✅ Set maximum runtime limits
-- ✅ Clean up resources when done
+## Next Steps
 
-## 🎉 **You're Ready!**
+1. **Copy the template** to create your environment file
+2. **Edit the file** with your actual values
+3. **Test your configuration** using the setup scripts
+4. **Deploy your infrastructure** using Terraform
+5. **Monitor your resources** and costs
 
-Once you've configured your `.env.local` file:
+## Additional Resources
 
-1. **Validate your setup**: Run the validation script
-2. **Deploy the lab**: Use the main lab script
-3. **Follow the checklist**: Complete all lab objectives
-4. **Clean up**: Destroy resources when finished
-
-**Remember**: This template is designed to make setup easy while keeping you secure. Take your time to understand each setting, and don't hesitate to ask for help if you need it!
+- [AWS IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+- [AWS Security Best Practices](https://aws.amazon.com/security/security-learning/)
+- [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 
 ---
 
-**Happy learning! 🚀🔒**
+**Remember:** This template is for educational purposes. Never use these settings in production without proper security review!
