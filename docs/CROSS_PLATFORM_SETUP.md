@@ -1,728 +1,300 @@
-# 🌍 Cross-Platform Setup Guide
+# Cross-Platform Setup Guide
 
-This comprehensive guide provides setup instructions for both Windows and Mac users, ensuring everyone can successfully deploy and run the AWS Security Lab regardless of their operating system.
+This guide provides setup instructions for the AWS Security Lab across different operating systems and platforms.
 
-## 📋 Prerequisites by Platform
+## Supported Platforms
 
-### Windows Users
-- ✅ Windows 10/11 (64-bit)
-- ✅ PowerShell 5.1 or PowerShell 7+
-- ✅ Administrator access (for some installations)
-- ✅ Internet connection
+- **Windows 10/11** (PowerShell 7+)
+- **macOS 10.15+** (Bash/Terminal)
+- **Linux** (Ubuntu 18.04+, CentOS 7+, RHEL 7+)
+- **WSL2** (Windows Subsystem for Linux)
 
-### Mac Users
-- ✅ macOS 10.15 (Catalina) or later
-- ✅ Terminal application
-- ✅ Homebrew package manager (recommended)
-- ✅ Internet connection
+## Prerequisites
 
----
+### All Platforms
+- AWS Account with appropriate permissions
+- Internet connection
+- Text editor (VS Code, Notepad++, Vim, etc.)
 
-## 🖥️ Windows Setup Guide
+### Windows
+- PowerShell 7+ (recommended) or PowerShell 5.1
+- Windows Terminal (optional but recommended)
 
-### Step 1: Install Required Tools
+### macOS
+- Terminal.app or iTerm2
+- Homebrew (recommended for package management)
 
-#### 1.1 Install Terraform
+### Linux
+- Bash shell
+- Package manager (apt, yum, dnf)
 
-**Option A: Using winget (Recommended)**
+## Platform-Specific Setup
+
+### Windows Setup
+
+#### Install PowerShell 7
 ```powershell
-# Open PowerShell as Administrator
-winget install HashiCorp.Terraform
+# Using winget (Windows 10 1709+)
+winget install Microsoft.PowerShell
+
+# Using Chocolatey
+choco install powershell
+
+# Manual download
+# https://github.com/PowerShell/PowerShell/releases
 ```
 
-**Option B: Manual Installation**
-1. Download Terraform from [terraform.io](https://www.terraform.io/downloads)
-2. Extract the ZIP file to `C:\terraform`
-3. Add `C:\terraform` to your system PATH
-4. Restart PowerShell
-
-**Verify Installation:**
+#### Install Windows Terminal (Optional)
 ```powershell
-terraform --version
+# Using Microsoft Store (recommended)
+# Search for "Windows Terminal" in Microsoft Store
+
+# Using winget
+winget install Microsoft.WindowsTerminal
 ```
 
-#### 1.2 Install AWS CLI
-
-**Option A: Using winget (Recommended)**
+#### Install Git
 ```powershell
-winget install Amazon.AWSCLI
-```
-
-**Option B: Manual Installation**
-1. Download the MSI installer from [AWS CLI Downloads](https://aws.amazon.com/cli/)
-2. Run the installer as Administrator
-3. Follow the installation wizard
-4. Restart PowerShell
-
-**Verify Installation:**
-```powershell
-aws --version
-```
-
-#### 1.3 Install Git (Optional but Recommended)
-
-**Using winget:**
-```powershell
+# Using winget
 winget install Git.Git
+
+# Using Chocolatey
+choco install git
+
+# Manual download
+# https://git-scm.com/download/win
 ```
 
-**Verify Installation:**
+#### Install VS Code
 ```powershell
-git --version
+# Using winget
+winget install Microsoft.VisualStudioCode
+
+# Using Chocolatey
+choco install vscode
+
+# Manual download
+# https://code.visualstudio.com/
 ```
 
-### Step 2: Configure AWS Credentials
+### macOS Setup
 
-#### 2.1 Create AWS Credentials File
-
-```powershell
-# Create .aws directory in your user profile
-mkdir $env:USERPROFILE\.aws
-
-# Create credentials file
-echo "[default]`naws_access_key_id = YOUR_ACCESS_KEY_ID_HERE`naws_secret_access_key = YOUR_SECRET_ACCESS_KEY_HERE" | Out-File -FilePath "$env:USERPROFILE\.aws\credentials" -Encoding UTF8
-
-# Create config file
-echo "[default]`nregion = us-east-1`noutput = json" | Out-File -FilePath "$env:USERPROFILE\.aws\config" -Encoding UTF8
-```
-
-#### 2.2 Configure Using AWS CLI (Alternative)
-
-```powershell
-aws configure
-# Enter your AWS Access Key ID
-# Enter your AWS Secret Access Key
-# Enter your preferred region (e.g., us-east-1)
-# Enter output format (json)
-```
-
-#### 2.3 Verify AWS Configuration
-
-```powershell
-aws sts get-caller-identity
-```
-
-### Step 3: Clone and Setup Lab
-
-#### 3.1 Clone Repository
-
-```powershell
-# Navigate to your desired directory
-cd C:\Users\YourUsername\Documents
-
-# Clone the repository
-git clone https://github.com/yourusername/aws-security-lab.git
-cd aws-security-lab
-```
-
-#### 3.2 Generate SSH Keys
-
-```powershell
-# Navigate to the SSH directory
-cd terraform\modules\ec2\ssh
-
-# Generate SSH key pair
-ssh-keygen -t rsa -b 2048 -f lab-key -N '""'
-
-# Verify keys were created
-dir lab-key*
-```
-
-#### 3.3 Run the Lab
-
-```powershell
-# Return to lab root directory
-cd C:\Users\YourUsername\Documents\aws-security-lab
-
-# Check AWS configuration
-.\scripts\setup_lab.ps1 -Action check
-
-# Initialize Terraform
-.\scripts\setup_lab.ps1 -Action init
-
-# Deploy infrastructure
-.\scripts\setup_lab.ps1 -Action deploy
-```
-
----
-
-## 🍎 Mac Setup Guide
-
-### Step 1: Install Required Tools
-
-#### 1.1 Install Homebrew (Package Manager)
-
+#### Install Homebrew
 ```bash
-# Install Homebrew if not already installed
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Add Homebrew to PATH (if not already done)
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
-source ~/.zshrc
 ```
 
-#### 1.2 Install Terraform
-
+#### Install Required Tools
 ```bash
-# Install Terraform using Homebrew
-brew install terraform
-
-# Verify installation
-terraform --version
-```
-
-#### 1.3 Install AWS CLI
-
-```bash
-# Install AWS CLI using Homebrew
-brew install awscli
-
-# Verify installation
-aws --version
-```
-
-#### 1.4 Install Git (if not already installed)
-
-```bash
-# Git is usually pre-installed on macOS
-# If not, install with Homebrew
+# Install Git
 brew install git
 
-# Verify installation
-git --version
+# Install VS Code
+brew install --cask visual-studio-code
+
+# Install iTerm2 (optional)
+brew install --cask iterm2
+
+# Install PowerShell (optional)
+brew install --cask powershell
 ```
 
-### Step 2: Configure AWS Credentials
-
-#### 2.1 Create AWS Credentials File
-
+#### Configure Terminal
 ```bash
-# Create .aws directory in your home directory
-mkdir ~/.aws
+# Set default shell to bash
+chsh -s /bin/bash
 
-# Create credentials file
-cat > ~/.aws/credentials << 'EOF'
-[default]
-aws_access_key_id = YOUR_ACCESS_KEY_ID_HERE
-aws_secret_access_key = YOUR_SECRET_ACCESS_KEY_HERE
-EOF
-
-# Create config file
-cat > ~/.aws/config << 'EOF'
-[default]
-region = us-east-1
-output = json
-EOF
+# Add Homebrew to PATH (if not already done)
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-#### 2.2 Configure Using AWS CLI (Alternative)
+### Linux Setup
 
+#### Ubuntu/Debian
 ```bash
-aws configure
-# Enter your AWS Access Key ID
-# Enter your AWS Secret Access Key
-# Enter your preferred region (e.g., us-east-1)
-# Enter output format (json)
+# Update package list
+sudo apt update
+
+# Install required packages
+sudo apt install -y git curl wget unzip
+
+# Install VS Code (optional)
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+sudo apt update
+sudo apt install -y code
 ```
 
-#### 2.3 Verify AWS Configuration
-
+#### CentOS/RHEL
 ```bash
-aws sts get-caller-identity
+# Install EPEL repository
+sudo yum install -y epel-release
+
+# Install required packages
+sudo yum install -y git curl wget unzip
+
+# Install VS Code (optional)
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yum/repos/code\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+sudo yum install -y code
 ```
 
-### Step 3: Clone and Setup Lab
+## Common Tools Installation
 
-#### 3.1 Clone Repository
+### AWS CLI v2
 
-```bash
-# Navigate to your desired directory
-cd ~/Documents
-
-# Clone the repository
-git clone https://github.com/yourusername/aws-security-lab.git
-cd aws-security-lab
-```
-
-#### 3.2 Generate SSH Keys
-
-```bash
-# Navigate to the SSH directory
-cd terraform/modules/ec2/ssh
-
-# Generate SSH key pair
-ssh-keygen -t rsa -b 2048 -f lab-key -N ""
-
-# Verify keys were created
-ls -la lab-key*
-```
-
-#### 3.3 Run the Lab
-
-```bash
-# Return to lab root directory
-cd ~/Documents/aws-security-lab
-
-# Check AWS configuration
-./scripts/setup_lab.ps1 -Action check
-
-# Initialize Terraform
-./scripts/setup_lab.ps1 -Action init
-
-# Deploy infrastructure
-./scripts/setup_lab.ps1 -Action deploy
-```
-
----
-
-## 🔧 Platform-Specific Scripts
-
-### Windows PowerShell Scripts
-
-The lab includes PowerShell scripts that work natively on Windows:
-
-- **`setup_lab.ps1`**: Main lab management script
-- **`simulate_compromise.ps1`**: Attack simulation script
-
-**Execution Policy (if needed):**
+#### Windows
 ```powershell
-# Check current execution policy
-Get-ExecutionPolicy
+# Using winget
+winget install Amazon.AWSCLI
 
-# Set execution policy for current user
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+# Using Chocolatey
+choco install awscli
+
+# Manual download
+# https://awscli.amazonaws.com/AWSCLIV2.msi
 ```
 
-### Mac/Linux Script Adaptations
-
-For Mac users, we provide Bash script alternatives:
-
-#### 1.1 Create Mac Setup Script
-
+#### macOS
 ```bash
-# Create a Mac-compatible setup script
-cat > setup_lab_mac.sh << 'EOF'
-#!/bin/bash
+# Using Homebrew
+brew install awscli
 
-# AWS Security Lab Setup Script for Mac/Linux
-# Usage: ./setup_lab_mac.sh [action]
-
-ACTION=${1:-help}
-
-show_help() {
-    echo "🔒 AWS Security Lab - EC2 Compromise & Remediation"
-    echo ""
-    echo "Usage: ./setup_lab_mac.sh [action]"
-    echo ""
-    echo "Actions:"
-    echo "  check     - Check AWS CLI and Terraform installation"
-    echo "  init      - Initialize Terraform"
-    echo "  plan      - Plan Terraform deployment"
-    echo "  deploy    - Deploy infrastructure"
-    echo "  destroy   - Destroy infrastructure"
-    echo "  simulate  - Run compromise simulation"
-    echo "  monitor   - Monitor security findings"
-    echo "  help      - Show this help message"
-}
-
-check_aws() {
-    echo "🔍 Checking AWS CLI configuration..."
-    if aws sts get-caller-identity >/dev/null 2>&1; then
-        echo "✅ AWS CLI is configured and working"
-        aws sts get-caller-identity
-        return 0
-    else
-        echo "❌ AWS CLI configuration issue detected"
-        return 1
-    fi
-}
-
-check_terraform() {
-    echo "🔍 Checking Terraform installation..."
-    if terraform version >/dev/null 2>&1; then
-        echo "✅ Terraform is installed"
-        terraform version | head -1
-        return 0
-    else
-        echo "❌ Terraform not found or not working"
-        return 1
-    fi
-}
-
-initialize_terraform() {
-    echo "🚀 Initializing Terraform..."
-    if [ ! -d "terraform" ]; then
-        echo "❌ Terraform directory not found"
-        return 1
-    fi
-    
-    cd terraform
-    if terraform init; then
-        echo "✅ Terraform initialized successfully"
-        cd ..
-        return 0
-    else
-        echo "❌ Terraform initialization failed"
-        cd ..
-        return 1
-    fi
-}
-
-plan_terraform() {
-    echo "📋 Planning Terraform deployment..."
-    if [ ! -d "terraform" ]; then
-        echo "❌ Terraform directory not found"
-        return 1
-    fi
-    
-    cd terraform
-    if terraform plan; then
-        echo "✅ Terraform plan completed successfully"
-        echo "Review the plan above and run 'deploy' when ready"
-        cd ..
-        return 0
-    else
-        echo "❌ Terraform plan failed"
-        cd ..
-        return 1
-    fi
-}
-
-deploy_infrastructure() {
-    echo "🚀 Deploying AWS infrastructure..."
-    if [ ! -d "terraform" ]; then
-        echo "❌ Terraform directory not found"
-        return 1
-    fi
-    
-    cd terraform
-    if terraform apply -auto-approve; then
-        echo "✅ Infrastructure deployed successfully!"
-        echo ""
-        echo "🔍 Next steps:"
-        echo "1. Check the outputs above for connection information"
-        echo "2. Run 'check' to verify deployment"
-        echo "3. Run 'simulate' to start security testing"
-        cd ..
-        return 0
-    else
-        echo "❌ Infrastructure deployment failed"
-        cd ..
-        return 1
-    fi
-}
-
-destroy_infrastructure() {
-    echo "🗑️ Destroying AWS infrastructure..."
-    echo "⚠️  WARNING: This will delete ALL lab resources!"
-    echo "This action cannot be undone."
-    
-    read -p "Are you sure you want to continue? (yes/no): " confirmation
-    
-    if [ "$confirmation" != "yes" ]; then
-        echo "❌ Operation cancelled by user"
-        return 1
-    fi
-    
-    if [ ! -d "terraform" ]; then
-        echo "❌ Terraform directory not found"
-        return 1
-    fi
-    
-    cd terraform
-    if terraform destroy -auto-approve; then
-        echo "✅ Infrastructure destroyed successfully!"
-        echo "All lab resources have been removed from AWS"
-        cd ..
-        return 0
-    else
-        echo "❌ Infrastructure destruction failed"
-        cd ..
-        return 1
-    fi
-}
-
-simulate_compromise() {
-    echo "🎭 Starting compromise simulation..."
-    if [ ! -f "scripts/simulate_compromise.sh" ]; then
-        echo "❌ Simulation script not found"
-        return 1
-    fi
-    
-    echo "Running compromise simulation..."
-    if ./scripts/simulate_compromise.sh; then
-        echo "✅ Compromise simulation completed successfully!"
-        echo "Check GuardDuty and Security Hub for findings"
-        return 0
-    else
-        echo "❌ Compromise simulation failed"
-        return 1
-    fi
-}
-
-monitor_findings() {
-    echo "📊 Monitoring security findings..."
-    
-    echo "🔍 Checking GuardDuty findings..."
-    if aws guardduty list-detectors --query 'DetectorIds[0]' --output text >/dev/null 2>&1; then
-        detector_id=$(aws guardduty list-detectors --query 'DetectorIds[0]' --output text)
-        findings=$(aws guardduty list-findings --detector-id "$detector_id" --finding-criteria '{"Criterion": {"severity": {"Gte": 4}}}' --query 'FindingIds' --output text)
-        
-        if [ "$findings" != "None" ] && [ "$findings" != "" ]; then
-            echo "🚨 High severity GuardDuty findings detected!"
-            echo "Check AWS Console for details"
-        else
-            echo "✅ No high severity GuardDuty findings"
-        fi
-    else
-        echo "❌ Error checking GuardDuty"
-    fi
-    
-    echo ""
-    echo "🔍 Checking Security Hub findings..."
-    findings=$(aws securityhub get-findings --filters '{"SeverityLabel": [{"Value": "HIGH", "Comparison": "EQUALS"}]}' --max-items 10 --query 'Findings' --output text)
-    
-    if [ "$findings" != "None" ] && [ "$findings" != "" ]; then
-        echo "🚨 High severity Security Hub findings detected!"
-        echo "Check AWS Console for details"
-    else
-        echo "✅ No high severity Security Hub findings"
-    fi
-}
-
-# Main execution logic
-case $ACTION in
-    check)
-        check_aws && check_terraform
-        ;;
-    init)
-        check_aws && check_terraform && initialize_terraform
-        ;;
-    plan)
-        check_aws && check_terraform && plan_terraform
-        ;;
-    deploy)
-        check_aws && check_terraform && deploy_infrastructure
-        ;;
-    destroy)
-        check_aws && check_terraform && destroy_infrastructure
-        ;;
-    simulate)
-        simulate_compromise
-        ;;
-    monitor)
-        monitor_findings
-        ;;
-    help|*)
-        show_help
-        ;;
-esac
-EOF
-
-# Make the script executable
-chmod +x setup_lab_mac.sh
+# Manual download
+# https://awscli.amazonaws.com/AWSCLIV2.pkg
 ```
 
-#### 1.2 Create Mac Simulation Script
-
+#### Linux
 ```bash
-# Create a Mac-compatible simulation script
-cat > scripts/simulate_compromise.sh << 'EOF'
-#!/bin/bash
-
-# Compromise Simulation Script for Mac/Linux
-# This script simulates various attack scenarios
-
-echo "🎭 AWS Security Lab - Compromise Simulation"
-echo "=========================================="
-
-# Get web server IP from Terraform output
-WEB_SERVER_IP=$(cd terraform && terraform output -raw public_web_public_ip 2>/dev/null)
-
-if [ -z "$WEB_SERVER_IP" ]; then
-    echo "❌ Could not retrieve web server IP from Terraform"
-    echo "Please ensure infrastructure is deployed first"
-    exit 1
-fi
-
-echo "🌐 Web Server IP: $WEB_SERVER_IP"
-echo ""
-
-# Function to simulate port scanning
-simulate_port_scan() {
-    echo "🔍 Simulating port scanning..."
-    
-    # Check if nmap is available
-    if command -v nmap >/dev/null 2>&1; then
-        echo "Running: nmap -sS -p 22,80,443 $WEB_SERVER_IP"
-        nmap -sS -p 22,80,443 "$WEB_SERVER_IP"
-    else
-        echo "⚠️  nmap not available, using alternative method..."
-        # Use telnet/netcat to check ports
-        for port in 22 80 443; do
-            if timeout 5 bash -c "</dev/tcp/$WEB_SERVER_IP/$port" 2>/dev/null; then
-                echo "✅ Port $port is open"
-            else
-                echo "❌ Port $port is closed"
-            fi
-        done
-    fi
-    echo ""
-}
-
-# Function to simulate brute force attacks
-simulate_brute_force() {
-    echo "🔐 Simulating brute force attacks..."
-    
-    # Simulate SSH brute force (without actually attempting)
-    echo "Simulating SSH brute force attempts..."
-    echo "This would normally trigger GuardDuty findings"
-    echo "✅ Brute force simulation completed"
-    echo ""
-}
-
-# Function to simulate SQL injection
-simulate_sql_injection() {
-    echo "💉 Simulating SQL injection attacks..."
-    
-    # Test for SQL injection vulnerability
-    echo "Testing web application for SQL injection..."
-    
-    # Use curl to send malicious payloads
-    if command -v curl >/dev/null 2>&1; then
-        echo "Sending SQL injection payload: ' OR '1'='1"
-        curl -s "http://$WEB_SERVER_IP/?id='%20OR%20'1'='1" | head -5
-        
-        echo "Sending SQL injection payload: '; DROP TABLE users; --"
-        curl -s "http://$WEB_SERVER_IP/?id=';%20DROP%20TABLE%20users;%20--" | head -5
-    else
-        echo "⚠️  curl not available, using alternative method..."
-        echo "Manually test: http://$WEB_SERVER_IP/?id=' OR '1'='1"
-    fi
-    echo "✅ SQL injection simulation completed"
-    echo ""
-}
-
-# Function to simulate malicious file upload
-simulate_file_upload() {
-    echo "📁 Simulating malicious file upload..."
-    
-    echo "Creating test malicious file..."
-    echo "This is a test malicious file for security lab purposes" > /tmp/test_malware.txt
-    
-    if command -v curl >/dev/null 2>&1; then
-        echo "Attempting to upload file to web server..."
-        curl -X POST -F "file=@/tmp/test_malware.txt" "http://$WEB_SERVER_IP/" | head -5
-    else
-        echo "⚠️  curl not available, manual testing required"
-    fi
-    
-    # Clean up test file
-    rm -f /tmp/test_malware.txt
-    echo "✅ File upload simulation completed"
-    echo ""
-}
-
-# Function to simulate network scanning
-simulate_network_scanning() {
-    echo "🌐 Simulating network scanning..."
-    
-    echo "Simulating internal network reconnaissance..."
-    echo "This would normally trigger GuardDuty findings"
-    echo "✅ Network scanning simulation completed"
-    echo ""
-}
-
-# Function to check security findings
-check_security_findings() {
-    echo "🔍 Checking for security findings..."
-    
-    echo "Waiting 30 seconds for findings to appear..."
-    sleep 30
-    
-    echo "Checking GuardDuty findings..."
-    if aws guardduty list-detectors --query 'DetectorIds[0]' --output text >/dev/null 2>&1; then
-        detector_id=$(aws guardduty list-detectors --query 'DetectorIds[0]' --output text)
-        findings=$(aws guardduty list-findings --detector-id "$detector_id" --query 'FindingIds' --output text)
-        
-        if [ "$findings" != "None" ] && [ "$findings" != "" ]; then
-            echo "🚨 GuardDuty findings detected!"
-            echo "Check AWS Console for details"
-        else
-            echo "✅ No GuardDuty findings yet"
-        fi
-    fi
-    
-    echo "Checking Security Hub findings..."
-    findings=$(aws securityhub get-findings --max-items 5 --query 'Findings' --output text)
-    
-    if [ "$findings" != "None" ] && [ "$findings" != "" ]; then
-        echo "🚨 Security Hub findings detected!"
-        echo "Check AWS Console for details"
-    else
-        echo "✅ No Security Hub findings yet"
-    fi
-}
-
-# Main execution
-echo "Starting compromise simulation against $WEB_SERVER_IP"
-echo ""
-
-simulate_port_scan
-simulate_brute_force
-simulate_sql_injection
-simulate_file_upload
-simulate_network_scanning
-
-echo "🎭 Compromise simulation completed!"
-echo ""
-echo "📋 Next steps:"
-echo "1. Wait a few minutes for findings to appear"
-echo "2. Check AWS GuardDuty console for threat findings"
-echo "3. Check AWS Security Hub for security findings"
-echo "4. Run 'monitor' action to check findings programmatically"
-echo ""
-
-check_security_findings
-EOF
-
-# Make the script executable
-chmod +x scripts/simulate_compromise.sh
+# Download and install
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 ```
 
----
+### Terraform
 
-## 🔄 Platform-Specific Commands
+#### Windows
+```powershell
+# Using Chocolatey
+choco install terraform
 
-### Windows Commands
+# Manual download
+# https://www.terraform.io/downloads.html
+```
 
-| Action | Windows Command |
-|--------|----------------|
-| Check AWS | `.\scripts\setup_lab.ps1 -Action check` |
-| Initialize | `.\scripts\setup_lab.ps1 -Action init` |
-| Deploy | `.\scripts\setup_lab.ps1 -Action deploy` |
-| Destroy | `.\scripts\setup_lab.ps1 -Action destroy` |
-| Simulate | `.\scripts\setup_lab.ps1 -Action simulate` |
-| Monitor | `.\scripts\setup_lab.ps1 -Action monitor` |
+#### macOS
+```bash
+# Using Homebrew
+brew install terraform
 
-### Mac/Linux Commands
+# Manual download
+# https://www.terraform.io/downloads.html
+```
 
-| Action | Mac/Linux Command |
-|--------|------------------|
-| Check AWS | `./setup_lab_mac.sh check` |
-| Initialize | `./setup_lab_mac.sh init` |
-| Deploy | `./setup_lab_mac.sh deploy` |
-| Destroy | `./setup_lab_mac.sh destroy` |
-| Simulate | `./setup_lab_mac.sh simulate` |
-| Monitor | `./setup_lab_mac.sh simulate` |
+#### Linux
+```bash
+# Download and install
+wget https://releases.hashicorp.com/terraform/1.5.0/terraform_1.5.0_linux_amd64.zip
+unzip terraform_1.5.0_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+```
 
----
+### Docker (Optional)
 
-## 🛠️ Platform-Specific Troubleshooting
+#### Windows
+```powershell
+# Using winget
+winget install Docker.DockerDesktop
+
+# Using Chocolatey
+choco install docker-desktop
+```
+
+#### macOS
+```bash
+# Using Homebrew
+brew install --cask docker
+
+# Manual download
+# https://www.docker.com/products/docker-desktop
+```
+
+#### Linux
+```bash
+# Ubuntu/Debian
+sudo apt install -y docker.io docker-compose
+sudo usermod -aG docker $USER
+
+# CentOS/RHEL
+sudo yum install -y docker docker-compose
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+```
+
+## Environment Configuration
+
+### Windows Environment Variables
+```powershell
+# Set environment variables
+$env:AWS_DEFAULT_REGION = "us-east-1"
+$env:AWS_PROFILE = "default"
+
+# Add to PowerShell profile for persistence
+Add-Content $PROFILE "`$env:AWS_DEFAULT_REGION = 'us-east-1'"
+Add-Content $PROFILE "`$env:AWS_PROFILE = 'default'"
+```
+
+### macOS/Linux Environment Variables
+```bash
+# Add to shell profile
+echo 'export AWS_DEFAULT_REGION=us-east-1' >> ~/.bashrc
+echo 'export AWS_PROFILE=default' >> ~/.bashrc
+
+# Reload profile
+source ~/.bashrc
+```
+
+### Cross-Platform Environment File
+```bash
+# Copy template
+cp env.template .env.lab
+
+# Edit with your values
+# Windows: notepad .env.lab
+# macOS: open -e .env.lab
+# Linux: nano .env.lab or vim .env.lab
+```
+
+## Platform-Specific Scripts
+
+### Windows Scripts
+```powershell
+# Run PowerShell scripts
+.\scripts\setup_credentials.ps1 setup
+.\scripts\setup_lab.ps1 check-aws
+.\scripts\setup_lab.ps1 deploy
+```
+
+### macOS/Linux Scripts
+```bash
+# Make scripts executable
+chmod +x scripts/*.sh
+
+# Run shell scripts
+./scripts/setup_credentials.sh setup
+./scripts/setup_lab.sh check-aws
+./scripts/setup_lab.sh deploy
+```
+
+## Troubleshooting
 
 ### Windows Issues
 
-#### 1. **PowerShell Execution Policy**
+#### PowerShell Execution Policy
 ```powershell
 # Check current policy
 Get-ExecutionPolicy
@@ -731,280 +303,139 @@ Get-ExecutionPolicy
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-#### 2. **Path Issues**
+#### Path Issues
 ```powershell
 # Check if tools are in PATH
-Get-Command terraform
 Get-Command aws
+Get-Command terraform
 
 # Add to PATH if needed
+$env:PATH += ";C:\Program Files\Amazon\AWSCLIV2"
 $env:PATH += ";C:\terraform"
 ```
 
-#### 3. **Permission Issues**
-```powershell
-# Run PowerShell as Administrator for installations
-# Right-click PowerShell → Run as Administrator
+### macOS Issues
+
+#### Permission Issues
+```bash
+# Fix Homebrew permissions
+sudo chown -R $(whoami) /opt/homebrew
+
+# Fix script permissions
+chmod +x scripts/*.sh
 ```
 
-### Mac Issues
-
-#### 1. **Homebrew Path Issues**
+#### Path Issues
 ```bash
+# Check PATH
+echo $PATH
+
 # Add Homebrew to PATH
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
-source ~/.zshrc
+echo 'export PATH="/opt/homebrew/bin:$PATH"' >> ~/.zprofile
+source ~/.zprofile
 ```
 
-#### 2. **Permission Issues**
+### Linux Issues
+
+#### Package Manager Issues
 ```bash
-# Make scripts executable
-chmod +x setup_lab_mac.sh
-chmod +x scripts/simulate_compromise.sh
+# Ubuntu/Debian
+sudo apt update && sudo apt upgrade
+
+# CentOS/RHEL
+sudo yum update
 ```
 
-#### 3. **Shell Compatibility**
+#### Permission Issues
 ```bash
-# Check your shell
-echo $SHELL
+# Fix ownership
+sudo chown -R $USER:$USER ~/.aws
 
-# If using bash instead of zsh
-echo 'export PATH="/opt/homebrew/bin:$PATH"' >> ~/.bash_profile
-source ~/.bash_profile
+# Fix script permissions
+chmod +x scripts/*.sh
 ```
 
----
+## Development Environment Setup
 
-## 🔍 Platform-Specific Verification
+### VS Code Extensions
 
-### Windows Verification
+#### Recommended Extensions
+- **AWS Toolkit** - AWS service integration
+- **Terraform** - Terraform file support
+- **YAML** - YAML file support
+- **GitLens** - Enhanced Git integration
+- **Remote Development** - Remote development support
 
-```powershell
-# Check all installations
-Write-Host "=== Windows Environment Check ===" -ForegroundColor Green
-
-Write-Host "PowerShell Version:" -ForegroundColor Yellow
-$PSVersionTable.PSVersion
-
-Write-Host "Terraform Version:" -ForegroundColor Yellow
-terraform --version
-
-Write-Host "AWS CLI Version:" -ForegroundColor Yellow
-aws --version
-
-Write-Host "Git Version:" -ForegroundColor Yellow
-git --version
-
-Write-Host "Current Directory:" -ForegroundColor Yellow
-Get-Location
-
-Write-Host "AWS Configuration:" -ForegroundColor Yellow
-aws configure list
-```
-
-### Mac Verification
-
+#### Install Extensions
 ```bash
-# Check all installations
-echo "=== Mac Environment Check ==="
-
-echo "Shell: $SHELL"
-echo "Terraform Version:"
-terraform --version
-
-echo "AWS CLI Version:"
-aws --version
-
-echo "Git Version:"
-git --version
-
-echo "Current Directory:"
-pwd
-
-echo "AWS Configuration:"
-aws configure list
-
-echo "Homebrew Status:"
-brew --version
+# Using VS Code CLI
+code --install-extension AmazonWebServices.aws-toolkit-vscode
+code --install-extension HashiCorp.terraform
+code --install-extension redhat.vscode-yaml
+code --install-extension eamodio.gitlens
+code --install-extension ms-vscode-remote.vscode-remote-extensionpack
 ```
 
----
-
-## 📱 Mobile and Remote Access
-
-### Windows Remote Desktop
-
-```powershell
-# Enable Remote Desktop (if needed)
-Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
-```
-
-### Mac Screen Sharing
-
+### Git Configuration
 ```bash
-# Enable Screen Sharing
-sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -clientopts -setvnclegacy -vnclegacy yes -clientopts -setvncpw -vncpw yourpassword -restart -agent -privs -all
+# Set global Git configuration
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+# Set default branch name
+git config --global init.defaultBranch main
+
+# Configure line endings
+git config --global core.autocrlf input  # Linux/macOS
+git config --global core.autocrlf true   # Windows
 ```
 
----
+## Performance Optimization
 
-## 🔧 Advanced Platform Configurations
+### Windows
+- Use Windows Terminal instead of Command Prompt
+- Enable WSL2 for Linux development
+- Use PowerShell 7+ for better performance
 
-### Windows Advanced Setup
+### macOS
+- Use iTerm2 for better terminal performance
+- Install tools via Homebrew for better management
+- Use native macOS tools when possible
 
-#### 1. **Windows Subsystem for Linux (WSL)**
-```powershell
-# Install WSL
-wsl --install
+### Linux
+- Use a lightweight desktop environment
+- Install only necessary packages
+- Use package managers for dependency management
 
-# Use Linux tools within Windows
-wsl terraform --version
-wsl aws --version
-```
+## Security Considerations
 
-#### 2. **Chocolatey Package Manager**
-```powershell
-# Install Chocolatey
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+### All Platforms
+- Never commit credentials to version control
+- Use IAM users with minimal permissions
+- Enable MFA on AWS accounts
+- Regularly rotate access keys
 
-# Install tools with Chocolatey
-choco install terraform awscli git
-```
+### Platform-Specific
+- **Windows**: Use Windows Defender and keep updated
+- **macOS**: Enable Gatekeeper and FileVault
+- **Linux**: Use firewall (ufw/iptables) and keep updated
 
-### Mac Advanced Setup
+## Next Steps
 
-#### 1. **Multiple Shell Support**
-```bash
-# Install additional shells
-brew install zsh bash fish
+1. **Complete platform setup** using the instructions above
+2. **Install required tools** (AWS CLI, Terraform)
+3. **Configure environment** using the template
+4. **Test your setup** using the validation scripts
+5. **Proceed with lab deployment**
 
-# Switch default shell
-chsh -s /bin/zsh
-```
+## Additional Resources
 
-#### 2. **Development Tools**
-```bash
-# Install development tools
-xcode-select --install
-
-# Install additional tools
-brew install jq yq kubectl docker
-```
-
----
-
-## 📊 Performance Comparison
-
-### Windows Performance
-- **Terraform**: Slightly slower due to Windows overhead
-- **AWS CLI**: Comparable performance
-- **Scripts**: PowerShell execution is fast
-- **File I/O**: May be slower with large files
-
-### Mac Performance
-- **Terraform**: Native performance
-- **AWS CLI**: Native performance
-- **Scripts**: Bash execution is very fast
-- **File I/O**: Excellent performance
-
-### Recommendations
-- **Windows**: Use SSD storage for better performance
-- **Mac**: Performance is generally excellent
-- **Both**: Use wired internet for faster AWS operations
-
----
-
-## 🔒 Security Considerations by Platform
-
-### Windows Security
-- **Execution Policy**: Controls script execution
-- **User Account Control**: Prevents unauthorized changes
-- **Windows Defender**: Built-in malware protection
-- **Firewall**: Network security controls
-
-### Mac Security
-- **Gatekeeper**: Prevents unauthorized app execution
-- **SIP (System Integrity Protection)**: Protects system files
-- **XProtect**: Built-in malware protection
-- **Firewall**: Network security controls
-
-### Cross-Platform Security
-- **AWS IAM**: Use least privilege access
-- **SSH Keys**: Secure key management
-- **Network Security**: Use VPN if needed
-- **Regular Updates**: Keep tools updated
-
----
-
-## 📚 Platform-Specific Resources
-
-### Windows Resources
+- [AWS CLI Installation Guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- [Terraform Installation Guide](https://developer.hashicorp.com/terraform/downloads)
 - [PowerShell Documentation](https://docs.microsoft.com/en-us/powershell/)
-- [Windows Terminal](https://github.com/microsoft/terminal)
-- [Windows Package Manager](https://docs.microsoft.com/en-us/windows/package-manager/)
-
-### Mac Resources
-- [Homebrew Documentation](https://docs.brew.sh/)
-- [macOS Terminal Guide](https://support.apple.com/guide/terminal/)
-- [macOS Security](https://support.apple.com/en-us/HT201796)
-
-### Cross-Platform Resources
-- [Terraform Documentation](https://www.terraform.io/docs)
-- [AWS CLI Documentation](https://docs.aws.amazon.com/cli/)
-- [Git Documentation](https://git-scm.com/doc)
+- [Homebrew Documentation](https://brew.sh/)
+- [VS Code Documentation](https://code.visualstudio.com/docs)
 
 ---
 
-## 🎯 Platform Selection Guide
-
-### Choose Windows If:
-- ✅ You're already familiar with Windows
-- ✅ You need Windows-specific tools
-- ✅ You're in a Windows-dominated environment
-- ✅ You prefer PowerShell scripting
-
-### Choose Mac If:
-- ✅ You're already familiar with macOS
-- ✅ You need Unix-like tools
-- ✅ You're in a development environment
-- ✅ You prefer Bash scripting
-
-### Both Platforms Support:
-- ✅ All AWS services
-- ✅ Terraform infrastructure
-- ✅ Security lab functionality
-- ✅ Cross-platform learning
-
----
-
-## 📝 Summary
-
-This cross-platform setup guide ensures that:
-
-- **Windows Users**: Can use PowerShell scripts natively
-- **Mac Users**: Can use Bash scripts natively
-- **Both Platforms**: Have equivalent functionality
-- **Learning Experience**: Is consistent across platforms
-- **Troubleshooting**: Is platform-specific and effective
-
-### Key Takeaways:
-
-1. **Tool Installation**: Use platform-appropriate package managers
-2. **Script Execution**: Use platform-specific scripts
-3. **Troubleshooting**: Follow platform-specific guidance
-4. **Security**: Maintain platform-appropriate security practices
-5. **Performance**: Optimize for your specific platform
-
-### Next Steps:
-
-1. **Choose Your Platform**: Windows or Mac
-2. **Follow Setup Guide**: Use platform-specific instructions
-3. **Install Tools**: Terraform, AWS CLI, Git
-4. **Configure AWS**: Set up credentials and access
-5. **Run the Lab**: Deploy and test infrastructure
-6. **Learn Security**: Practice detection and response
-
-Remember: **The platform doesn't matter - the learning does!** Both Windows and Mac provide excellent environments for learning AWS security concepts.
-
-Happy learning on your chosen platform! 🚀🔒
+**Remember:** Take your time to set up your development environment properly. A well-configured environment will make your learning experience much smoother!
