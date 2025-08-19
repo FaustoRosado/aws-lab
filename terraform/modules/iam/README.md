@@ -1,48 +1,98 @@
-# 🔐 IAM Module - Identity & Access Management
+# IAM Module - Identity and Access Management
 
-## 📚 **What is IAM?**
+## What is IAM?
 
 **IAM (Identity and Access Management)** is AWS's **permission and user management service**. Think of it as the **security system** for your AWS account that controls who can access what resources and what they can do with them.
 
-### **🏠 Real-World Analogy**
+### Real-World Analogy
 
-- **🔐 IAM** = The security system for your building
-- **👤 Users** = People who need access to your building
-- **🔑 Access Keys** = Key cards that let people in
-- **📋 Policies** = Rules about what each person can do
-- **👥 Groups** = Teams of people with similar access needs
-- **🎭 Roles** = Temporary access for specific tasks
-
----
-
-## 🎯 **What This Module Creates**
-
-This module sets up **IAM security infrastructure** for your security lab:
-
-- **👤 IAM Users** - Individual accounts for team members
-- **🔑 Access Keys** - Programmatic access to AWS services
-- **📋 IAM Policies** - Rules defining what users can do
-- **👥 IAM Groups** - Collections of users with similar permissions
-- **🎭 IAM Roles** - Temporary access for specific services
-- **🏷️ Tags** - Organization and cost tracking
+- **IAM** = The security system for your building
+- **Users** = People who need access to your building
+- **Groups** = Departments or teams with similar access needs
+- **Roles** = Temporary access passes for specific tasks
+- **Policies** = Rules that define what each person can do
+- **Access Keys** = Digital keys that let applications access AWS
 
 ---
 
-## 🏗️ **Module Structure**
+## What This Module Creates
+
+This module sets up **comprehensive access control** for your AWS environment:
+
+- **IAM Users** - Individual accounts for team members
+- **IAM Groups** - Collections of users with similar permissions
+- **IAM Policies** - Rules that define what users can do
+- **Access Keys** - Programmatic access for applications and scripts
+- **User Management** - Organized structure for access control
+
+---
+
+## Module Structure
 
 ```
 iam/
-├── main.tf      # 🎯 Creates IAM users, groups, policies, and roles
-├── variables.tf # 📝 What the module needs as input
-├── outputs.tf   # 📤 What the module provides to others
-└── README.md    # 📖 This file!
+├── main.tf      # Creates IAM users, groups, and policies
+├── variables.tf # What the module needs as input
+├── outputs.tf   # What the module provides to others
+└── README.md    # This file!
 ```
 
 ---
 
-## 📝 **Input Variables Explained**
+## Input Variables Explained
 
-### **🏷️ Environment and Naming**
+### User Configuration
+
+```hcl
+variable "users" {
+  description = "List of IAM users to create"
+  type = list(object({
+    name = string
+    groups = list(string)
+    access_keys = list(string)
+  }))
+  default = [
+    {
+      name = "admin-user"
+      groups = ["administrators"]
+      access_keys = ["admin-key"]
+    },
+    {
+      name = "developer-user"
+      groups = ["developers"]
+      access_keys = ["developer-key"]
+    }
+  ]
+}
+```
+
+**What this means:** Defines which users to create, which groups they belong to, and what access keys they need
+
+### Group Configuration
+
+```hcl
+variable "groups" {
+  description = "List of IAM groups to create"
+  type = list(object({
+    name = string
+    policies = list(string)
+  }))
+  default = [
+    {
+      name = "administrators"
+      policies = ["AdministratorAccess"]
+    },
+    {
+      name = "developers"
+      policies = ["PowerUserAccess"]
+    }
+  ]
+}
+```
+
+**What this means:** Defines which groups to create and what permissions each group has
+
+### Environment Configuration
 
 ```hcl
 variable "environment" {
@@ -54,7 +104,165 @@ variable "environment" {
 
 **What this means:** All IAM resources get tagged with your environment (dev, staging, prod)
 
-### **👥 User Configuration**
+---
+
+## How It Works (Step by Step)
+
+### Step 1: Create IAM Groups
+
+```hcl
+resource "aws_iam_group" "main" {
+  count = length(var.groups)
+  name  = var.groups[count.index].name
+  
+  tags = {
+    Name        = "${var.environment}-${var.groups[count.index].name}"
+    Environment = var.environment
+    Type        = "IAM Group"
+  }
+}
+```
+
+**What this does:** Creates IAM groups that will contain users with similar access needs
+
+### Step 2: Attach Policies to Groups
+
+```hcl
+resource "aws_iam_group_policy_attachment" "main" {
+  count      = length(var.groups)
+  group      = aws_iam_group.main[count.index].name
+  policy_arn = "arn:aws:iam::aws:policy/${var.groups[count.index].policies[0]}"
+}
+```
+
+**What this does:** Gives each group the permissions they need to do their jobs
+
+### Step 3: Create IAM Users
+
+```hcl
+resource "aws_iam_user" "main" {
+  count = length(var.users)
+  name  = var.users[count.index].name
+  
+  tags = {
+    Name        = "${var.environment}-${var.users[count.index].name}"
+    Environment = var.environment
+    Type        = "IAM User"
+  }
+}
+```
+
+**What this does:** Creates individual user accounts for team members
+
+### Step 4: Add Users to Groups
+
+```hcl
+resource "aws_iam_user_group_membership" "main" {
+  count  = length(var.users)
+  user   = aws_iam_user.main[count.index].name
+  groups = var.users[count.index].groups
+}
+```
+
+**What this does:** Puts each user in the appropriate groups to get the right permissions
+
+### Step 5: Create Access Keys
+
+```hcl
+resource "aws_iam_access_key" "main" {
+  count = length(var.users)
+  user  = aws_iam_user.main[count.index].name
+  
+  tags = {
+    Name        = "${var.environment}-${var.users[count.index].name}-key"
+    Environment = var.environment
+    Type        = "Access Key"
+  }
+}
+```
+
+**What this does:** Creates access keys that let users and applications access AWS programmatically
+
+---
+
+## IAM Security Concepts
+
+### Users vs Groups vs Roles
+
+- **Users:** Individual people who need access
+- **Groups:** Collections of users with similar permissions
+- **Roles:** Temporary access for specific tasks or services
+
+### Policy Types
+
+- **Managed Policies:** Pre-built policies from AWS (e.g., AdministratorAccess)
+- **Inline Policies:** Custom policies you create for specific needs
+- **Service-Linked Roles:** Special roles for AWS services
+
+### Access Control Principles
+
+- **Least Privilege:** Give users only the permissions they need
+- **Separation of Duties:** Split critical permissions across multiple users
+- **Regular Review:** Periodically review and update permissions
+
+---
+
+## What the Module Provides (Outputs)
+
+### User Information
+
+```hcl
+output "user_names" {
+  description = "Names of created IAM users"
+  value       = aws_iam_user.main[*].name
+}
+
+output "user_arns" {
+  description = "ARNs of created IAM users"
+  value       = aws_iam_user.main[*].arn
+}
+```
+
+**Used by:** Other modules that need to reference specific users
+
+### Group Information
+
+```hcl
+output "group_names" {
+  description = "Names of created IAM groups"
+  value       = aws_iam_group.main[*].name
+}
+
+output "group_arns" {
+  description = "ARNs of created IAM groups"
+  value       = aws_iam_group.main[*].arn
+}
+```
+
+**Used by:** Other modules that need to reference specific groups
+
+### Access Key Information
+
+```hcl
+output "access_key_ids" {
+  description = "Access key IDs for created users"
+  value       = aws_iam_access_key.main[*].id
+}
+
+output "secret_access_keys" {
+  description = "Secret access keys for created users"
+  value       = aws_iam_access_key.main[*].secret
+  sensitive   = true
+}
+```
+
+**Used by:** Applications and scripts that need programmatic access to AWS
+
+---
+
+## Customizing Your IAM Setup
+
+### Add More Users
 
 ```hcl
 variable "users" {
@@ -62,99 +270,61 @@ variable "users" {
   type = list(object({
     name = string
     groups = list(string)
-    access_keys = bool
+    access_keys = list(string)
   }))
   default = [
     {
-      name = "lab-admin"
-      groups = ["Administrators"]
-      access_keys = true
+      name = "admin-user"
+      groups = ["administrators"]
+      access_keys = ["admin-key"]
     },
     {
-      name = "lab-user"
-      groups = ["Users"]
-      access_keys = true
+      name = "developer-user"
+      groups = ["developers"]
+      access_keys = ["developer-key"]
+    },
+    {
+      name = "analyst-user"
+      groups = ["analysts"]
+      access_keys = ["analyst-key"]
     }
   ]
 }
 ```
 
-**What this means:** Defines which users to create, what groups they belong to, and whether they need programmatic access
-
-### **📋 Policy Configuration**
+### Create Custom Groups
 
 ```hcl
-variable "policies" {
-  description = "Map of IAM policies to create"
-  type = map(object({
-    description = string
-    policy = string
+variable "groups" {
+  description = "List of IAM groups to create"
+  type = list(object({
+    name = string
+    policies = list(string)
   }))
+  default = [
+    {
+      name = "administrators"
+      policies = ["AdministratorAccess"]
+    },
+    {
+      name = "developers"
+      policies = ["PowerUserAccess"]
+    },
+    {
+      name = "readonly-users"
+      policies = ["ReadOnlyAccess"]
+    }
+  ]
 }
 ```
 
-**What this means:** Defines custom IAM policies with specific permissions for your lab
-
----
-
-## 🔍 **How It Works (Step by Step)**
-
-### **Step 1: Create IAM Groups**
+### Add Custom Policies
 
 ```hcl
-resource "aws_iam_group" "administrators" {
-  name = "${var.environment}-administrators"
-  
-  tags = {
-    Name        = "${var.environment}-administrators-group"
-    Environment = var.environment
-    Type        = "Administrators"
-  }
-}
-
-resource "aws_iam_group" "users" {
-  name = "${var.environment}-users"
-  
-  tags = {
-    Name        = "${var.environment}-users-group"
-    Environment = var.environment
-    Type        = "Users"
-  }
-}
-```
-
-**What this does:** Creates two groups:
-- **Administrators group** - For users who need full access
-- **Users group** - For users who need limited access
-
-### **Step 2: Create IAM Policies**
-
-```hcl
-resource "aws_iam_policy" "lab_admin_policy" {
-  name        = "${var.environment}-admin-policy"
-  description = "Full access policy for lab administrators"
-  
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = "*"
-        Resource = "*"
-      }
-    ]
-  })
-  
-  tags = {
-    Name        = "${var.environment}-admin-policy"
-    Environment = var.environment
-    Type        = "Administrator"
-  }
-}
-
-resource "aws_iam_policy" "lab_user_policy" {
-  name        = "${var.environment}-user-policy"
-  description = "Limited access policy for lab users"
+# Create a custom policy for S3 access
+resource "aws_iam_policy" "s3_access" {
+  name        = "${var.environment}-s3-access-policy"
+  description = "Custom policy for S3 bucket access"
   
   policy = jsonencode({
     Version = "2012-10-17"
@@ -162,424 +332,149 @@ resource "aws_iam_policy" "lab_user_policy" {
       {
         Effect = "Allow"
         Action = [
-          "ec2:Describe*",
-          "ec2:Get*",
-          "s3:Get*",
-          "s3:List*"
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
         ]
-        Resource = "*"
+        Resource = "arn:aws:s3:::${var.environment}-bucket/*"
       }
     ]
   })
-  
-  tags = {
-    Name        = "${var.environment}-user-policy"
-    Environment = var.environment
-    Type        = "User"
-  }
 }
 ```
-
-**What this does:** Creates two policies:
-- **Admin Policy** - Full access to all AWS services (for administrators)
-- **User Policy** - Limited access to read-only operations (for regular users)
-
-### **Step 3: Attach Policies to Groups**
-
-```hcl
-resource "aws_iam_group_policy_attachment" "admin_policy" {
-  group      = aws_iam_group.administrators.name
-  policy_arn = aws_iam_policy.lab_admin_policy.arn
-}
-
-resource "aws_iam_group_policy_attachment" "user_policy" {
-  group      = aws_iam_group.users.name
-  policy_arn = aws_iam_policy.lab_user_policy.arn
-}
-```
-
-**What this does:** Connects the policies to the appropriate groups so users get the right permissions
-
-### **Step 4: Create IAM Users**
-
-```hcl
-resource "aws_iam_user" "users" {
-  for_each = { for user in var.users : user.name => user }
-  
-  name = each.value.name
-  
-  tags = {
-    Name        = each.value.name
-    Environment = var.environment
-    Type        = "IAM User"
-  }
-}
-```
-
-**What this does:** Creates individual IAM users based on your configuration
-
-### **Step 5: Add Users to Groups**
-
-```hcl
-resource "aws_iam_user_group_membership" "user_groups" {
-  for_each = { for user in var.users : user.name => user }
-  
-  user   = aws_iam_user.users[each.key].name
-  groups = each.value.groups
-}
-```
-
-**What this does:** Assigns each user to their specified groups, giving them the appropriate permissions
-
-### **Step 6: Create Access Keys (if needed)**
-
-```hcl
-resource "aws_iam_access_key" "user_keys" {
-  for_each = { for user in var.users : user.name => user if user.access_keys }
-  
-  user = aws_iam_user.users[each.key].name
-  
-  tags = {
-    Name        = "${each.key}-access-key"
-    Environment = var.environment
-    Type        = "Access Key"
-  }
-}
-```
-
-**What this does:** Creates access keys for users who need programmatic access to AWS services
 
 ---
 
-## 🔐 **IAM Security Concepts Explained**
+## Common Questions
 
-### **👤 IAM Users**
+### "What's the difference between AdministratorAccess and PowerUserAccess?"
 
-**What they are:**
-- **Individual accounts** for people or applications
-- **Long-term credentials** that don't expire
-- **Unique usernames** and passwords/access keys
+- **AdministratorAccess:** Full access to all AWS services and resources
+- **PowerUserAccess:** Access to most services but can't manage users or billing
+- **ReadOnlyAccess:** Can view resources but can't make changes
 
-**Best practices:**
-- **One user per person** (don't share accounts)
-- **Use strong passwords** and enable MFA
-- **Regular access reviews** to remove unused users
+### "How do I give a user access to only specific S3 buckets?"
 
-### **🔑 Access Keys**
-
-**What they are:**
-- **Programmatic access** to AWS services
-- **API credentials** for scripts and applications
-- **Secret access key** (never share this!)
-
-**Best practices:**
-- **Rotate regularly** (every 90 days)
-- **Use least privilege** (only necessary permissions)
-- **Monitor usage** for suspicious activity
-
-### **📋 IAM Policies**
-
-**What they are:**
-- **JSON documents** defining permissions
-- **Allow/Deny statements** for specific actions
-- **Resource-based** or **identity-based** permissions
-
-**Policy structure:**
+**Create a custom policy:**
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "s3:GetObject",
+      "Action": ["s3:GetObject", "s3:PutObject"],
       "Resource": "arn:aws:s3:::my-bucket/*"
     }
   ]
 }
 ```
 
-### **👥 IAM Groups**
+### "Can I change a user's permissions after creation?"
 
-**What they are:**
-- **Collections of users** with similar access needs
-- **Easier management** than individual user policies
-- **Consistent permissions** across team members
+**Yes!** You can:
+- **Add/remove users** from groups
+- **Attach/detach policies** from users or groups
+- **Create new policies** and apply them
+- **Modify existing policies** (be careful with this)
 
-**Best practices:**
-- **Group by function** (developers, admins, auditors)
-- **Use descriptive names** (e.g., "EC2-Developers")
-- **Regular membership reviews**
+### "What happens if I delete an IAM user?"
 
-### **🎭 IAM Roles**
-
-**What they are:**
-- **Temporary credentials** for specific tasks
-- **No long-term access keys** to manage
-- **Assumed by users or services** as needed
-
-**Common use cases:**
-- **EC2 instances** accessing S3 buckets
-- **Lambda functions** calling other AWS services
-- **Cross-account access** for temporary collaboration
+- **User account** is permanently deleted
+- **Access keys** are immediately invalidated
+- **User's resources** remain (but they can't access them)
+- **Consider transferring** resources to another user first
 
 ---
 
-## 📤 **What the Module Provides (Outputs)**
+## Troubleshooting
 
-### **👤 User Information**
+### Error: "Policy not found"
+**Solution:** Check that the policy name exists in AWS or create a custom policy
 
-```hcl
-output "user_names" {
-  description = "List of created IAM user names"
-  value       = [for user in aws_iam_user.users : user.name]
-}
+### Error: "User already exists"
+**Solution:** Use a unique username or reference an existing user
 
-output "user_arns" {
-  description = "Map of IAM user names to ARNs"
-  value       = { for k, v in aws_iam_user.users : k => v.arn }
-}
-```
+### Error: "Insufficient permissions"
+**Solution:** Ensure your AWS user has IAM permissions to create users and groups
 
-**Used by:** Other modules or scripts that need to reference your IAM users
-
-### **🔑 Access Key Information**
-
-```hcl
-output "access_keys" {
-  description = "Map of usernames to access key IDs"
-  value       = { for k, v in aws_iam_access_key.user_keys : k => v.id }
-  sensitive   = true
-}
-```
-
-**Used by:** You to know which access keys belong to which users
-
-### **👥 Group Information**
-
-```hcl
-output "group_names" {
-  description = "List of created IAM group names"
-  value       = [aws_iam_group.administrators.name, aws_iam_group.users.name]
-}
-
-output "group_arns" {
-  description = "Map of group names to ARNs"
-  value = {
-    administrators = aws_iam_group.administrators.arn
-    users         = aws_iam_group.users.arn
-  }
-}
-```
-
-**Used by:** Other modules that need to reference your IAM groups
+### Error: "Access key limit exceeded"
+**Solution:** Each user can only have 2 access keys. Delete old ones first.
 
 ---
 
-## 🎨 **Customizing Your IAM Setup**
+## Next Steps
 
-### **👤 Add More Users**
-
-```hcl
-variable "users" {
-  description = "List of IAM users to create"
-  type = list(object({
-    name = string
-    groups = list(string)
-    access_keys = bool
-  }))
-  default = [
-    {
-      name = "lab-admin"
-      groups = ["Administrators"]
-      access_keys = true
-    },
-    {
-      name = "lab-user"
-      groups = ["Users"]
-      access_keys = true
-    },
-    {
-      name = "lab-developer"
-      groups = ["Developers"]
-      access_keys = true
-    },
-    {
-      name = "lab-auditor"
-      groups = ["Auditors"]
-      access_keys = false
-    }
-  ]
-}
-```
-
-### **📋 Create Custom Policies**
-
-```hcl
-variable "policies" {
-  description = "Map of IAM policies to create"
-  type = map(object({
-    description = string
-    policy = string
-  }))
-  default = {
-    "ec2-developer" = {
-      description = "Policy for EC2 developers"
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
-          {
-            Effect = "Allow"
-            Action = [
-              "ec2:*",
-              "elasticloadbalancing:*",
-              "autoscaling:*"
-            ]
-            Resource = "*"
-          }
-        ]
-      })
-    }
-  }
-}
-```
-
-### **🔐 Enable MFA for Users**
-
-```hcl
-resource "aws_iam_user" "users" {
-  for_each = { for user in var.users : user.name => user }
-  
-  name = each.value.name
-  
-  # Force MFA for all users
-  force_detach_policies = true
-  
-  tags = {
-    Name        = each.value.name
-    Environment = var.environment
-    Type        = "IAM User"
-    MFA         = "Required"
-  }
-}
-```
+1. **Look at the main.tf** to see how IAM resources are created
+2. **Modify variables** to customize your user and group setup
+3. **Deploy the module** to create your IAM structure
+4. **Test access** by logging in with different users
+5. **Set up additional policies** for specific access needs
 
 ---
 
-## 🚨 **Common Questions**
+## Security Best Practices
 
-### **❓ "What's the difference between users and roles?"**
+### Do's
+- Use groups to manage permissions, not individual users
+- Follow the principle of least privilege
+- Regularly rotate access keys
+- Use strong passwords and MFA
+- Tag all IAM resources for organization
 
-- **👤 Users:** Long-term accounts for people, have permanent credentials
-- **🎭 Roles:** Temporary access for specific tasks, no permanent credentials
-- **🔄 Best Practice:** Use roles for temporary access, users for long-term access
-
-### **❓ "How do I know what permissions a user has?"**
-
-- **📋 Check Groups:** See what groups the user belongs to
-- **🔍 Check Policies:** Look at policies attached to those groups
-- **📊 AWS Console:** Use the IAM console to see effective permissions
-- **🔧 AWS CLI:** Use `aws iam get-user-policy` and `aws iam list-attached-user-policies`
-
-### **❓ "What if I accidentally give someone too many permissions?"**
-
-- **🚨 Immediate:** Remove the user from admin groups
-- **🔍 Review:** Check what they accessed in CloudTrail logs
-- **🔄 Fix:** Adjust group memberships and policies
-- **📝 Document:** Record what happened and how you fixed it
-
-### **❓ "How often should I rotate access keys?"**
-
-**AWS recommends:**
-- **🔑 Access Keys:** Every 90 days
-- **🔐 Passwords:** Every 90 days
-- **🎭 Role Sessions:** Use shortest duration possible
-- **📅 Regular Reviews:** Monthly access reviews
+### Don'ts
+- Don't give users more permissions than they need
+- Don't share access keys between users
+- Don't use root account for daily operations
+- Don't forget to review permissions regularly
+- Don't ignore IAM access logs
 
 ---
 
-## 🔧 **Troubleshooting**
+## Cost Considerations
 
-### **🚨 Error: "User already exists"**
-**Solution:** Either delete the existing user or use a different username
+### IAM Costs
+- **Users:** FREE
+- **Groups:** FREE
+- **Policies:** FREE
+- **Access Keys:** FREE
 
-### **🚨 Error: "Policy not found"**
-**Solution:** Make sure the policy exists before attaching it to groups
+### Related Costs
+- **AWS CloudTrail:** $2.00 per 100,000 events (for IAM activity logging)
+- **AWS Config:** $0.003 per configuration item recorded
+- **IAM Access Analyzer:** FREE
 
-### **🚨 Error: "Insufficient permissions"**
-**Solution:** Ensure your AWS user has IAM permissions:
-- `iam:CreateUser`
-- `iam:CreateGroup`
-- `iam:CreatePolicy`
-- `iam:AttachGroupPolicy`
-
-### **🚨 Error: "Access key limit exceeded"**
-**Solution:** Each user can only have 2 access keys. Delete old ones before creating new ones.
-
----
-
-## 🎯 **Next Steps**
-
-1. **🔍 Look at the main.tf** to see how IAM resources are created
-2. **📝 Modify variables** to customize your users and permissions
-3. **🚀 Deploy the module** to create your IAM infrastructure
-4. **🔐 Test access** to ensure permissions work correctly
-5. **📊 Monitor usage** to track who's accessing what
+### Cost Optimization Tips
+- Use groups instead of individual user policies
+- Regularly review and remove unused users
+- Monitor IAM activity with CloudTrail
+- Use service-linked roles when possible
 
 ---
 
-## 🔐 **Security Best Practices**
+## Integration with Other Services
 
-### **✅ Do's**
-- **🔐 Use least privilege** - only give necessary permissions
-- **🔄 Rotate credentials regularly** - access keys and passwords
-- **📱 Enable MFA** - multi-factor authentication for all users
-- **🏷️ Use consistent tagging** - for cost tracking and organization
-- **📊 Regular access reviews** - remove unused permissions
+### AWS CloudTrail
+- Logs all IAM API calls and user activity
+- Provides audit trail for compliance
+- Enables security monitoring and alerting
 
-### **❌ Don'ts**
-- **🚫 Don't use root credentials** - create IAM users instead
-- **🚫 Don't share access keys** - each user should have their own
-- **🚫 Don't give admin access** - unless absolutely necessary
-- **🚫 Don't ignore access logs** - monitor for suspicious activity
-- **🚫 Don't forget to rotate** - credentials should expire
+### AWS Config
+- Tracks IAM configuration changes
+- Monitors compliance with security policies
+- Provides configuration history
 
----
+### AWS Organizations
+- Manages multiple AWS accounts
+- Centralizes IAM user management
+- Enables cross-account access
 
-## 💰 **Cost Considerations**
-
-### **💰 IAM Costs**
-- **✅ IAM is FREE** - no charges for users, groups, or policies
-- **🔑 Access Keys:** No additional cost
-- **📊 CloudTrail:** May incur costs for API logging
-- **🔍 Access Analyzer:** Free for first 1000 checks per month
-
-### **💡 Cost Optimization Tips**
-- **🏷️ Use tags** to track IAM usage by project
-- **📊 Monitor CloudTrail** for unusual IAM activity
-- **🔄 Regular cleanup** of unused users and policies
-- **📝 Document policies** to avoid duplicate creation
-
----
-
-## 🔗 **Integration with Other Services**
-
-### **🛡️ GuardDuty**
-- **Monitor IAM activity** for suspicious behavior
-- **Detect privilege escalation** attempts
-- **Alert on unusual access patterns**
-
-### **📊 CloudTrail**
-- **Log all IAM API calls** for audit purposes
-- **Track permission changes** over time
-- **Monitor access patterns** for security analysis
-
-### **🔐 AWS Config**
-- **Track IAM configuration** changes
-- **Ensure compliance** with security policies
-- **Automated remediation** of policy violations
+### Third-Party Tools
+- Identity providers (SAML, OIDC)
+- Privileged access management tools
+- Security information and event management (SIEM)
 
 ---
 
 <div align="center">
-  <p><em>🔐 Your IAM security is now configured! 🛡️</em></p>
+  <p><em>Your access control is now properly configured!</em></p>
 </div>

@@ -1,51 +1,51 @@
-# 🖥️ EC2 Module - Virtual Servers
+# EC2 Module - Virtual Servers
 
-## 📚 **What is EC2?**
+## What is EC2?
 
 **EC2 (Elastic Compute Cloud)** is AWS's **virtual server service**. Think of it as renting computers in the cloud that you can start, stop, and configure however you want.
 
-### **🏠 Real-World Analogy**
+### Real-World Analogy
 
-- **🖥️ EC2 Instance** = A computer you rent in the cloud
-- **💾 Instance Type** = How powerful your computer is (CPU, RAM, storage)
-- **🔑 SSH Key** = The key to access your computer remotely
-- **📝 User Data** = Instructions that run when your computer starts up
-- **🏷️ Tags** = Labels to organize and identify your computers
+- **EC2 Instance** = A computer you rent in the cloud
+- **Instance Type** = How powerful your computer is (CPU, RAM, storage)
+- **SSH Key** = The key to access your computer remotely
+- **User Data** = Instructions that run when your computer starts up
+- **Tags** = Labels to organize and identify your computers
 
 ---
 
-## 🎯 **What This Module Creates**
+## What This Module Creates
 
 This module creates **two types of EC2 instances** for your security lab:
 
-- **🌐 Web Server Instance** - Public-facing server for web traffic
-- **🗄️ Database Server Instance** - Private server for database storage
-- **🔑 SSH Key Pair** - Secure access to your instances
-- **📝 User Data Scripts** - Automatic server setup and configuration
+- **Web Server Instance** - Public-facing server for web traffic
+- **Database Server Instance** - Private server for database storage
+- **SSH Key Pair** - Secure access to your instances
+- **User Data Scripts** - Automatic server setup and configuration
 
 ---
 
-## 🏗️ **Module Structure**
+## Module Structure
 
 ```
 ec2/
-├── main.tf           # 🎯 Creates EC2 instances and SSH keys
-├── variables.tf      # 📝 What the module needs as input
-├── outputs.tf        # 📤 What the module provides to others
-├── README.md         # 📖 This file!
-├── ssh/              # 🔑 SSH key management
+├── main.tf           # Creates EC2 instances and SSH keys
+├── variables.tf      # What the module needs as input
+├── outputs.tf        # What the module provides to others
+├── README.md         # This file!
+├── ssh/              # SSH key management
 │   ├── lab-key       # Private SSH key
 │   └── lab-key.pub   # Public SSH key
-└── user_data/        # 📝 Server setup scripts
+└── user_data/        # Server setup scripts
     ├── web_server.sh      # Web server configuration
     └── database_server.sh # Database setup
 ```
 
 ---
 
-## 📝 **Input Variables Explained**
+## Input Variables Explained
 
-### **🌐 VPC and Network Configuration**
+### VPC and Network Configuration
 
 ```hcl
 variable "vpc_id" {
@@ -56,7 +56,7 @@ variable "vpc_id" {
 
 **What this means:** Your EC2 instances will be created in the VPC created by the VPC module
 
-### **🏠 Subnet Configuration**
+### Subnet Configuration
 
 ```hcl
 variable "public_subnet_ids" {
@@ -74,7 +74,7 @@ variable "private_subnet_ids" {
 - **Web server** goes in public subnets (can access internet)
 - **Database server** goes in private subnets (hidden from internet)
 
-### **🛡️ Security Group Configuration**
+### Security Group Configuration
 
 ```hcl
 variable "public_ec2_sg_id" {
@@ -90,7 +90,7 @@ variable "private_ec2_sg_id" {
 
 **What this means:** Your instances will use the security groups created by the security groups module
 
-### **🏷️ Environment and Naming**
+### Environment and Naming
 
 ```hcl
 variable "environment" {
@@ -100,13 +100,33 @@ variable "environment" {
 }
 ```
 
-**What this means:** All instances get tagged with your environment (dev, staging, prod)
+**What this means:** All EC2 resources get tagged with your environment (dev, staging, prod)
+
+### Instance Configuration
+
+```hcl
+variable "instance_type" {
+  description = "EC2 instance type (size/power)"
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "ami_id" {
+  description = "Amazon Machine Image ID (operating system)"
+  type        = string
+  default     = "ami-0c02fb55956c7d316"  # Amazon Linux 2
+}
+```
+
+**What this means:** 
+- **Instance Type:** How powerful your server is (t3.micro = small, t3.large = powerful)
+- **AMI ID:** Which operating system to use (Amazon Linux 2 is free and AWS-optimized)
 
 ---
 
-## 🔍 **How It Works (Step by Step)**
+## How It Works (Step by Step)
 
-### **Step 1: Create SSH Key Pair**
+### Step 1: Create SSH Key Pair
 
 ```hcl
 resource "aws_key_pair" "lab_key" {
@@ -116,18 +136,19 @@ resource "aws_key_pair" "lab_key" {
   tags = {
     Name        = "${var.environment}-lab-key"
     Environment = var.environment
+    Type        = "SSH Key"
   }
 }
 ```
 
 **What this does:** Creates an SSH key pair so you can securely connect to your instances
 
-### **Step 2: Create Web Server Instance**
+### Step 2: Create Web Server Instance
 
 ```hcl
 resource "aws_instance" "web_server" {
-  ami                    = var.web_server_ami
-  instance_type          = var.web_server_instance_type
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
   key_name              = aws_key_pair.lab_key.key_name
   vpc_security_group_ids = [var.public_ec2_sg_id]
   subnet_id              = var.public_subnet_ids[0]
@@ -142,20 +163,14 @@ resource "aws_instance" "web_server" {
 }
 ```
 
-**What this does:** Creates a web server that:
-- **Uses the specified AMI** (Amazon Machine Image - like an operating system)
-- **Has the specified size** (CPU, RAM, storage)
-- **Uses your SSH key** for secure access
-- **Gets the public security group** (allows web traffic)
-- **Goes in a public subnet** (can access internet)
-- **Runs the web server setup script** when it starts
+**What this does:** Creates a web server in a public subnet with automatic setup scripts
 
-### **Step 3: Create Database Server Instance**
+### Step 3: Create Database Server Instance
 
 ```hcl
 resource "aws_instance" "database_server" {
-  ami                    = var.database_server_ami
-  instance_type          = var.database_server_instance_type
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
   key_name              = aws_key_pair.lab_key.key_name
   vpc_security_group_ids = [var.private_ec2_sg_id]
   subnet_id              = var.private_subnet_ids[0]
@@ -170,100 +185,13 @@ resource "aws_instance" "database_server" {
 }
 ```
 
-**What this does:** Creates a database server that:
-- **Uses the specified AMI** (different from web server)
-- **Has the specified size** (optimized for database workloads)
-- **Uses your SSH key** for secure access
-- **Gets the private security group** (restricts access)
-- **Goes in a private subnet** (hidden from internet)
-- **Runs the database setup script** when it starts
+**What this does:** Creates a database server in a private subnet for security
 
 ---
 
-## 📝 **User Data Scripts Explained**
+## What the Module Provides (Outputs)
 
-### **🌐 Web Server Setup (`web_server.sh`)**
-
-```bash
-#!/bin/bash
-# Update system packages
-yum update -y
-
-# Install web server (Apache)
-yum install -y httpd
-
-# Start and enable Apache
-systemctl start httpd
-systemctl enable httpd
-
-# Create a simple web page
-echo "<h1>Welcome to AWS Security Lab!</h1>" > /var/www/html/index.html
-echo "<p>This is your web server running in the cloud.</p>" >> /var/www/html/index.html
-```
-
-**What this does:** When your web server starts, it automatically:
-- **Updates the system** with latest security patches
-- **Installs Apache web server**
-- **Starts the web service**
-- **Creates a welcome page**
-
-### **🗄️ Database Server Setup (`database_server.sh`)**
-
-```bash
-#!/bin/bash
-# Update system packages
-yum update -y
-
-# Install MySQL database
-yum install -y mysql-server
-
-# Start and enable MySQL
-systemctl start mysqld
-systemctl enable mysqld
-
-# Secure the MySQL installation
-mysql_secure_installation
-```
-
-**What this does:** When your database server starts, it automatically:
-- **Updates the system** with latest security patches
-- **Installs MySQL database server**
-- **Starts the database service**
-- **Secures the MySQL installation**
-
----
-
-## 🔑 **SSH Key Management**
-
-### **🔐 Key Pair Structure**
-
-```
-ssh/
-├── lab-key       # 🔒 Private key (keep secret!)
-└── lab-key.pub   # 🔓 Public key (safe to share)
-```
-
-### **🔑 How SSH Keys Work**
-
-1. **Private Key** (`lab-key`): Stays on your computer, never share this
-2. **Public Key** (`lab-key.pub`): Gets uploaded to AWS, safe to share
-3. **Authentication**: AWS uses the public key to verify your private key
-
-### **🔐 Connecting to Your Instances**
-
-```bash
-# Connect to web server
-ssh -i ssh/lab-key ec2-user@[WEB_SERVER_PUBLIC_IP]
-
-# Connect to database server (from web server)
-ssh -i ssh/lab-key ec2-user@[DATABASE_SERVER_PRIVATE_IP]
-```
-
----
-
-## 📤 **What the Module Provides (Outputs)**
-
-### **🆔 Instance IDs**
+### Instance Information
 
 ```hcl
 output "web_server_id" {
@@ -277,9 +205,9 @@ output "database_server_id" {
 }
 ```
 
-**Used by:** Other modules or scripts that need to reference your instances
+**Used by:** You to know which instances were created
 
-### **🌐 Public IP Addresses**
+### Connection Information
 
 ```hcl
 output "web_server_public_ip" {
@@ -287,15 +215,15 @@ output "web_server_public_ip" {
   value       = aws_instance.web_server.public_ip
 }
 
-output "web_server_public_dns" {
-  description = "Public DNS name of the web server"
-  value       = aws_instance.web_server.public_dns
+output "web_server_private_ip" {
+  description = "Private IP address of the web server"
+  value       = aws_instance.web_server.private_ip
 }
 ```
 
-**Used by:** You to access your web server from the internet
+**Used by:** You to connect to your instances via SSH or web browser
 
-### **🔑 SSH Key Information**
+### SSH Key Information
 
 ```hcl
 output "ssh_key_name" {
@@ -308,158 +236,164 @@ output "ssh_key_name" {
 
 ---
 
-## 🎨 **Customizing Your Instances**
+## Customizing Your EC2 Setup
 
-### **🖥️ Change Instance Types**
+### Change Instance Types
 
 ```hcl
-variable "web_server_instance_type" {
-  description = "EC2 instance type for web server"
+variable "instance_type" {
+  description = "EC2 instance type"
   type        = string
-  default     = "t3.micro"  # Change to t3.small, t3.medium, etc.
-}
-
-variable "database_server_instance_type" {
-  description = "EC2 instance type for database server"
-  type        = string
-  default     = "t3.micro"  # Change to t3.small, t3.medium, etc.
+  default     = "t3.small"  # Change from t3.micro to t3.small
 }
 ```
 
-**Instance Type Guide:**
-- **t3.micro**: 2 vCPU, 1 GB RAM (good for learning)
-- **t3.small**: 2 vCPU, 2 GB RAM (good for small workloads)
-- **t3.medium**: 2 vCPU, 4 GB RAM (good for medium workloads)
-
-### **🖼️ Change Operating System**
+### Use Different Operating Systems
 
 ```hcl
-variable "web_server_ami" {
-  description = "AMI ID for web server"
+variable "ami_id" {
+  description = "Amazon Machine Image ID"
   type        = string
   default     = "ami-0c02fb55956c7d316"  # Amazon Linux 2
-}
-
-variable "database_server_ami" {
-  description = "AMI ID for database server"
-  type        = string
-  default     = "ami-0c02fb55956c7d316"  # Amazon Linux 2
+  # Alternative AMIs:
+  # "ami-0c02fb55956c7d316" = Amazon Linux 2 (free)
+  # "ami-0c02fb55956c7d317" = Ubuntu 20.04 LTS
+  # "ami-0c02fb55956c7d318" = Windows Server 2019
 }
 ```
 
-**Popular AMIs:**
-- **Amazon Linux 2**: Good for beginners, AWS-optimized
-- **Ubuntu**: Popular Linux distribution
-- **Windows Server**: If you need Windows
+### Add More Instances
 
-### **📝 Customize User Data Scripts**
-
-You can modify the scripts in the `user_data/` folder to:
-- **Install different software**
-- **Configure specific services**
-- **Set up monitoring tools**
-- **Create custom web pages**
-
----
-
-## 🚨 **Common Questions**
-
-### **❓ "What's the difference between public and private subnets?"**
-
-- **🌐 Public Subnets:** Instances here can access the internet directly
-  - Good for: Web servers, load balancers, bastion hosts
-  - Security: Less secure, exposed to internet
-
-- **🏠 Private Subnets:** Instances here are hidden from the internet
-  - Good for: Database servers, application servers, internal services
-  - Security: More secure, no direct internet access
-
-### **❓ "Why do I need SSH keys?"**
-
-- **🔐 Security:** More secure than passwords
-- **🔑 Automation:** Scripts can connect without manual input
-- **👥 Team Access:** Multiple people can use the same key
-- **🚫 No Password Sharing:** Eliminates password security risks
-
-### **❓ "What happens if I lose my SSH key?"**
-
-- **🚨 Problem:** You can't connect to your instances
-- **🔧 Solution:** Create a new key pair and update your instances
-- **💡 Prevention:** Keep your private key safe and backed up
-
-### **❓ "Can I change instance types after creation?"**
-
-**Yes!** You can:
-- **Stop the instance** (not terminate)
-- **Change the instance type** in Terraform
-- **Apply the changes** to resize your instance
-- **Start the instance** with new specifications
+```hcl
+# Add a monitoring server
+resource "aws_instance" "monitoring_server" {
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  key_name              = aws_key_pair.lab_key.key_name
+  vpc_security_group_ids = [var.private_ec2_sg_id]
+  subnet_id              = var.private_subnet_ids[1]
+  
+  user_data = file("${path.module}/user_data/monitoring_server.sh")
+  
+  tags = {
+    Name        = "${var.environment}-monitoring-server"
+    Environment = var.environment
+    Type        = "Monitoring Server"
+  }
+}
+```
 
 ---
 
-## 🔧 **Troubleshooting**
+## Common Questions
 
-### **🚨 Error: "AMI not found"**
-**Solution:** Check that your AMI ID is correct and available in your region
+### "What's the difference between public and private subnets?"
 
-### **🚨 Error: "Instance type not supported"**
-**Solution:** Verify the instance type is available in your region
+- **Public Subnets:** Instances here can get public IP addresses and access the internet directly
+- **Private Subnets:** Instances here are hidden from the internet and use NAT Gateway for outbound access
 
-### **🚨 Error: "Subnet not found"**
-**Solution:** Make sure the VPC and subnet modules run before this one
+### "Which instance type should I choose?"
 
-### **🚨 Error: "Security group not found"**
-**Solution:** Ensure the security groups module runs before this one
+- **t3.micro:** Good for learning and testing (free tier eligible)
+- **t3.small:** Better performance for development
+- **t3.medium:** Good for production workloads
+- **t3.large:** High performance for demanding applications
 
-### **🚨 Error: "SSH connection failed"**
-**Solution:** 
-1. Check that your security group allows SSH (port 22)
-2. Verify you're using the correct SSH key
-3. Wait a few minutes for the instance to fully start
+### "How do I connect to my instances?"
 
----
+1. **Web Server:** Use the public IP in your browser
+2. **Database Server:** SSH from the web server (same VPC)
+3. **SSH Command:** `ssh -i ssh/lab-key ec2-user@[PUBLIC_IP]`
 
-## 🎯 **Next Steps**
+### "What are user data scripts?"
 
-1. **🔍 Look at the main.tf** to see how instances are created
-2. **📝 Modify variables** to customize your instances
-3. **🚀 Deploy the module** to see your servers in action
-4. **🔗 Connect to your instances** using SSH
-5. **🌐 Test your web server** by visiting the public IP
+**User Data Scripts** are bash scripts that run automatically when your instance starts up. They install software, configure services, and set up your server without manual intervention.
 
 ---
 
-## 🔐 **Security Best Practices**
+## Troubleshooting
 
-### **✅ Do's**
-- **🔒 Use SSH keys** instead of passwords
-- **🏷️ Tag your instances** for organization
-- **🛡️ Use security groups** to control access
-- **📝 Keep user data scripts** simple and secure
+### Error: "Key pair not found"
+**Solution:** Make sure the SSH key files exist in the `ssh/` folder
 
-### **❌ Don'ts**
-- **🚫 Don't share private SSH keys**
-- **🚫 Don't put sensitive data** in user data scripts
-- **🚫 Don't forget to stop instances** when not using them
-- **🚫 Don't ignore security group rules**
+### Error: "Security group not found"
+**Solution:** Deploy the security groups module first, then EC2
+
+### Error: "Subnet not found"
+**Solution:** Deploy the VPC module first, then EC2
+
+### Error: "AMI not found in region"
+**Solution:** Use an AMI that exists in your chosen AWS region
 
 ---
 
-## 💰 **Cost Considerations**
+## Next Steps
 
-### **💰 Instance Pricing**
-- **t3.micro**: ~$8-10/month (good for learning)
-- **t3.small**: ~$16-20/month (good for small workloads)
-- **t3.medium**: ~$32-40/month (good for medium workloads)
+1. **Look at the main.tf** to see how instances are created
+2. **Modify variables** to customize your server setup
+3. **Deploy the module** to create your EC2 instances
+4. **Connect via SSH** to test your setup
+5. **Check the web server** in your browser
 
-### **💡 Cost Optimization Tips**
-- **🛑 Stop instances** when not using them
-- **🏷️ Use tags** to track costs
-- **📊 Monitor usage** with AWS Cost Explorer
-- **🔄 Use spot instances** for non-critical workloads
+---
+
+## Security Best Practices
+
+### Do's
+- Use private subnets for sensitive resources
+- Keep SSH keys secure and never share private keys
+- Use security groups to restrict access
+- Tag all resources for organization
+
+### Don'ts
+- Don't put sensitive data on public instances
+- Don't use default security groups
+- Don't forget to update user data scripts
+- Don't skip instance monitoring
+
+---
+
+## Cost Considerations
+
+### EC2 Instance Costs
+- **t3.micro:** Free tier eligible (750 hours/month)
+- **t3.small:** ~$0.0208 per hour
+- **t3.medium:** ~$0.0416 per hour
+- **t3.large:** ~$0.0832 per hour
+
+### Data Transfer Costs
+- **Inbound:** FREE
+- **Outbound:** $0.09 per GB (first 1GB free)
+- **Between instances:** FREE (same VPC)
+
+### Cost Optimization Tips
+- Use spot instances for non-critical workloads
+- Stop instances when not in use
+- Use reserved instances for long-term workloads
+- Monitor usage with AWS Cost Explorer
+
+---
+
+## Integration with Other Services
+
+### Security Groups
+- Control network access to your instances
+- Define which ports are open and to whom
+
+### VPC
+- Provides network isolation and routing
+- Determines subnet placement and internet access
+
+### User Data Scripts
+- Automate server setup and configuration
+- Install software and configure services
+
+### CloudWatch
+- Monitor instance performance and health
+- Set up alarms for resource usage
 
 ---
 
 <div align="center">
-  <p><em>🖥️ Your virtual servers are ready to run! 🚀</em></p>
+  <p><em>Your virtual servers are now ready!</em></p>
 </div>

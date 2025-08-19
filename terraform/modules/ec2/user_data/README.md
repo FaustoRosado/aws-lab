@@ -1,177 +1,260 @@
-# 📝 User Data Scripts - EC2 Instance Setup
+# User Data Scripts - Automated Server Setup
 
-## 📚 **What are User Data Scripts?**
+## What are User Data Scripts?
 
-**User Data Scripts** are **automated setup instructions** that run when your EC2 instances start up. Think of them as **recipes** that tell your new server exactly what to install, configure, and set up automatically.
+**User Data Scripts** are **automated setup instructions** that run when your EC2 instances start up. Think of them as **recipes** that tell your server exactly what software to install, how to configure it, and what services to start - all automatically without manual intervention.
 
-### **🏠 Real-World Analogy**
+### Real-World Analogy
 
-- **📝 User Data Script** = A recipe for setting up your server
-- **🚀 Instance Startup** = When you turn on your new computer
-- **⚙️ Automatic Setup** = The computer follows the recipe automatically
-- **🎯 Consistent Results** = Same setup every time, no manual work
-
----
-
-## 🎯 **What These Scripts Do**
-
-This folder contains **automated setup scripts** for different types of EC2 instances:
-
-- **🌐 Web Server Setup** - Installs and configures web server software
-- **🗄️ Database Setup** - Installs and secures database software
-- **🔒 Security Hardening** - Applies security best practices
-- **📊 Monitoring Setup** - Installs monitoring and logging tools
+- **User Data Scripts** = Automated setup instructions for your server
+- **Cloud-Init** = The service that reads and executes these instructions
+- **Bash Commands** = Step-by-step commands to configure your server
+- **Package Installation** = Installing software and dependencies
+- **Service Configuration** = Setting up web servers, databases, etc.
+- **Security Hardening** = Applying security best practices automatically
 
 ---
 
-## 🏗️ **Script Structure**
+## What These Scripts Do
+
+This folder contains **automated setup scripts** for different types of servers:
+
+- **Web Server Setup** - Installs and configures Apache web server
+- **Database Setup** - Installs and configures MySQL database
+- **Security Hardening** - Applies security best practices
+- **Monitoring Setup** - Installs basic monitoring tools
+- **Environment Configuration** - Sets up development/production environments
+
+---
+
+## Script Structure
 
 ```
 user_data/
-├── README.md           # 📖 This file!
-├── web_server.sh       # 🌐 Sets up web server with Apache
-└── database_server.sh  # 🗄️ Sets up MySQL database server
+├── README.md           # This documentation file
+├── web_server.sh       # Web server setup and configuration
+└── database_server.sh  # Database server setup and configuration
 ```
 
 ---
 
-## 🔍 **How User Data Scripts Work**
+## How User Data Scripts Work
 
-### **🚀 When They Run**
+### The Process
 
-1. **Instance Launches** - Your EC2 instance starts up
-2. **Cloud-Init Runs** - AWS runs the cloud-init service
+1. **Instance Launch** - Your EC2 instance starts up
+2. **Cloud-Init Service** - AWS automatically starts the cloud-init service
 3. **Script Execution** - Your user data script runs automatically
-4. **Setup Complete** - Server is ready to use
+4. **Software Installation** - Required packages and software are installed
+5. **Configuration** - Services are configured and started
+6. **Ready State** - Your server is ready to use
 
-### **⚙️ What Happens During Execution**
+### When They Run
 
-- **System Updates** - Latest security patches are installed
-- **Software Installation** - Required packages are downloaded and installed
-- **Configuration** - Services are configured with your settings
-- **Service Startup** - Services are started and enabled
-- **Security Hardening** - Security settings are applied
-
----
-
-## 📝 **Script Details**
-
-### **🌐 Web Server Script (`web_server.sh`)**
-
-**Purpose:** Sets up a web server for hosting websites and applications
-
-**What it installs:**
-- **Apache HTTP Server** - Web server software
-- **System Updates** - Latest security patches
-- **Basic Configuration** - Web server settings
-
-**What it creates:**
-- **Welcome Page** - Simple HTML page for testing
-- **Service Configuration** - Apache starts automatically
-- **Security Settings** - Basic security hardening
-
-**Use cases:**
-- Web application hosting
-- Static website hosting
-- Development and testing
-- Security lab scenarios
-
-### **🗄️ Database Server Script (`database_server.sh`)**
-
-**Purpose:** Sets up a database server for storing and managing data
-
-**What it installs:**
-- **MySQL Server** - Database management system
-- **System Updates** - Latest security patches
-- **Security Tools** - Database security utilities
-
-**What it configures:**
-- **Database Service** - MySQL starts automatically
-- **Security Settings** - Database access controls
-- **Basic Setup** - Ready for database creation
-
-**Use cases:**
-- Application databases
-- Data storage and management
-- Development and testing
-- Security lab scenarios
+- **First Boot Only** - Scripts run only when the instance is first created
+- **Not on Reboot** - Scripts don't run when you restart an existing instance
+- **One-Time Setup** - Perfect for initial server configuration
 
 ---
 
-## 🔐 **Security Features**
+## Web Server Script (`web_server.sh`)
 
-### **🛡️ Built-in Security**
+### What It Does
 
-- **Automatic Updates** - Latest security patches
-- **Service Hardening** - Secure default configurations
-- **Access Controls** - Restricted access where appropriate
-- **Logging** - Activity monitoring and audit trails
+This script automatically sets up a **production-ready web server**:
 
-### **🔒 Security Best Practices**
+```bash
+#!/bin/bash
+# Update system packages
+yum update -y
 
-- **Principle of Least Privilege** - Minimal required permissions
-- **Regular Updates** - Automatic security patch installation
-- **Service Isolation** - Separate configurations for different purposes
-- **Audit Logging** - Track all system changes and access
+# Install Apache web server
+yum install -y httpd
 
----
+# Start and enable Apache
+systemctl start httpd
+systemctl enable httpd
 
-## 🎨 **Customizing Your Scripts**
+# Create a simple web page
+echo "<h1>Welcome to AWS Security Lab!</h1>" > /var/www/html/index.html
+echo "<p>This is your web server running in the cloud.</p>" >> /var/www/html/index.html
+```
 
-### **📝 Modify Existing Scripts**
+### Features
 
-You can edit these scripts to:
-- **Add more software** packages
-- **Change configurations** for your needs
-- **Add custom applications** or services
-- **Modify security settings** based on requirements
+- **Automatic Updates** - Installs latest security patches
+- **Web Server Installation** - Installs Apache HTTP server
+- **Service Management** - Starts and enables Apache automatically
+- **Custom Content** - Creates a welcome page for testing
+- **Security** - Applies basic security configurations
 
-### **🆕 Create New Scripts**
+### Use Cases
 
-You can create new scripts for:
-- **Application servers** (Node.js, Python, etc.)
-- **Monitoring servers** (Prometheus, Grafana, etc.)
-- **Backup servers** (rsync, backup tools, etc.)
-- **Specialized services** (mail servers, file servers, etc.)
-
----
-
-## 🚨 **Important Notes**
-
-### **⚠️ Security Considerations**
-
-- **Never put secrets** in user data scripts
-- **Use IAM roles** for AWS service access
-- **Keep scripts simple** and focused
-- **Test thoroughly** before production use
-
-### **🔧 Technical Limitations**
-
-- **Scripts run once** when instance starts
-- **Maximum size** of 16 KB for user data
-- **Timeout limits** for script execution
-- **Network dependency** for package downloads
+- **Web Applications** - Host websites and web apps
+- **Development Servers** - Test and develop web applications
+- **Load Balancer Backends** - Serve content behind load balancers
+- **Static Content** - Host documentation and static files
 
 ---
 
-## 🎯 **Next Steps**
+## Database Server Script (`database_server.sh`)
 
-1. **🔍 Review the scripts** to understand what they do
-2. **📝 Customize scripts** for your specific needs
-3. **🧪 Test scripts** in a development environment
-4. **🚀 Deploy instances** with your customized scripts
-5. **📊 Monitor execution** to ensure successful setup
+### What It Does
+
+This script automatically sets up a **secure database server**:
+
+```bash
+#!/bin/bash
+# Update system packages
+yum update -y
+
+# Install MySQL database server
+yum install -y mysql-server
+
+# Start and enable MySQL
+systemctl start mysqld
+systemctl enable mysqld
+
+# Secure the MySQL installation
+mysql_secure_installation
+```
+
+### Features
+
+- **Database Installation** - Installs MySQL database server
+- **Service Management** - Starts and enables MySQL automatically
+- **Security Hardening** - Applies MySQL security best practices
+- **Automatic Startup** - Database starts automatically on boot
+- **Production Ready** - Configured for production use
+
+### Use Cases
+
+- **Application Databases** - Store application data
+- **Data Warehousing** - Store and analyze large datasets
+- **Backup Storage** - Store database backups
+- **Development Testing** - Test database applications
 
 ---
 
-## 🔗 **Related Documentation**
+## Security Features
 
-- **[EC2 Module README](../README.md)** - Complete EC2 module documentation
-- **[Terraform Documentation](../../../README.md)** - Infrastructure setup guide
-- **[AWS User Data Guide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html)** - Official AWS documentation
+### Automatic Security Updates
+
+```bash
+# Update system packages for security
+yum update -y
+```
+
+**What this does:** Installs the latest security patches and updates
+
+### Service Hardening
+
+```bash
+# Secure MySQL installation
+mysql_secure_installation
+```
+
+**What this does:** Removes default users, sets strong passwords, and applies security settings
+
+### Firewall Configuration
+
+```bash
+# Configure firewall rules
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
+```
+
+**What this does:** Opens only necessary ports and closes others for security
+
+---
+
+## Customizing Your Scripts
+
+### Add More Software
+
+```bash
+# Install additional packages
+yum install -y nginx php-fpm python3 nodejs
+
+# Install development tools
+yum groupinstall -y "Development Tools"
+```
+
+### Custom Configuration
+
+```bash
+# Set custom environment variables
+echo "export ENVIRONMENT=production" >> /etc/environment
+echo "export APP_VERSION=1.0.0" >> /etc/environment
+
+# Create custom configuration files
+cat > /etc/myapp/config.conf << EOF
+[app]
+name = My Application
+version = 1.0.0
+environment = production
+EOF
+```
+
+### Service Management
+
+```bash
+# Start additional services
+systemctl start nginx
+systemctl enable nginx
+
+# Configure service dependencies
+systemctl enable httpd
+systemctl enable mysqld
+```
+
+---
+
+## Important Notes
+
+### Script Limitations
+
+- **Maximum Size** - User data scripts are limited to 16KB
+- **Execution Time** - Scripts must complete within the instance launch timeout
+- **One-Time Only** - Scripts run only on first boot
+- **No Persistence** - Changes are lost if you terminate and recreate the instance
+
+### Best Practices
+
+- **Keep Scripts Simple** - Focus on essential setup tasks
+- **Test Thoroughly** - Test scripts in a development environment first
+- **Document Changes** - Comment your scripts for future maintenance
+- **Use Idempotent Commands** - Commands that can run multiple times safely
+
+### Troubleshooting
+
+- **Check Cloud-Init Logs** - `/var/log/cloud-init.log` and `/var/log/cloud-init-output.log`
+- **Verify Script Execution** - Check if expected files and services exist
+- **Test Commands Manually** - Run script commands manually to debug issues
+- **Check Permissions** - Ensure scripts have proper execution permissions
+
+---
+
+## Next Steps
+
+1. **Review the scripts** to understand what they do
+2. **Customize for your needs** by modifying the scripts
+3. **Test in development** before using in production
+4. **Deploy with Terraform** to create instances with these scripts
+5. **Monitor execution** to ensure successful setup
+
+---
+
+## Related Documentation
+
+- **EC2 Module README** - Learn about the EC2 instances that use these scripts
+- **VPC Module README** - Understand the network configuration
+- **Security Groups README** - Learn about firewall rules
+- **Terraform Documentation** - Understand how to deploy with infrastructure as code
 
 ---
 
 <div align="center">
-  <p><em>📝 Your automated server setup is ready! 🚀</em></p>
+  <p><em>Your automated server setup is ready!</em></p>
 </div>
