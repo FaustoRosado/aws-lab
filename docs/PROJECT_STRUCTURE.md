@@ -1,22 +1,22 @@
-# 🏗️ Project Structure & Organization Guide
+# Project Structure & Organization Guide
 
 This document explains the organization and structure of the AWS Security Lab repository, helping you understand why files are organized the way they are and how to navigate the project effectively.
 
-## 📁 Root Directory Overview
+## Root Directory Overview
 
 ```
 aws-lab/
-├── 📁 docs/                    # Comprehensive documentation
-├── 📁 scripts/                 # PowerShell and automation scripts
-├── 📁 terraform/               # Infrastructure as Code (Terraform)
-├── 📄 README.md                # Main project overview
-├── 📄 .gitignore              # Git ignore patterns
-└── 📄 LICENSE                 # Project license
+├── docs/                    # Comprehensive documentation
+├── scripts/                 # PowerShell and automation scripts
+├── terraform/               # Infrastructure as Code (Terraform)
+├── README.md                # Main project overview
+├── .gitignore              # Git ignore patterns
+└── LICENSE                 # Project license
 ```
 
 ---
 
-## 🎯 Why This Structure?
+## Why This Structure?
 
 ### 1. **Separation of Concerns**
 - **Documentation** is separate from **code** and **scripts**
@@ -35,7 +35,7 @@ aws-lab/
 
 ---
 
-## 📚 Documentation Directory (`docs/`)
+## Documentation Directory (`docs/`)
 
 ### Purpose
 The `docs/` directory contains all project documentation, separated from code to ensure easy access and maintenance.
@@ -43,13 +43,13 @@ The `docs/` directory contains all project documentation, separated from code to
 ### Structure
 ```
 docs/
-├── 📄 README.md                    # Main project overview
-├── 📄 SETUP_GUIDE.md              # Step-by-step setup instructions
-├── 📄 AWS_CREDENTIALS_SETUP.md    # AWS authentication guide
-├── 📄 PROJECT_STRUCTURE.md        # This file - structure explanation
-├── 📄 MODULE_DOCUMENTATION.md     # Detailed Terraform module explanations
-├── 📄 LAB_CHECKLIST.md            # Lab completion checklist
-└── 📄 QUICK_START.md              # Fast deployment guide
+├── README.md                    # Main project overview
+├── SETUP_GUIDE.md              # Step-by-step setup instructions
+├── AWS_CREDENTIALS_SETUP.md    # AWS authentication guide
+├── PROJECT_STRUCTURE.md        # This file - structure explanation
+├── MODULE_DOCUMENTATION.md     # Detailed Terraform module explanations
+├── LAB_CHECKLIST.md            # Lab completion checklist
+└── QUICK_START.md              # Fast deployment guide
 ```
 
 ### Why Separate Documentation?
@@ -60,7 +60,7 @@ docs/
 
 ---
 
-## 🔧 Scripts Directory (`scripts/`)
+## Scripts Directory (`scripts/`)
 
 ### Purpose
 The `scripts/` directory contains PowerShell and automation scripts that streamline lab operations.
@@ -68,8 +68,8 @@ The `scripts/` directory contains PowerShell and automation scripts that streaml
 ### Structure
 ```
 scripts/
-├── 📄 setup_lab.ps1              # Main lab management script
-└── 📄 simulate_compromise.ps1     # Attack simulation script
+├── setup_lab.ps1              # Main lab management script
+└── simulate_compromise.ps1     # Attack simulation script
 ```
 
 ### Why PowerShell Scripts?
@@ -85,7 +85,7 @@ scripts/
 
 ---
 
-## 🏗️ Terraform Directory (`terraform/`)
+## Terraform Directory (`terraform/`)
 
 ### Purpose
 The `terraform/` directory contains all Infrastructure as Code (IaC) configurations for the AWS lab.
@@ -93,19 +93,19 @@ The `terraform/` directory contains all Infrastructure as Code (IaC) configurati
 ### Structure
 ```
 terraform/
-├── 📄 main.tf                    # Main configuration file
-├── 📄 variables.tf               # Input variable definitions
-├── 📄 outputs.tf                 # Output value definitions
-├── 📄 versions.tf                # Provider and version constraints
-└── 📁 modules/                   # Reusable Terraform modules
-    ├── 📁 vpc/                   # VPC and networking
-    ├── 📁 security_groups/       # Security group definitions
-    ├── 📁 ec2/                   # EC2 instance configurations
-    ├── 📁 s3/                    # S3 bucket configurations
-    ├── 📁 guardduty/             # GuardDuty service setup
-    ├── 📁 security_hub/          # Security Hub configuration
-    ├── 📁 cloudwatch/            # CloudWatch monitoring
-    └── 📁 iam/                   # IAM roles and policies
+├── main.tf                    # Main configuration file
+├── variables.tf               # Input variable definitions
+├── outputs.tf                 # Output value definitions
+├── versions.tf                # Provider and version constraints
+└── modules/                   # Reusable Terraform modules
+    ├── vpc/                   # VPC and networking
+    ├── security_groups/       # Security group definitions
+    ├── ec2/                   # EC2 instance configurations
+    ├── s3/                    # S3 bucket configurations
+    ├── guardduty/             # GuardDuty service setup
+    ├── security_hub/          # Security Hub configuration
+    ├── cloudwatch/            # CloudWatch monitoring
+    └── iam/                   # IAM roles and policies
 ```
 
 ### Why Modular Structure?
@@ -132,14 +132,15 @@ terraform/
 
 ---
 
-## 🔍 Detailed Module Breakdown
+## Detailed Module Breakdown
 
 ### VPC Module (`modules/vpc/`)
 ```
 modules/vpc/
-├── 📄 main.tf                    # VPC, subnets, route tables
-├── 📄 variables.tf               # Input parameters
-└── 📄 outputs.tf                 # Exported values
+├── main.tf                    # VPC, subnets, route tables
+├── variables.tf               # Input parameters
+├── outputs.tf                 # Exported values
+└── README.md                  # Complete module documentation
 ```
 
 **Why This Structure?**
@@ -150,15 +151,17 @@ modules/vpc/
 ### EC2 Module (`modules/ec2/`)
 ```
 modules/ec2/
-├── 📄 main.tf                    # Instance definitions
-├── 📄 variables.tf               # Configuration parameters
-├── 📄 outputs.tf                 # Instance information
-├── 📁 user_data/                 # Instance setup scripts
-│   ├── 📄 web_server.sh          # Web server configuration
-│   └── 📄 database_server.sh     # Database setup
-└── 📁 ssh/                       # SSH key management
-    ├── 📄 lab-key                # Private SSH key
-    └── 📄 lab-key.pub            # Public SSH key
+├── main.tf                    # Instance definitions
+├── variables.tf               # Configuration parameters
+├── outputs.tf                 # Instance information
+├── README.md                  # Complete module documentation
+├── user_data/                 # Instance setup scripts
+│   ├── README.md              # User data scripts documentation
+│   ├── web_server.sh          # Web server configuration
+│   └── database_server.sh     # Database setup
+└── ssh/                       # SSH key management
+    ├── lab-key                # Private SSH key
+    └── lab-key.pub            # Public SSH key
 ```
 
 **Why This Organization?**
@@ -169,9 +172,10 @@ modules/ec2/
 ### Security Groups Module (`modules/security_groups/`)
 ```
 modules/security_groups/
-├── 📄 main.tf                    # Security group definitions
-├── 📄 variables.tf               # VPC and environment parameters
-└── 📄 outputs.tf                 # Security group IDs
+├── main.tf                    # Security group definitions
+├── variables.tf               # VPC and environment parameters
+├── outputs.tf                 # Security group IDs
+└── README.md                  # Complete module documentation
 ```
 
 **Why Separate Security Groups?**
@@ -179,9 +183,69 @@ modules/security_groups/
 - **Complex Rules**: Many ingress/egress rules
 - **Reusability**: Can be applied to different instances
 
+### GuardDuty Module (`modules/guardduty/`)
+```
+modules/guardduty/
+├── main.tf                    # Threat detection configuration
+├── variables.tf               # Environment and region parameters
+├── outputs.tf                 # Detector and role information
+└── README.md                  # Complete module documentation
+```
+
+**Why Separate GuardDuty?**
+- **Threat Detection**: Core security monitoring service
+- **Complex Configuration**: Multiple data sources and features
+- **Integration**: Works with multiple AWS services
+
+### IAM Module (`modules/iam/`)
+```
+modules/iam/
+├── main.tf                    # User, group, and policy definitions
+├── variables.tf               # User and permission parameters
+├── outputs.tf                 # User and group information
+└── README.md                  # Complete module documentation
+```
+
+**Why Separate IAM?**
+- **Access Control**: Critical for security and compliance
+- **Complex Permissions**: Multiple users, groups, and policies
+- **Security**: Foundation for all other services
+
+### S3 Module (`modules/s3/`)
+```
+modules/s3/
+├── main.tf                    # Bucket and policy definitions
+├── variables.tf               # Bucket and security parameters
+├── outputs.tf                 # Bucket and security information
+├── README.md                  # Complete module documentation
+└── sample_data/               # Example files for testing
+    ├── README.md              # Sample data documentation
+    └── threats/               # Security threat examples
+        └── malware_indicators.json # Sample malware data
+```
+
+**Why Separate S3?**
+- **Data Storage**: Core storage service for the lab
+- **Security Features**: Encryption, versioning, and access policies
+- **Sample Data**: Provides testing materials for learning
+
+### Security Hub Module (`modules/security_hub/`)
+```
+modules/security_hub/
+├── main.tf                    # Security Hub configuration
+├── variables.tf               # Standards and region parameters
+├── outputs.tf                 # Security Hub information
+└── README.md                  # Complete module documentation
+```
+
+**Why Separate Security Hub?**
+- **Centralized Security**: Aggregates findings from all services
+- **Compliance**: Enables security standards and frameworks
+- **Integration**: Connects all security tools together
+
 ---
 
-## 📋 File Naming Conventions
+## File Naming Conventions
 
 ### 1. **Descriptive Names**
 - `setup_lab.ps1` - Clearly indicates purpose
@@ -201,227 +265,83 @@ modules/security_groups/
 
 ---
 
-## 🔄 Workflow Integration
-
-### How Files Work Together
-
-```
-1. User runs setup_lab.ps1
-   ↓
-2. Script checks prerequisites (AWS CLI, Terraform)
-   ↓
-3. Terraform initializes and reads main.tf
-   ↓
-4. Main.tf calls individual modules
-   ↓
-5. Modules create AWS resources
-   ↓
-6. Outputs provide connection information
-   ↓
-7. User can run simulation scripts
-```
-
-### File Dependencies
-- **Main Scripts** → **Terraform** → **AWS Resources**
-- **Documentation** → **User Guidance** → **Successful Execution**
-- **Modules** → **Reusable Components** → **Consistent Infrastructure**
-
----
-
-## 🌍 Cross-Platform Considerations
-
-### Windows Users
-- **PowerShell Scripts**: Native execution
-- **Terraform**: Works identically
-- **AWS CLI**: Same commands and syntax
-
-### Mac Users
-- **Scripts**: Can be adapted to Bash
-- **Terraform**: Identical functionality
-- **AWS CLI**: Same configuration and usage
-
-### Why This Approach?
-- **Consistency**: Same infrastructure regardless of OS
-- **Learning**: Users learn platform-agnostic concepts
-- **Flexibility**: Easy to adapt for different environments
-
----
-
-## 📊 Benefits of This Structure
-
-### 1. **For Beginners**
-- **Clear Navigation**: Easy to find what you need
-- **Logical Flow**: Follows natural learning progression
-- **Comprehensive Coverage**: All aspects documented
-
-### 2. **For Educators**
-- **Modular Teaching**: Focus on specific concepts
-- **Consistent Patterns**: Students learn best practices
-- **Easy Customization**: Adapt for different skill levels
-
-### 3. **For Professionals**
-- **Production Ready**: Follows industry standards
-- **Maintainable**: Easy to update and extend
-- **Collaborative**: Multiple team members can contribute
-
----
-
-## 🚀 How to Navigate This Project
-
-### 1. **Start Here**
-- Read `README.md` for project overview
-- Follow `QUICK_START.md` for fast deployment
-- Use `SETUP_GUIDE.md` for detailed setup
-
-### 2. **Understand Infrastructure**
-- Review `PROJECT_STRUCTURE.md` (this file)
-- Study `MODULE_DOCUMENTATION.md` for technical details
-- Examine Terraform files for implementation
-
-### 3. **Execute the Lab**
-- Use `scripts/setup_lab.ps1` for management
-- Follow `LAB_CHECKLIST.md` for completion tracking
-- Run simulation scripts for hands-on learning
-
-### 4. **Customize and Extend**
-- Modify Terraform modules for your needs
-- Add new security scenarios
-- Integrate with existing infrastructure
-
----
-
-## 🔧 Customization Guidelines
+## Adding New Components
 
 ### Adding New Modules
 1. **Create Directory**: `modules/new_service/`
-2. **Standard Files**: `main.tf`, `variables.tf`, `outputs.tf`
+2. **Standard Files**: `main.tf`, `variables.tf`, `outputs.tf`, `README.md`
 3. **Update Main**: Add module call to `main.tf`
 4. **Document**: Add to `MODULE_DOCUMENTATION.md`
+5. **Update Index**: Add to `docs/INDEX.md`
+6. **Update Structure**: Add to `docs/PROJECT_STRUCTURE.md`
 
 ### Adding New Scripts
-1. **Place in Scripts**: `scripts/new_script.ps1`
-2. **Follow Naming**: Descriptive, clear purpose
-3. **Document**: Update relevant documentation
-4. **Test**: Verify functionality before committing
+1. **Create File**: Use descriptive name with appropriate extension
+2. **Add Documentation**: Include usage instructions and examples
+3. **Update Scripts README**: Document the new script
+4. **Test**: Ensure it works across platforms
 
 ### Adding New Documentation
-1. **Place in Docs**: `docs/new_guide.md`
-2. **Consistent Format**: Follow existing markdown style
-3. **Cross-Reference**: Link to related documents
-4. **Update Index**: Add to main README if appropriate
+1. **Create File**: Use clear, descriptive filename
+2. **Follow Format**: Use consistent markdown structure
+3. **Update Index**: Add to `docs/INDEX.md`
+4. **Cross-Reference**: Link to related documentation
 
 ---
 
-## 📈 Scaling Considerations
+## Best Practices
 
-### Small Labs
-- Use existing modules as-is
-- Minimal customization required
-- Focus on learning concepts
-
-### Medium Labs
-- Modify module parameters
-- Add custom security groups
-- Extend monitoring and alerting
-
-### Large Labs
-- Create new modules
-- Integrate with existing infrastructure
-- Implement advanced security controls
-
----
-
-## 🎓 Learning Path
-
-### Phase 1: Understanding
-1. Read project documentation
-2. Examine Terraform configurations
-3. Understand module relationships
-
-### Phase 2: Execution
-1. Set up AWS credentials
-2. Deploy infrastructure
-3. Run security scenarios
-
-### Phase 3: Customization
-1. Modify existing modules
-2. Add new security controls
-3. Integrate with your environment
-
-### Phase 4: Extension
-1. Create new modules
-2. Develop additional scenarios
-3. Share improvements with community
-
----
-
-## 🔍 Troubleshooting Structure Issues
-
-### Common Problems
-
-#### 1. **File Not Found**
-- **Check Path**: Ensure correct directory structure
-- **Verify Names**: Confirm exact file names
-- **Case Sensitivity**: Some systems are case-sensitive
-
-#### 2. **Module Errors**
-- **Check Dependencies**: Ensure required modules exist
-- **Verify Variables**: Check input/output consistency
-- **Review Syntax**: Validate Terraform syntax
-
-#### 3. **Script Issues**
-- **Permissions**: Ensure scripts are executable
-- **Dependencies**: Check required tools are installed
-- **Environment**: Verify correct working directory
-
-### Getting Help
-1. **Check Documentation**: Start with relevant guides
-2. **Review Structure**: Understand file relationships
-3. **Examine Logs**: Look for error messages
-4. **Community Support**: Use repository issues
-
----
-
-## 📝 Best Practices
-
-### 1. **File Organization**
-- Keep related files together
-- Use descriptive names
-- Maintain consistent structure
+### 1. **Consistency**
+- Use the same structure across all modules
+- Follow established naming conventions
+- Maintain consistent formatting
 
 ### 2. **Documentation**
-- Document everything
-- Keep it up to date
-- Use clear, simple language
+- Every module should have a README
+- Include examples and use cases
+- Document all variables and outputs
 
-### 3. **Code Quality**
-- Follow Terraform best practices
-- Use consistent formatting
-- Include helpful comments
+### 3. **Organization**
+- Group related functionality together
+- Keep directories focused and purposeful
+- Avoid deep nesting (max 3-4 levels)
 
-### 4. **Version Control**
-- Commit frequently
-- Use descriptive commit messages
-- Tag important releases
+### 4. **Maintenance**
+- Regular cleanup of unused files
+- Update documentation when code changes
+- Version control everything
 
 ---
 
-## 🎯 Summary
+## Navigation Tips
 
-This project structure is designed to be:
+### Finding Specific Files
+1. **Start with docs/INDEX.md** - Overview of all documentation
+2. **Use PROJECT_STRUCTURE.md** - Detailed file organization
+3. **Check module READMEs** - Specific service documentation
+4. **Search by filename** - Use your editor's search function
 
-- **🏗️ Logical**: Clear organization and relationships
-- **📚 Educational**: Easy to learn and understand
-- **🔧 Practical**: Ready for real-world use
-- **🌍 Flexible**: Adaptable to different needs
-- **📈 Scalable**: Easy to extend and customize
+### Understanding Dependencies
+1. **Check main.tf** - See how modules are connected
+2. **Review variables.tf** - Understand configuration options
+3. **Examine outputs.tf** - See what each module provides
+4. **Read README files** - Get the complete picture
 
-By following this structure, you'll have a solid foundation for:
-- Learning AWS security concepts
-- Building production-ready infrastructure
-- Collaborating with team members
-- Contributing to the community
+---
 
-Remember: **Good structure leads to good understanding, and good understanding leads to successful execution.**
+## Common Questions
 
-Happy learning! 🚀🔒
+### "Where do I start?"
+Begin with `docs/INDEX.md` and follow the learning paths based on your experience level.
+
+### "How do I add a new service?"
+Follow the "Adding New Modules" section above and maintain consistency with existing modules.
+
+### "Why are files organized this way?"
+The structure prioritizes clarity, maintainability, and beginner-friendliness while following professional standards.
+
+---
+
+<div align="center">
+  <p><em>Your project structure is now clear and organized!</em></p>
+</div>

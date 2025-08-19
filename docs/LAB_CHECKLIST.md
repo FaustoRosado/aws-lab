@@ -1,8 +1,8 @@
-# 🔒 AWS Security Lab - Completion Checklist
+# AWS Security Lab - Completion Checklist
 
 This checklist helps you track your progress through the EC2 Compromise & Remediation lab.
 
-## 📋 Pre-Lab Setup
+## Pre-Lab Setup
 
 - [ ] AWS CLI installed and configured
 - [ ] Terraform installed
@@ -10,7 +10,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Lab directory structure created
 - [ ] Required AWS permissions verified
 
-## 🚀 Infrastructure Deployment
+## Infrastructure Deployment
 
 - [ ] Terraform initialized (`terraform init`)
 - [ ] Infrastructure plan reviewed (`terraform plan`)
@@ -23,7 +23,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Security Hub enabled
 - [ ] CloudWatch dashboard created
 
-## 🔍 Infrastructure Verification
+## Infrastructure Verification
 
 - [ ] VPC created with correct CIDR blocks
 - [ ] Public and private subnets configured
@@ -34,7 +34,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Web server responding on HTTP
 - [ ] Database server accessible from web server
 
-## 🎭 Compromise Simulation
+## Compromise Simulation
 
 - [ ] Port scanning simulation completed
 - [ ] Brute force attack simulation completed
@@ -43,7 +43,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Network scanning simulation completed
 - [ ] All simulation scripts executed successfully
 
-## 🛡️ Security Detection
+## Security Detection
 
 - [ ] GuardDuty findings generated
 - [ ] Security Hub findings generated
@@ -51,7 +51,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] SNS notifications received (if configured)
 - [ ] Security dashboard accessible
 
-## 📊 Investigation & Analysis
+## Investigation & Analysis
 
 - [ ] GuardDuty findings reviewed
 - [ ] Security Hub findings analyzed
@@ -60,7 +60,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Network traffic patterns analyzed
 - [ ] Security group rules reviewed
 
-## 🔧 Remediation Actions
+## Remediation Actions
 
 - [ ] Vulnerable web application patched
 - [ ] Security group rules tightened
@@ -69,7 +69,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Monitoring enhanced
 - [ ] Incident response procedures documented
 
-## 📈 Monitoring & Alerting
+## Monitoring & Alerting
 
 - [ ] CloudWatch alarms configured
 - [ ] SNS topics for notifications
@@ -77,7 +77,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Metrics collection active
 - [ ] Dashboard accessible and functional
 
-## 🧹 Lab Cleanup
+## Lab Cleanup
 
 - [ ] Infrastructure destroyed (`terraform destroy`)
 - [ ] AWS resources cleaned up
@@ -85,7 +85,7 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] SSH keys removed
 - [ ] Lab artifacts archived (if needed)
 
-## 📚 Learning Objectives Achieved
+## Learning Objectives Achieved
 
 - [ ] Understand AWS security services (GuardDuty, Security Hub)
 - [ ] Experience threat detection in action
@@ -94,66 +94,36 @@ This checklist helps you track your progress through the EC2 Compromise & Remedi
 - [ ] Understand monitoring and alerting
 - [ ] Practice remediation techniques
 
-## 🔍 Additional Exploration
+## Additional Exploration
 
 - [ ] Try different attack vectors
 - [ ] Test different security configurations
+- [ ] Experiment with different monitoring setups
+- [ ] Practice with different remediation techniques
 - [ ] Explore additional AWS security services
-- [ ] Practice with different instance types
-- [ ] Test network segmentation
-- [ ] Experiment with IAM policies
 
-## 📝 Documentation
+## Notes & Observations
 
-- [ ] Lab notes completed
-- [ ] Findings documented
-- [ ] Remediation steps recorded
-- [ ] Lessons learned documented
-- [ ] Best practices identified
-- [ ] Recommendations for production
+Use this space to document your findings, challenges, and insights:
 
-## 🎯 Post-Lab Activities
-
-- [ ] Review AWS security best practices
-- [ ] Explore additional security services
-- [ ] Consider implementing in test environment
-- [ ] Share learnings with team
-- [ ] Plan security improvements
-- [ ] Schedule regular security assessments
+- **What worked well:**
+- **Challenges encountered:**
+- **Key learnings:**
+- **Areas for improvement:**
+- **Next steps:**
 
 ---
 
-## 📊 Progress Tracking
+## Completion Status
 
-**Overall Progress**: ___ / 50 items completed
+- **Total Tasks:** 50+
+- **Completed:** ___ / ___
+- **Completion Rate:** ___%
 
-**Categories**:
-- Pre-Lab Setup: ___ / 5
-- Infrastructure Deployment: ___ / 10
-- Infrastructure Verification: ___ / 8
-- Compromise Simulation: ___ / 6
-- Security Detection: ___ / 5
-- Investigation & Analysis: ___ / 6
-- Remediation Actions: ___ / 6
-- Monitoring & Alerting: ___ / 5
-- Lab Cleanup: ___ / 5
-- Learning Objectives: ___ / 6
-- Additional Exploration: ___ / 6
-- Documentation: ___ / 6
-- Post-Lab Activities: ___ / 6
+**Lab Status:** [ ] Not Started [ ] In Progress [ ] Completed [ ] Mastered
 
 ---
 
-## 🏆 Completion Certificate
-
-**Lab Completed**: ___ / ___ / ____
-
-**Instructor/Reviewer**: ________________
-
-**Notes**: ________________________________
-
-**Next Steps**: ________________________________
-
----
-
-**Remember**: This lab is for educational purposes only. Never deploy intentionally vulnerable infrastructure in production environments!
+<div align="center">
+  <p><em>Track your progress and document your learning journey!</em></p>
+</div>
