@@ -26,6 +26,10 @@ Choose your path based on what you want to learn:
 - **[VPC Module Guide](../terraform/modules/vpc/README.md)** - Understanding networking
 - **[EC2 Module Guide](../terraform/modules/ec2/README.md)** - Understanding virtual servers
 - **[Security Groups Guide](../terraform/modules/security_groups/README.md)** - Understanding firewalls
+- **[GuardDuty Module Guide](../terraform/modules/guardduty/README.md)** - Understanding threat detection
+- **[IAM Module Guide](../terraform/modules/iam/README.md)** - Understanding access management
+- **[S3 Module Guide](../terraform/modules/s3/README.md)** - Understanding object storage
+- **[Security Hub Module Guide](../terraform/modules/security_hub/README.md)** - Understanding security management
 
 ### **🚀 Lab Setup & Execution**
 - **[Setup Guide](SETUP_GUIDE.md)** - Step-by-step lab setup instructions
@@ -49,6 +53,10 @@ Choose your path based on what you want to learn:
 - **[VPC Module](../terraform/modules/vpc/README.md)** - Network foundation
 - **[EC2 Module](../terraform/modules/ec2/README.md)** - Virtual servers
 - **[Security Groups Module](../terraform/modules/security_groups/README.md)** - Firewall rules
+- **[GuardDuty Module](../terraform/modules/guardduty/README.md)** - Threat detection
+- **[IAM Module](../terraform/modules/iam/README.md)** - Access management
+- **[S3 Module](../terraform/modules/s3/README.md)** - Object storage
+- **[Security Hub Module](../terraform/modules/security_hub/README.md)** - Security management
 - **[Project Structure](PROJECT_STRUCTURE.md)** - How the project is organized
 
 ### **🚀 Lab Execution**
@@ -78,6 +86,8 @@ Choose your path based on what you want to learn:
 2. **[Lab Checklist](LAB_CHECKLIST.md)** - Run security scenarios
 3. **[Module Deep Dives](../terraform/modules/)** - Understand each component
 4. **[Extend with New Services](../terraform/README.md)** - Add more security tools
+5. **[Security Tools Deep Dive](../terraform/modules/guardduty/README.md)** - Master threat detection
+6. **[Access Management](../terraform/modules/iam/README.md)** - Understand IAM security
 
 ---
 
@@ -121,6 +131,8 @@ Choose your path based on what you want to learn:
 - Security Hub setup
 - CloudWatch monitoring
 - Threat detection
+- IAM access management
+- S3 security and encryption
 
 ### **📚 Learning & Documentation**
 - Step-by-step guides
