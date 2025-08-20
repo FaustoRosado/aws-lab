@@ -1,0 +1,9 @@
+# Domain Blacklist for ${environment} Environment
+# Sample malicious domains for security testing purposes
+# DO NOT USE IN PRODUCTION
+
+malicious.example.com
+evil.test.net
+phishing.lab.org
+c2server.fake.io
+badactor.demo.co

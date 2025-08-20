@@ -19,7 +19,7 @@ resource "aws_securityhub_standards_subscription" "aws_foundational_security" {
 
 # Security Hub Actions
 resource "aws_securityhub_action_target" "guardduty_findings" {
-  name        = "${var.environment}-guardduty-findings-action"
+  name        = "${var.environment}-gd-action"
   identifier  = "GuardDutyFindings"
   description = "Action target for GuardDuty findings"
 }

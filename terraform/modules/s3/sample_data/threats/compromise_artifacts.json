@@ -1,0 +1,39 @@
+{
+  "environment": "${environment}",
+  "threat_type": "compromise_artifacts",
+  "description": "Sample compromise artifacts for security testing and training purposes",
+  "timestamp": "2025-08-17T17:00:00Z",
+  "source": "Security Lab Simulation",
+  "artifacts": [
+    {
+      "type": "file_path",
+      "value": "/tmp/malicious_script.sh",
+      "confidence": "high",
+      "description": "Suspicious script in temp directory"
+    },
+    {
+      "type": "registry_key",
+      "value": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Malware",
+      "confidence": "high",
+      "description": "Persistence mechanism in registry"
+    },
+    {
+      "type": "network_connection",
+      "value": "192.168.1.100:4444",
+      "confidence": "medium",
+      "description": "Suspicious outbound connection"
+    },
+    {
+      "type": "process_name",
+      "value": "suspicious_process.exe",
+      "confidence": "high",
+      "description": "Unknown process execution"
+    },
+    {
+      "type": "user_agent",
+      "value": "Mozilla/5.0 (Malware Bot)",
+      "confidence": "medium",
+      "description": "Suspicious user agent string"
+    }
+  ]
+}
