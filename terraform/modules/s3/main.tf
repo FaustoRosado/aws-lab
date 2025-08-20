@@ -2,6 +2,9 @@
 resource "aws_s3_bucket" "threat_intel" {
   bucket = var.bucket_name
 
+  # Force destroy for fast cleanup - students can recreate
+  force_destroy = true
+
   tags = {
     Name        = var.bucket_name
     Environment = var.environment
