@@ -64,7 +64,8 @@ module "s3_bucket" {
 module "guardduty" {
   source = "./modules/guardduty"
   
-  environment = var.environment
+  environment      = var.environment
+  s3_bucket_name  = var.s3_bucket_name
 }
 
 # Security Hub Configuration
