@@ -143,7 +143,7 @@ aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
 .\scripts\setup_lab.ps1 -Action destroy
 ```
 
-## 🚀 Fast Cleanup (If Needed)
+## Fast Cleanup (If Needed)
 
 **If `terraform destroy` gets stuck or takes too long, use our fast cleanup scripts:**
 
@@ -158,7 +158,7 @@ chmod +x fast_cleanup.sh
 ./fast_cleanup.sh
 ```
 
-**These scripts will clean up everything in under 30 seconds!** ⚡
+**These scripts will clean up everything in under 30 seconds!**
 
 **Why Fast Cleanup?**
 - **Cybersecurity professionals need speed** - no time to wait
