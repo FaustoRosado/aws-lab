@@ -207,7 +207,7 @@ Your lab is successfully deployed when:
 - VPC and subnets are created  
 - Security groups are configured  
 
-## 📝 Notes for Students
+## Notes for Students
 
 - **Keep AWS credentials secure** - Never commit to Git
 - **Monitor costs** - Free tier has limits
