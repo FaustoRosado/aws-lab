@@ -323,6 +323,10 @@ simulation-outputs/
 attack-logs/
 compromise-evidence/
 
+# PDF Documents (additional protection)
+*.pdf
+pdf-documents/
+
 # Personal notes and configurations
 my-notes.md
 personal-config/
