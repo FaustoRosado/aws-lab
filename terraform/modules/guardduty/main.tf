@@ -41,11 +41,11 @@ resource "aws_sns_topic_policy" "guardduty_findings" {
 resource "aws_guardduty_publishing_destination" "main" {
   detector_id     = aws_guardduty_detector.main.id
   destination_arn = aws_sns_topic.guardduty_findings.arn
-  kms_key_arn     = "alias/aws/guardduty"
+  kms_key_arn     = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:alias/aws/guardduty"
 }
 
 # GuardDuty Threat Intel Set (Sample malicious IPs)
-resource "aws_guardduty_threat_intel_set" "malicious_ips" {
+resource "aws_guardduty_threatintelset" "malicious_ips" {
   activate    = true
   detector_id = aws_guardduty_detector.main.id
   format      = "TXT"
@@ -59,7 +59,7 @@ resource "aws_guardduty_threat_intel_set" "malicious_ips" {
 }
 
 # GuardDuty IP Set (Sample trusted IPs)
-resource "aws_guardduty_ip_set" "trusted_ips" {
+resource "aws_guardduty_ipset" "trusted_ips" {
   activate    = true
   detector_id = aws_guardduty_detector.main.id
   format      = "TXT"
@@ -71,3 +71,7 @@ resource "aws_guardduty_ip_set" "trusted_ips" {
     Environment = var.environment
   }
 }
+
+# Data sources for region and account ID
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}

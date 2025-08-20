@@ -92,17 +92,12 @@ variable "enable_pci_standard" {
 
 ```hcl
 resource "aws_securityhub_account" "main" {
-  enable_default_standards = false
-  
-  tags = {
-    Name        = "${var.environment}-security-hub"
-    Environment = var.environment
-    Service     = "Security Hub"
-  }
+  enable_default_standards = true
+  auto_enable_controls     = true
 }
 ```
 
-**What this does:** Enables Security Hub in your AWS account with custom standards
+**What this does:** Enables Security Hub in your AWS account with default standards enabled
 
 ### Step 2: Enable Security Standards
 

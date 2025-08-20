@@ -2,11 +2,6 @@
 resource "aws_securityhub_account" "main" {
   enable_default_standards = true
   auto_enable_controls     = true
-
-  tags = {
-    Name        = "${var.environment}-security-hub"
-    Environment = var.environment
-  }
 }
 
 # Security Hub Standards
@@ -27,11 +22,6 @@ resource "aws_securityhub_action_target" "guardduty_findings" {
   name        = "${var.environment}-guardduty-findings-action"
   identifier  = "GuardDutyFindings"
   description = "Action target for GuardDuty findings"
-
-  tags = {
-    Name        = "${var.environment}-guardduty-findings-action"
-    Environment = var.environment
-  }
 }
 
 # Security Hub Insights
@@ -41,13 +31,9 @@ resource "aws_securityhub_insight" "high_severity_findings" {
 
   filters {
     severity_label {
-      eq = ["HIGH", "CRITICAL"]
+      comparison = "EQUALS"
+      value      = "HIGH"
     }
-  }
-
-  tags = {
-    Name        = "${var.environment}-high-severity-findings"
-    Environment = var.environment
   }
 }
 
@@ -57,13 +43,9 @@ resource "aws_securityhub_insight" "guardduty_findings" {
 
   filters {
     product_name {
-      eq = ["GuardDuty"]
+      comparison = "EQUALS"
+      value      = "GuardDuty"
     }
-  }
-
-  tags = {
-    Name        = "${var.environment}-guardduty-findings"
-    Environment = var.environment
   }
 }
 
