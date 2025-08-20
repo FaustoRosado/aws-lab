@@ -16,6 +16,10 @@ resource "aws_instance" "public_web" {
     environment = var.environment
   }))
 
+  # Optimize for fast termination - cybersecurity professionals need speed
+  disable_api_termination = false
+  instance_initiated_shutdown_behavior = "terminate"
+
   tags = {
     Name        = "${var.environment}-public-web-server"
     Environment = var.environment
@@ -35,9 +39,13 @@ resource "aws_instance" "private_db" {
     environment = var.environment
   }))
 
+  # Optimize for fast termination - cybersecurity professionals need speed
+  disable_api_termination = false
+  instance_initiated_shutdown_behavior = "terminate"
+
   tags = {
     Name        = "${var.environment}-private-db-server"
-    Environment = var.environment
+    Environment = "lab"
     Purpose     = "Database Server - Internal Target"
   }
 }
