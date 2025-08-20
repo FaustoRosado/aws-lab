@@ -31,19 +31,11 @@ This folder provides **comprehensive testing materials** for your security lab:
 ```
 sample_data/
 ├── README.md              # This documentation file
-├── threats/               # Security threat examples
-│   └── malware_indicators.json # Sample malware data
-├── logs/                  # Sample log files
-│   ├── web_access.log     # Web server access logs
-│   ├── security.log       # Security event logs
-│   └── system.log         # System activity logs
-├── documents/             # Sample documents
-│   ├── report.pdf         # Sample PDF document
-│   ├── data.csv           # Sample CSV data file
-│   └── config.yaml        # Sample configuration file
-└── templates/             # Reusable templates
-    ├── threat_report.md   # Threat report template
-    └── log_analysis.md    # Log analysis template
+└── threats/               # Security threat examples
+    ├── malware_indicators.json    # Sample malware data
+    ├── ip_blacklist.txt           # Sample malicious IP addresses
+    ├── domain_blacklist.txt       # Sample malicious domains
+    └── compromise_artifacts.json  # Sample compromise indicators
 ```
 
 ---
@@ -84,6 +76,82 @@ This file contains **sample threat intelligence data** for testing security tool
 }
 ```
 
+### IP Blacklist (`threats/ip_blacklist.txt`)
+
+This file contains **sample malicious IP addresses** for testing network security tools:
+
+```txt
+# IP Blacklist for lab Environment
+# Sample malicious IPs for security testing purposes
+# DO NOT USE IN PRODUCTION
+
+192.168.1.100
+10.0.0.50
+172.16.0.25
+198.51.100.10
+203.0.113.5
+```
+
+**Use Cases:**
+- **GuardDuty Testing** - Test IP-based threat detection
+- **Network Security** - Practice blocking malicious IPs
+- **Firewall Rules** - Test security group configurations
+- **Threat Intelligence** - Practice with realistic threat data
+
+### Domain Blacklist (`threats/domain_blacklist.txt`)
+
+This file contains **sample malicious domains** for testing DNS security:
+
+```txt
+# Domain Blacklist for lab Environment
+# Sample malicious domains for security testing purposes
+# DO NOT USE IN PRODUCTION
+
+malicious.example.com
+evil.test.net
+phishing.lab.org
+c2server.fake.io
+badactor.demo.co
+```
+
+**Use Cases:**
+- **DNS Security** - Test domain-based threat detection
+- **Web Filtering** - Practice blocking malicious domains
+- **GuardDuty Testing** - Test domain-based findings
+- **Security Analysis** - Practice analyzing domain threats
+
+### Compromise Artifacts (`threats/compromise_artifacts.json`)
+
+This file contains **sample compromise indicators** for testing incident response:
+
+```json
+{
+  "environment": "lab",
+  "threat_type": "compromise_artifacts",
+  "description": "Sample compromise artifacts for security testing and training purposes",
+  "artifacts": [
+    {
+      "type": "file_path",
+      "value": "/tmp/malicious_script.sh",
+      "confidence": "high",
+      "description": "Suspicious script in temp directory"
+    },
+    {
+      "type": "registry_key",
+      "value": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Malware",
+      "confidence": "high",
+      "description": "Persistence mechanism in registry"
+    }
+  ]
+}
+```
+
+**Use Cases:**
+- **Incident Response** - Practice analyzing compromise indicators
+- **Forensics** - Test artifact analysis workflows
+- **Security Monitoring** - Practice detecting suspicious activities
+- **Threat Hunting** - Test proactive threat detection
+
 ### Use Cases
 
 - **GuardDuty Testing** - Test threat detection capabilities
@@ -93,76 +161,19 @@ This file contains **sample threat intelligence data** for testing security tool
 
 ---
 
-## Log Sample Files
+## Threat Intelligence Files
 
-### Web Access Logs (`logs/web_access.log`)
-
-Sample web server access logs for analysis training:
-
-```log
-192.168.1.100 - - [01/Jan/2024:10:00:00 +0000] "GET / HTTP/1.1" 200 2326
-192.168.1.101 - - [01/Jan/2024:10:00:01 +0000] "GET /admin HTTP/1.1" 403 1234
-192.168.1.102 - - [01/Jan/2024:10:00:02 +0000] "POST /login HTTP/1.1" 200 567
-```
-
-### Security Event Logs (`logs/security.log`)
-
-Sample security event logs for monitoring practice:
-
-```log
-[2024-01-01 10:00:00] SECURITY: Failed login attempt from 192.168.1.100
-[2024-01-01 10:00:01] SECURITY: User admin logged in from 192.168.1.101
-[2024-01-01 10:00:02] SECURITY: File access denied: /etc/passwd
-```
-
-### System Activity Logs (`logs/system.log`)
-
-Sample system activity logs for analysis:
-
-```log
-Jan 1 10:00:00 server1 kernel: CPU temperature above threshold
-Jan 1 10:00:01 server1 systemd: Started Apache Web Server
-Jan 1 10:00:02 server1 sshd: Accepted password for user from 192.168.1.100
-```
+The threat intelligence files provide realistic security testing data for your lab environment. These files are automatically uploaded to your S3 bucket and can be used with GuardDuty, Security Hub, and other AWS security services.
 
 ---
 
-## Document Samples
+## File Format Examples
 
-### Sample Reports (`documents/report.pdf`)
+The sample data files demonstrate different formats commonly used in security operations:
 
-Example PDF documents for testing file processing:
-
-- **Security Assessment Reports** - Sample security findings
-- **Compliance Documents** - Example compliance reports
-- **Technical Documentation** - Sample technical guides
-
-### Data Files (`documents/data.csv`)
-
-Sample CSV data for analysis practice:
-
-```csv
-timestamp,ip_address,user_agent,status_code,response_time
-2024-01-01 10:00:00,192.168.1.100,Mozilla/5.0,200,150
-2024-01-01 10:00:01,192.168.1.101,Chrome/91.0,404,200
-2024-01-01 10:00:02,192.168.1.102,Safari/14.0,200,120
-```
-
-### Configuration Files (`documents/config.yaml`)
-
-Sample configuration files for testing:
-
-```yaml
-application:
-  name: "Sample Security App"
-  version: "1.0.0"
-  environment: "development"
-
-security:
-  enabled: true
-  log_level: "info"
-  max_attempts: 3
-```
+- **JSON Files** - Structured threat intelligence data
+- **Text Files** - Simple lists and configurations
+- **Templates** - Reusable data structures for your projects
 
 ---
 
@@ -170,24 +181,24 @@ security:
 
 ### Testing Security Tools
 
-1. **Upload to S3** - Use sample data to test S3 functionality
-2. **Process with Lambda** - Test data processing workflows
-3. **Analyze with Athena** - Practice SQL queries on sample data
-4. **Monitor with CloudWatch** - Test log monitoring and alerting
+1. **GuardDuty Integration** - Use threat intelligence files to test threat detection
+2. **Security Hub Testing** - Test finding aggregation with sample threat data
+3. **S3 Security** - Test bucket policies and access controls
+4. **Threat Intelligence** - Practice with realistic security indicators
 
 ### Learning and Training
 
-1. **Security Analysis** - Practice analyzing threat indicators
-2. **Log Analysis** - Learn to read and interpret log files
-3. **Data Processing** - Practice working with different file formats
-4. **Tool Integration** - Test how different AWS services work together
+1. **Threat Intelligence** - Practice analyzing threat indicators and artifacts
+2. **Security Analysis** - Learn to identify and classify security threats
+3. **Data Formats** - Practice working with JSON and text-based threat data
+4. **Security Tool Integration** - Test how GuardDuty and Security Hub work together
 
 ### Development and Testing
 
-1. **Application Testing** - Test applications with realistic data
-2. **API Development** - Develop APIs that process sample data
-3. **Workflow Testing** - Test data processing pipelines
-4. **Performance Testing** - Test system performance with sample data
+1. **Security Workflows** - Test incident response and threat hunting workflows
+2. **API Development** - Develop security APIs that process threat intelligence
+3. **Automation Testing** - Test automated threat detection and response
+4. **Integration Testing** - Test security service integrations
 
 ---
 
@@ -211,7 +222,7 @@ security:
 
 ## Customizing Sample Data
 
-### Add New Data Types
+### Add New Threat Types
 
 ```bash
 # Create new threat indicators
@@ -230,22 +241,20 @@ cat > threats/new_threats.json << EOF
 EOF
 ```
 
-### Create Custom Log Formats
+### Create Custom IP Lists
 
 ```bash
-# Generate custom log entries
-for i in {1..10}; do
-  echo "$(date): Sample log entry $i" >> logs/custom.log
-done
+# Generate custom IP blacklists
+echo "192.168.1.200" >> threats/ip_blacklist.txt
+echo "10.0.0.100" >> threats/ip_blacklist.txt
 ```
 
-### Add Different File Types
+### Add Different Threat Formats
 
 ```bash
 # Create sample files of various types
-echo "Sample text content" > documents/sample.txt
-echo '{"key": "value"}' > documents/sample.json
-echo "Sample XML content" > documents/sample.xml
+echo "malware.example.org" >> threats/domain_blacklist.txt
+echo '{"type": "new_threat", "value": "test"}' > threats/custom_threats.json
 ```
 
 ---
@@ -254,24 +263,24 @@ echo "Sample XML content" > documents/sample.xml
 
 ### S3 Integration
 
-- **Bucket Organization** - Organize sample data by type and purpose
-- **Access Control** - Control who can access sample data
-- **Versioning** - Track changes to sample data over time
-- **Lifecycle Policies** - Automate data management
+- **Bucket Organization** - Organize threat intelligence by type and purpose
+- **Access Control** - Control who can access threat intelligence data
+- **Versioning** - Track changes to threat intelligence over time
+- **Lifecycle Policies** - Automate threat data management
 
-### Lambda Functions
+### GuardDuty Integration
 
-- **Data Processing** - Process sample data with serverless functions
-- **Format Conversion** - Convert between different data formats
-- **Validation** - Validate sample data structure and content
-- **Enrichment** - Add additional context to sample data
+- **Threat Detection** - Use threat intelligence files to test detection capabilities
+- **IP Sets** - Test IP-based threat detection with blacklist files
+- **Threat Intel Sets** - Test domain and artifact-based detection
+- **Finding Generation** - Generate realistic security findings for testing
 
-### CloudWatch
+### Security Hub Integration
 
-- **Log Monitoring** - Monitor sample log files for patterns
-- **Metrics** - Create metrics from sample data
-- **Alarms** - Set up alerts based on sample data analysis
-- **Dashboards** - Visualize sample data trends
+- **Finding Aggregation** - Aggregate findings from multiple security services
+- **Threat Intelligence** - Correlate findings with threat intelligence data
+- **Security Monitoring** - Monitor security posture with realistic data
+- **Incident Response** - Practice incident response with sample threats
 
 ---
 
