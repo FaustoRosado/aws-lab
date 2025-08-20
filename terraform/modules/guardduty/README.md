@@ -30,8 +30,8 @@ This module sets up **comprehensive threat detection** for your AWS environment:
 
 ```
 guardduty/
-├── main.tf      # Creates GuardDuty detector and data sources
-├── variables.tf # What the module needs as input
+├── main.tf      # Creates GuardDuty detector, threat intel sets, and SNS integration
+├── variables.tf # What the module needs as input (environment, s3_bucket_name)
 ├── outputs.tf   # What the module provides to others
 └── README.md    # This file!
 ```
@@ -64,17 +64,16 @@ variable "aws_region" {
 
 **What this means:** GuardDuty will monitor resources in this specific AWS region
 
-### SNS Topic Configuration
+### S3 Bucket Configuration
 
 ```hcl
-variable "sns_topic_name" {
-  description = "Name for the SNS topic that sends security alerts"
+variable "s3_bucket_name" {
+  description = "S3 bucket name for threat intelligence data"
   type        = string
-  default     = "guardduty-security-alerts"
 }
 ```
 
-**What this means:** Security alerts will be sent to this SNS topic for notification
+**What this means:** GuardDuty will use this S3 bucket to store and retrieve threat intelligence data
 
 ---
 
