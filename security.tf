@@ -25,11 +25,11 @@ resource "aws_guardduty_detector" "main" {
 // You can uncomment this block and replace the 'location' URL with a
 // valid publicly accessible threat feed file to enable this functionality.
 
-resource "aws_guardduty_ipset" "threat_intel_set" {
+resource "aws_guardduty_threatintelset" "threat_intel_set" {
   detector_id = aws_guardduty_detector.main.id
   name        = "my-threat-intel-set"
   format      = "TXT" 
-  location    = "https://s3.amazonaws.com/my-threat-intel-bucket/threat-list.txt"
+  location    = "https://s3.us-east-1.amazonaws.com/${aws_s3_bucket.threat_intel_bucket.id}/${aws_s3_object.threat_list_file.key}"
   activate    = true
 }
 

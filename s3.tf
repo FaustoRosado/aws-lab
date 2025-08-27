@@ -1,35 +1,48 @@
-// s3.tf - S3 Bucket Configuration
+# s3.tf
 
-// This file defines an AWS S3 bucket to be created and managed by Terraform.
-// S3 is an object storage service that can be used for various purposes,
-// such as a backend for your website, file storage, or data archiving.
+# This resource creates the S3 bucket where you will store your threat intelligence list.
 
-// It is best practice to use a random suffix to ensure the bucket name is globally unique.
-
-resource "aws_s3_bucket" "my_app_bucket" {
-  bucket = "${var.s3_bucket_name}-${random_string.suffix.result}"
+resource "aws_s3_bucket" "threat_intel_bucket" {
+  bucket = "seize-the-bucket"
 
   tags = {
-    Name        = var.s3_bucket_name
-    Environment = "prod"
+    Name = "GuardDuty Threat Intel"
   }
 }
 
-// Blocks public access to the bucket to enhance security.
+# This resource creates a specific S3 object (the file) within your bucket.
+# You can use this to upload a static list of IPs directly with Terraform.
 
-resource "aws_s3_bucket_public_access_block" "my_app_bucket" {
-  bucket = aws_s3_bucket.my_app_bucket.id
-
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+resource "aws_s3_object" "threat_list_file" {
+  bucket = aws_s3_bucket.threat_intel_bucket.id
+  key    = "Threatlists.txt"
+  
+  # Use the `content` argument to embed the file content directly
+  content = <<EOT
+192.0.2.1/32
+192.168.10.7
+198.51.100.0/24
+203.0.113.5/32
+EOT
 }
 
-// Provides a random suffix for the bucket name to ensure global uniqueness.
+# This is the S3 bucket policy that grants GuardDuty the permissions to read your threat list file.
+resource "aws_s3_bucket_policy" "threat_intel_policy" {
+  bucket = aws_s3_bucket.threat_intel_bucket.id
 
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-  upper   = false
+  # The 'jsonencode' function helps format the policy document correctly.
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid = "GuardDutyThreatIntel",
+        Effect = "Allow",
+        Principal = {
+          Service = "guardduty.amazonaws.com"
+        },
+        Action = "s3:GetObject",
+        Resource = "arn:aws:s3:::${aws_s3_bucket.threat_intel_bucket.id}/${aws_s3_object.threat_list_file.key}"
+      }
+    ]
+  })
 }
