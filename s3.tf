@@ -20,7 +20,7 @@ resource "aws_s3_object" "threat_list_file" {
   # Use the `content` argument to embed the file content directly
   content = <<EOT
 192.0.2.1/32
-192.168.10.7
+192.168.10.7/24
 198.51.100.0/24
 203.0.113.5/32
 EOT
