@@ -30,3 +30,25 @@ secrets.*
 .DS_Store
 *.swp
 *.swo
+
+# Secrets and key material
+*.pem
+*.pub
+*.ppk
+*.key
+*.p12
+*.cer
+*.crt
+*.der
+*.jks
+*.kdb
+*.srl
+*.csr
+*.ovpn
+.secrets*
+.env
+.env.*
+
+# PDFs and images (optional)
+*.pdf
+*.ppm
