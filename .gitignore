@@ -1,0 +1,349 @@
+# ===========================================
+# UNIVERSAL GITIGNORE - COMPREHENSIVE COVERAGE
+# ===========================================
+
+# ===========================================
+# CREDENTIALS & SECURITY
+# ===========================================
+# AWS Credentials and Access Keys
+docs/
+docs/aws-lab-user_accessKeys.csv
+*.csv
+*accessKeys*
+*credentials*
+*.pem
+*.key
+*.pub
+*.p12
+*.cer
+*.crt
+*.der
+*.jks
+*.kdb
+*.srl
+*.csr
+*.ovpn
+secrets.*
+*.secrets
+*.env
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
+config.json
+secrets.json
+credentials.json
+*.config
+*.conf
+
+# ===========================================
+# TERRAFORM & INFRASTRUCTURE
+# ===========================================
+# Terraform state files (if not using remote state)
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+crash.log
+terraform.tfstate.backup
+# Terraform directories - ignore state and lock files but keep modules
+terraform/*.tfstate*
+terraform/.terraform/
+terraform/*.tfvars
+terraform/crash.log
+**/terraform/*.tfstate*
+**/terraform/.terraform/
+**/terraform/*.tfvars
+**/terraform/crash.log
+
+# ===========================================
+# LOGS & DEBUGGING
+# ===========================================
+*.log
+*.log.*
+logs/
+debug/
+*.debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# ===========================================
+# OPERATING SYSTEM FILES
+# ===========================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===========================================
+# IDE & EDITOR FILES
+# ===========================================
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# ===========================================
+# PROGRAMMING LANGUAGES & FRAMEWORKS
+# ===========================================
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+.node_repl_history
+*.tgz
+.yarn-integrity
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+# C/C++
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Rust
+target/
+Cargo.lock
+
+# Ruby
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+*.rbs
+
+# PHP
+/vendor/
+composer.phar
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# ===========================================
+# BUILD & DEPLOYMENT
+# ===========================================
+# Build outputs
+build/
+dist/
+out/
+target/
+bin/
+obj/
+*.tsbuildinfo
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Gemfile.lock
+Pipfile.lock
+poetry.lock
+
+# ===========================================
+# TEMPORARY & CACHE FILES
+# ===========================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.cache/
+.temp/
+tmp/
+temp/
+
+# ===========================================
+# DOCUMENTS & MEDIA
+# ===========================================
+*.pdf
+*.ppm
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.odt
+*.ods
+*.odp
+*.rtf
+*.txt
+*.md
+*.markdown
+
+# ===========================================
+# DATABASE & DATA FILES
+# ===========================================
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.accdb
+*.dbf
+*.csv
+*.tsv
+*.xlsx
+*.xls
+
+# ===========================================
+# DOCKER & CONTAINERS
+# ===========================================
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+.docker/
+
+# ===========================================
+# CLOUD & CI/CD
+# ===========================================
+.aws/
+.azure/
+.gcp/
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+azure-pipelines.yml
+.vsts/
