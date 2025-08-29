@@ -1,0 +1,32 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
+terraform.tfstate.backup
+
+# Keys and credentials
+*.pem
+*.key
+*.pub
+*.p12
+*.cer
+*.crt
+*.der
+*.jks
+*.kdb
+*.srl
+*.csr
+*.ovpn
+.env
+.env.*
+secrets.*
+
+# Documents
+*.pdf
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
