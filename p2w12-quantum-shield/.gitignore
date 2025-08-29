@@ -52,3 +52,27 @@ secrets.*
 # PDFs and images (optional)
 *.pdf
 *.ppm
+
+# Secrets and key material
+*.pem
+*.pub
+*.ppk
+*.key
+*.p12
+*.cer
+*.crt
+*.der
+*.jks
+*.kdb
+*.srl
+*.csr
+*.ovpn
+.secrets*
+.env
+.env.*
+
+# Documents
+*.pdf
+
+# Images
+*.ppm
