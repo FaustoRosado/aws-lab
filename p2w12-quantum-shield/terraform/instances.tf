@@ -1,4 +1,3 @@
-cat > instances.tf << 'EOF'
 # Data source for latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
@@ -15,17 +14,11 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-# Key Pair for SSH access
-resource "aws_key_pair" "quantum_key" {
-  key_name   = "quantum-shield-key"
-  public_key = file("${path.module}/quantum-shield-key.pub")
-}
-
 # Kali Linux Attacker Instance (using Amazon Linux 2 for now)
 resource "aws_instance" "kali_attacker" {
   ami                    = data.aws_ami.amazon_linux_2.id
   instance_type          = var.instance_type_kali
-  key_name              = aws_key_pair.quantum_key.key_name
+  key_name              = var.key_name
   vpc_security_group_ids = [aws_security_group.kali_sg.id]
   subnet_id              = aws_subnet.public_subnet.id
   
@@ -48,9 +41,9 @@ resource "aws_instance" "kali_attacker" {
 resource "aws_instance" "vuln_target" {
   ami                    = data.aws_ami.amazon_linux_2.id
   instance_type          = var.instance_type_vuln
-  key_name              = aws_key_pair.quantum_key.key_name
+  key_name              = var.key_name
   vpc_security_group_ids = [aws_security_group.vuln_sg.id]
-  subnet_id              = aws_subnet.public_subnet.id
+  subnet_id              = aws_subnet.private_app_subnet.id
   
   user_data = <<-EOF
               #!/bin/bash
@@ -105,25 +98,5 @@ resource "aws_instance" "vuln_target" {
     Name = "quantum-shield-vuln-target"
     Role = "Target"
     Team = "P2W12"
-  }
-}
-
-# Elastic IP for Kali instance
-resource "aws_eip" "kali_eip" {
-  instance = aws_instance.kali_attacker.id
-  domain   = "vpc"
-  
-  tags = {
-    Name = "quantum-shield-kali-eip"
-  }
-}
-
-# Elastic IP for vulnerable target
-resource "aws_eip" "vuln_eip" {
-  instance = aws_instance.vuln_target.id
-  domain   = "vpc"
-  
-  tags = {
-    Name = "quantum-shield-vuln-eip"
   }
 }

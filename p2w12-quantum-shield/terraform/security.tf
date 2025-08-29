@@ -1,4 +1,3 @@
-cat > security.tf << 'EOF'
 # Security Group for Kali Linux Attacker
 resource "aws_security_group" "kali_sg" {
   name        = "quantum-shield-kali-sg"
@@ -107,5 +106,5 @@ resource "aws_network_acl" "public_nacl" {
 # Network ACL Association
 resource "aws_network_acl_association" "public_nacl_assoc" {
   network_acl_id = aws_network_acl.public_nacl.id
-  subnet_id      = aws_subnet.public_subnet.id
+  subnet_id       = aws_subnet.public_subnet.id
 }

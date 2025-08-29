@@ -1,4 +1,3 @@
-cat > main.tf << 'EOF'
 # Quantum Shield Cyber Range - P2W12 Final Project
 # Team: Shannon Kelly, Fausto Rosado, Zeinab Ali, Latrisha Dodson, Javier Acosta
 

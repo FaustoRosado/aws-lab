@@ -1,4 +1,3 @@
-cat > outputs.tf << 'EOF'
 output "vpc_id" {
   description = "ID of the VPC"
   value       = aws_vpc.quantum_vpc.id
@@ -26,7 +25,7 @@ output "kali_instance_id" {
 
 output "kali_public_ip" {
   description = "Public IP of the Kali attacker instance"
-  value       = aws_eip.kali_eip.public_ip
+  value       = aws_instance.kali_attacker.public_ip
 }
 
 output "vuln_instance_id" {
@@ -34,9 +33,9 @@ output "vuln_instance_id" {
   value       = aws_instance.vuln_target.id
 }
 
-output "vuln_public_ip" {
-  description = "Public IP of the vulnerable target instance"
-  value       = aws_eip.vuln_eip.public_ip
+output "vuln_private_ip" {
+  description = "Private IP of the vulnerable target instance"
+  value       = aws_instance.vuln_target.private_ip
 }
 
 output "kali_security_group_id" {
@@ -49,7 +48,7 @@ output "vuln_security_group_id" {
   value       = aws_security_group.vuln_sg.id
 }
 
-output "key_pair_name" {
-  description = "ID of the SSH key pair"
-  value       = aws_key_pair.quantum_key.key_name
+output "ssh_command" {
+  description = "SSH command to connect to Kali instance"
+  value       = "ssh -i ${var.key_name}.pem ec2-user@${aws_instance.kali_attacker.public_ip}"
 }

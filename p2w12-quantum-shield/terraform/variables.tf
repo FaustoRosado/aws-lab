@@ -1,4 +1,3 @@
-cat > variables.tf << 'EOF'
 variable "aws_region" {
   description = "AWS region for resources"
   type        = string
@@ -50,17 +49,22 @@ variable "vuln_ami" {
 variable "instance_type_kali" {
   description = "EC2 instance type for Kali Linux"
   type        = string
-  default     = "t2.medium"
+  default     = "t3.micro"
 }
 
 variable "instance_type_vuln" {
   description = "EC2 instance type for vulnerable target"
   type        = string
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 variable "my_ip" {
   description = "Your personal IP address for SSH access (CIDR notation)"
   type        = string
   default     = "162.84.199.50/32" # We'll update this
+}
+
+variable "key_name" {
+  description = "Name of the SSH key pair to use for EC2 instances"
+  type        = string
 }
