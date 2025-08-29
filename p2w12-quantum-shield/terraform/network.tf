@@ -1,4 +1,3 @@
-cat > network.tf << 'EOF'
 # VPC Configuration
 resource "aws_vpc" "quantum_vpc" {
   cidr_block           = var.vpc_cidr

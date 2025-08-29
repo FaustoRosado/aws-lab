@@ -1,4 +1,3 @@
-cat > instances.tf << 'EOF'
 # Data source for latest Amazon Linux 2 AMI
 data "aws_ami" "amazon_linux_2" {
   most_recent = true

@@ -1,4 +1,3 @@
-cat > security.tf << 'EOF'
 # Security Group for Kali Linux Attacker
 resource "aws_security_group" "kali_sg" {
   name        = "quantum-shield-kali-sg"
