@@ -318,8 +318,9 @@ temp/
 *.odp
 *.rtf
 *.txt
-*.md
-*.markdown
+# Note: .md files are now tracked for documentation
+# *.md
+# *.markdown
 
 # ===========================================
 # DATABASE & DATA FILES
@@ -370,18 +371,12 @@ p2w12-quantum-shield/cloudwatch-policy.json
 p2w12-quantum-shield/security-monitor.service
 p2w12-quantum-shield/security_monitor.sh
 
-# Team Documentation (keep local)
-p2w12-quantum-shield/TEAM_README.md
-p2w12-quantum-shield/MITRE_ATTACK_TABLE.md
-p2w12-quantum-shield/ATTACK_PLAYBOOK.md
-p2w12-quantum-shield/DEFENSE_PLAYBOOK.md
-p2w12-quantum-shield/ADVANCED_THREAT_DETECTION_SUMMARY.md
-p2w12-quantum-shield/THREAT_DETECTION_SYSTEM.md
-p2w12-quantum-shield/threat-intelligence.md
-p2w12-quantum-shield/MONITORING_SETUP.md
-
 # SSH Keys and Sensitive Files
 p2w12-quantum-shield/*.pem
 p2w12-quantum-shield/my-lab-key-new.pem
 terraform/modules/ec2/ssh/lab-key
 terraform/modules/ec2/ssh/lab-key.pub
+
+# Instructor Access System (keep local, don't push)
+p2w12-quantum-shield/setup-instructor-access.ps1
+p2w12-quantum-shield/instructor-credentials-*.txt
