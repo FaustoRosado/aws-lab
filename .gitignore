@@ -356,3 +356,30 @@ docker-compose.yaml
 .circleci/
 azure-pipelines.yml
 .vsts/
+
+# ===========================================
+# P2W12 QUANTUM SHIELD SPECIFIC EXCLUSIONS
+# ===========================================
+# CloudWatch and AWS Configuration
+p2w12-quantum-shield/cloudwatch-*.json
+p2w12-quantum-shield/cloudwatch-config.json
+p2w12-quantum-shield/cloudwatch-dashboard.json
+p2w12-quantum-shield/cloudwatch-policy.json
+
+# Security and Monitoring Configuration
+p2w12-quantum-shield/security-monitor.service
+p2w12-quantum-shield/security_monitor.sh
+
+# Team Documentation (keep local)
+p2w12-quantum-shield/TEAM_README.md
+p2w12-quantum-shield/MITRE_ATTACK_TABLE.md
+p2w12-quantum-shield/ATTACK_PLAYBOOK.md
+p2w12-quantum-shield/DEFENSE_PLAYBOOK.md
+p2w12-quantum-shield/ADVANCED_THREAT_DETECTION_SUMMARY.md
+p2w12-quantum-shield/THREAT_DETECTION_SYSTEM.md
+p2w12-quantum-shield/threat-intelligence.md
+p2w12-quantum-shield/MONITORING_SETUP.md
+
+# SSH Keys and Sensitive Files
+p2w12-quantum-shield/*.pem
+p2w12-quantum-shield/my-lab-key-new.pem
