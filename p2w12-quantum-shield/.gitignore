@@ -1,78 +1,180 @@
-# Terraform
-.terraform/
+# P2W12 Quantum Shield Cyber Range - Git Ignore File
+# Excludes sensitive files, configuration files, and keys from Git tracking
+
+# ========================================
+# CREDENTIALS & SECURITY
+# ========================================
+# AWS Access Keys and Credentials
+*.csv
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.pem
+*.p8
+*.jks
+*.keystore
+aws-lab-user_accessKeys.csv
+my-lab-key-new.pem
+lab-key*
+
+# ========================================
+# CONFIGURATION FILES
+# ========================================
+# CloudWatch and AWS Configuration
+cloudwatch-*.json
+cloudwatch-config.json
+cloudwatch-dashboard.json
+cloudwatch-policy.json
+
+# Security and Monitoring Configuration
+security-monitor.service
+security_monitor.sh
+*.conf
+*.config
+*.cfg
+
+# ========================================
+# TERRAFORM & INFRASTRUCTURE
+# ========================================
+# Terraform files (keep in root, not in p2w12 branch)
+../terraform/
+terraform/
 *.tfstate
 *.tfstate.*
 *.tfvars
-crash.log
-terraform.tfstate.backup
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
 
-# Keys and credentials
-*.pem
-*.key
-*.pub
-*.p12
-*.cer
-*.crt
-*.der
-*.jks
-*.kdb
-*.srl
-*.csr
-*.ovpn
-.env
-.env.*
-secrets.*
+# ========================================
+# DOCUMENTATION & TEAM FILES
+# ========================================
+# Team documentation (keep local, don't push)
+TEAM_README.md
+MITRE_ATTACK_TABLE.md
+ATTACK_PLAYBOOK.md
+DEFENSE_PLAYBOOK.md
 
-# Documents
-*.pdf
+# ========================================
+# LOGS & DEBUGGING
+# ========================================
+*.log
+*.out
+*.err
+logs/
+debug/
+*.tmp
+*.temp
 
-# OS / editor
+# ========================================
+# OPERATING SYSTEM FILES
+# ========================================
 .DS_Store
+Thumbs.db
 *.swp
 *.swo
+*~
 
-# Secrets and key material
-*.pem
-*.pub
-*.ppk
-*.key
-*.p12
-*.cer
-*.crt
-*.der
-*.jks
-*.kdb
-*.srl
-*.csr
-*.ovpn
-.secrets*
+# ========================================
+# IDE & EDITOR FILES
+# ========================================
+.vscode/
+.idea/
+*.sublime-*
+*.vim
+*.emacs
+
+# ========================================
+# PROGRAMMING LANGUAGES & FRAMEWORKS
+# ========================================
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
 .env
-.env.*
+.env.local
+.env.*.local
 
-# PDFs and images (optional)
+# ========================================
+# BUILD & DEPLOYMENT
+# ========================================
+dist/
+build/
+*.tar.gz
+*.zip
+*.rar
+
+# ========================================
+# TEMPORARY & CACHE FILES
+# ========================================
+tmp/
+temp/
+cache/
+*.cache
+
+# ========================================
+# DOCUMENTS & MEDIA
+# ========================================
 *.pdf
-*.ppm
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
 
-# Secrets and key material
+# ========================================
+# DATABASE & DATA FILES
+# ========================================
+*.db
+*.sqlite
+*.sql
+*.dump
+*.bak
+
+# ========================================
+# DOCKER & CONTAINERS
+# ========================================
+Dockerfile
+docker-compose.yml
+.dockerignore
+*.dockerfile
+
+# ========================================
+# CLOUD & CI/CD
+# ========================================
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+azure-pipelines.yml
+
+# ========================================
+# SPECIFIC P2W12 EXCLUSIONS
+# ========================================
+# All sensitive configuration files
+*-config.json
+*-policy.json
+*-dashboard.json
+*-service
+*_monitor.sh
+
+# SSH and security keys
 *.pem
-*.pub
-*.ppk
 *.key
-*.p12
-*.cer
-*.crt
-*.der
-*.jks
-*.kdb
-*.srl
-*.csr
-*.ovpn
-.secrets*
-.env
-.env.*
+*.pub
 
-# Documents
-*.pdf
+# AWS configuration files
+aws-config
+aws-credentials
+.aws/
 
-# Images
-*.ppm
+# ========================================
+# END OF FILE
+# ========================================
