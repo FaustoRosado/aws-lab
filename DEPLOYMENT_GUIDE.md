@@ -189,7 +189,7 @@ ping -c 3 <DATABASE_PRIVATE_IP>
 
 **Expected Results**:
 - Web target: Accessible
-- Database: ❌ Not accessible (by design)
+- Database: Not accessible (by design)
 
 **Screenshot Required**: Terminal showing ping test results
 
