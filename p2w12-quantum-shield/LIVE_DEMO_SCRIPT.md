@@ -69,7 +69,7 @@ aws ec2 describe-vpcs --output table
 ```bash
 # Show project structure
 echo "=== P2W12 QUANTUM SHIELD CYBER RANGE ==="
-echo "Team: Shannon Kelly, Fausto Rosado, Zeinab Ali, Latrisha Dodson, Javier Acosta"
+echo "Team: [Team Member 1], [Team Member 2], [Team Member 3], [Team Member 4], [Team Member 5]"
 echo ""
 
 # Display running infrastructure

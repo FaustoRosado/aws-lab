@@ -65,11 +65,11 @@ resource "aws_instance" "vuln_target" {
                   <p>This is a deliberately vulnerable web server for penetration testing.</p>
               <p>Team Members:</p>
               <ul>
-                  <li>Shannon Kelly - Lead Cloud Architect</li>
-                  <li>Fausto Rosado - Infrastructure Engineer</li>
-                  <li>Zeinab Ali - Red Team Engineer</li>
-                  <li>Latrisha Dodson - Blue Team Engineer</li>
-                  <li>Javier Acosta - Documentation Lead</li>
+                          <li>[Team Member 1] - Lead Cloud Architect</li>
+        <li>[Team Member 2] - Infrastructure Engineer</li>
+        <li>[Team Member 3] - Red Team Engineer</li>
+        <li>[Team Member 4] - Blue Team Engineer</li>
+        <li>[Team Member 5] - Documentation Lead</li>
               </ul>
               <p>Current Time: <span id="time"></span></p>
               <script>

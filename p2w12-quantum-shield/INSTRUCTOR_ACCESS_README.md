@@ -156,7 +156,7 @@ terraform destroy -var="key_name=my-lab-key-new" -auto-approve
 - **Resource Not Found**: Verify lab environment is running
 
 ### **Support Contacts**
-- **Technical Lead**: Fausto Rosado
+- **Technical Lead**: [Team Lead Name]
 - **Project Lead**: Shannon Kelly
 - **Lab Administrator**: [Your Name]
 

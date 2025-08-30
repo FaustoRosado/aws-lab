@@ -4,7 +4,7 @@
 **Project**: P2W12 Advanced Cybersecurity Lab  
 **Implementation Date**: August 29, 2025  
 **Status**: Ready for Implementation  
-**Team**: Shannon Kelly, Fausto Rosado, Zeinab Ali, Latrisha Dodson, Javier Acosta
+**Team**: [Team Member 1], [Team Member 2], [Team Member 3], [Team Member 4], [Team Member 5]
 
 ---
 

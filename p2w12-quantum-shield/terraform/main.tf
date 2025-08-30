@@ -1,5 +1,5 @@
 # Quantum Shield Cyber Range - P2W12 Final Project
-# Team: Shannon Kelly, Fausto Rosado, Zeinab Ali, Latrisha Dodson, Javier Acosta
+# Team: [Team Member 1], [Team Member 2], [Team Member 3], [Team Member 4], [Team Member 5]
 
 terraform {
   required_version = ">= 1.0"

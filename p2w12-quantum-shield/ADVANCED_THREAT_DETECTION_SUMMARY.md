@@ -4,7 +4,7 @@
 **Project**: P2W12 Advanced Cybersecurity Lab  
 **Implementation Date**: August 29, 2025  
 **Status**: COMPLETE  
-**Team**: Shannon Kelly, Fausto Rosado, Zeinab Ali, Latrisha Dodson, Javier Acosta
+**Team**: [Team Member 1], [Team Member 2], [Team Member 3], [Team Member 4], [Team Member 5]
 
 ---
 
@@ -226,7 +226,7 @@ The **Advanced Threat Detection System** represents the pinnacle of our P2W12 cy
 
 ### **Team Contributions**
 - **Shannon Kelly**: Infrastructure design and AWS architecture
-- **Fausto Rosado**: Terraform deployment and automation
+- **[Team Member 2]**: Terraform deployment and automation
 - **Zeinab Ali**: Security monitoring and threat detection
 - **Latrisha Dodson**: Incident response and security controls
 - **Javier Acosta**: Documentation and knowledge management
@@ -294,7 +294,7 @@ This system serves as a foundation for advanced cybersecurity research, training
 ## **Contact Information**
 
 **Project Lead**: Shannon Kelly  
-**Technical Lead**: Fausto Rosado  
+**Technical Lead**: [Team Lead Name]  
 **Security Lead**: Zeinab Ali  
 **Operations Lead**: Latrisha Dodson  
 **Documentation Lead**: Javier Acosta  

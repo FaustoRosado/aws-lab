@@ -12,8 +12,9 @@ docs/aws-lab-user_accessKeys.csv
 *accessKeys*
 *credentials*
 *.pem
-*.key
+*.pek
 *.pub
+*.key
 *.p12
 *.cer
 *.crt
@@ -318,9 +319,42 @@ temp/
 *.odp
 *.rtf
 *.txt
-# Note: .md files are now tracked for documentation
-# *.md
-# *.markdown
+# ===========================================
+# DOCUMENTATION & MARKDOWN FILES
+# ===========================================
+# Exclude all markdown files to prevent personal information leakage
+*.md
+*.markdown
+*.MD
+*.Markdown
+
+# ===========================================
+# PERSONAL INFORMATION & SENSITIVE DATA
+# ===========================================
+# Exclude files that might contain personal information
+*personal*
+*private*
+*secret*
+*password*
+*faust*
+*Fausto*
+*Rosado*
+*shannon*
+*Shannon*
+*kelly*
+*Kelly*
+*zeinab*
+*Zeinab*
+*ali*
+*Ali*
+*latrisha*
+*Latrisha*
+*dodson*
+*Dodson*
+*javier*
+*Javier*
+*acosta*
+*Acosta*
 
 # ===========================================
 # DATABASE & DATA FILES
@@ -371,11 +405,8 @@ p2w12-quantum-shield/cloudwatch-policy.json
 p2w12-quantum-shield/security-monitor.service
 p2w12-quantum-shield/security_monitor.sh
 
-# SSH Keys and Sensitive Files
-p2w12-quantum-shield/*.pem
-p2w12-quantum-shield/my-lab-key-new.pem
-terraform/modules/ec2/ssh/lab-key
-terraform/modules/ec2/ssh/lab-key.pub
+# SSH Keys and Sensitive Files (globally excluded above)
+# All .pem, .pek, .pub, .key files are excluded
 
 # Instructor Access System (keep local, don't push)
 p2w12-quantum-shield/setup-instructor-access.ps1

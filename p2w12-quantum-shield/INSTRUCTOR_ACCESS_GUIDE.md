@@ -227,7 +227,7 @@ aws ec2 describe-vpcs --profile instructor
 
 ### **Support Contacts**
 - **Lab Administrator**: [Your Name]
-- **Technical Lead**: Fausto Rosado
+- **Technical Lead**: [Team Lead Name]
 - **Project Lead**: Shannon Kelly
 - **Emergency Contact**: [Emergency Contact Info]
 
