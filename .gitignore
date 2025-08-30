@@ -49,12 +49,21 @@ credentials.json
 crash.log
 terraform.tfstate.backup
 # Terraform directories - ignore state and lock files but keep modules
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+crash.log
 terraform/*.tfstate*
 terraform/.terraform/
+terraform/.terraform.lock.hcl
 terraform/*.tfvars
 terraform/crash.log
 **/terraform/*.tfstate*
 **/terraform/.terraform/
+**/terraform/.terraform.lock.hcl
 **/terraform/*.tfvars
 **/terraform/crash.log
 
