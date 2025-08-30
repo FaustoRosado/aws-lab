@@ -1,0 +1,104 @@
+{
+    "widgets": [
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    ["AWS/EC2", "CPUUtilization", "AutoScalingGroupName", "quantum-shield-kali"],
+                    ["AWS/EC2", "NetworkIn", "AutoScalingGroupName", "quantum-shield-kali"],
+                    ["AWS/EC2", "NetworkOut", "AutoScalingGroupName", "quantum-shield-kali"]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "us-east-1",
+                "title": "Kali Machine - System Performance",
+                "period": 300
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 0,
+            "width": 12,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    ["AWS/EC2", "CPUUtilization", "AutoScalingGroupName", "quantum-shield-vuln-target"],
+                    ["AWS/EC2", "NetworkIn", "AutoScalingGroupName", "quantum-shield-vuln-target"],
+                    ["AWS/EC2", "NetworkOut", "AutoScalingGroupName", "quantum-shield-vuln-target"]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "us-east-1",
+                "title": "Vulnerable Target - System Performance",
+                "period": 300
+            }
+        },
+        {
+            "type": "log",
+            "x": 0,
+            "y": 6,
+            "width": 24,
+            "height": 6,
+            "properties": {
+                "query": "SOURCE /aws/ec2/security/ssh-access\n| fields @timestamp, @message\n| filter @message like /Failed password/\n| stats count() by bin(5m)",
+                "region": "us-east-1",
+                "title": "SSH Failed Login Attempts",
+                "view": "table"
+            }
+        },
+        {
+            "type": "log",
+            "x": 0,
+            "y": 12,
+            "width": 24,
+            "height": 6,
+            "properties": {
+                "query": "SOURCE /aws/ec2/security/web-access\n| fields @timestamp, @message\n| filter @message like /union|select|script|javascript/\n| stats count() by bin(5m)",
+                "region": "us-east-1",
+                "title": "Web Attack Attempts",
+                "view": "table"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 18,
+            "width": 12,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    ["AWS/Logs", "IncomingLogEvents", "LogGroupName", "/aws/ec2/security/ssh-access"],
+                    ["AWS/Logs", "IncomingLogEvents", "LogGroupName", "/aws/ec2/security/web-access"],
+                    ["AWS/Logs", "IncomingLogEvents", "LogGroupName", "/aws/ec2/security/system-logs"]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "us-east-1",
+                "title": "Security Log Volume",
+                "period": 300
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 18,
+            "width": 12,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    ["AWS/VPC", "FlowLogs", "VPCId", "vpc-07040a3caaeb5f336"]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "us-east-1",
+                "title": "VPC Flow Logs",
+                "period": 300
+            }
+        }
+    ]
+}
