@@ -1,14 +1,14 @@
 # Red Team Demo Instructions
 
 ## Setup
-- Target Web Server: `3.239.79.238` (public)
-- Target DB Server: `10.0.10.116` (private, access via web server)
+- Target Web Server: `<PUBLIC_IP>` (get from Terraform output)
+- Target DB Server: `<PRIVATE_IP>` (private, access via web server)
 
 ## Red Team Flow (3-4 minutes)
 
 ### 1. Basic Reconnaissance
 ```bash
-TARGET="3.239.79.238"
+TARGET="<PUBLIC_IP_FROM_TERRAFORM>"
 echo "Scanning target: $TARGET"
 ```
 
