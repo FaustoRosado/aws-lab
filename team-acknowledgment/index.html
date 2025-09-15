@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Shield Team - AWS Cyber Range Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .role-title {
+            color: #667eea;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .member-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+        
+        .contributions {
+            list-style: none;
+        }
+        
+        .contributions li {
+            padding: 0.3rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .contributions li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+        }
+        
+        .github-profile {
+            margin-bottom: 1rem;
+        }
+        
+        .github-profile a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            border: 1px solid #667eea;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .github-profile a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .project-info {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .project-info h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .tech-tag {
+            background: #667eea;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 2rem;
+            opacity: 0.8;
+        }
+        
+        .github-link {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .github-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        
+        .topology-diagram {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .internet-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .vpc-container {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .vpc-header {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .zones-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .public-zone {
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid #48bb78;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .private-zone {
+            background: rgba(159, 122, 234, 0.1);
+            border: 1px solid #9f7aea;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .zone-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .component {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .component:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .component.internet {
+            background: #fef5e7;
+            border-color: #f6ad55;
+        }
+        
+        .component.gateway {
+            background: #e6fffa;
+            border-color: #4fd1c7;
+        }
+        
+        .component.subnet {
+            background: #f0fff4;
+            border-color: #68d391;
+        }
+        
+        .component.server {
+            background: #fef5e7;
+            border-color: #f6ad55;
+        }
+        
+        .component.security {
+            background: #ebf8ff;
+            border-color: #63b3ed;
+        }
+        
+        .security-section {
+            margin-top: 1rem;
+        }
+        
+        .security-title {
+            font-weight: 600;
+            color: #2b6cb0;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .security-components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+        }
+        
+        .arrow {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Component descriptions
+        const componentInfo = {
+            'internet': {
+                title: 'The Internet',
+                description: 'External network providing global connectivity. All inbound traffic originates here and flows through security controls.'
+            },
+            'gateway': {
+                title: 'Internet Gateway',
+                description: 'AWS managed service that provides bidirectional internet access for resources in public subnets. Enables external connectivity.'
+            },
+            'public-subnet': {
+                title: 'Public Subnets',
+                description: 'Subnets with direct internet access via Internet Gateway. Houses web servers and public-facing resources.'
+            },
+            'private-subnet': {
+                title: 'Private Subnets', 
+                description: 'Isolated subnets with no direct internet access. Houses databases and internal applications for security.'
+            },
+            'web-server': {
+                title: 'Web Server (EC2)',
+                description: 'Public-facing web application server. Target for red team attacks and compromise simulation exercises.'
+            },
+            'app-server': {
+                title: 'App Server (EC2)',
+                description: 'Internal application server in private subnet. Accessible only from within the VPC for lateral movement testing.'
+            },
+            'db-server': {
+                title: 'Database Server',
+                description: 'Private database instance storing sensitive data. Protected by network isolation and security groups.'
+            },
+            'public-nacl': {
+                title: 'Public NACL',
+                description: 'Network Access Control List providing stateless subnet-level security for public resources.'
+            },
+            'private-nacl': {
+                title: 'Private NACL',
+                description: 'Network Access Control List providing additional security layer for private subnet resources.'
+            },
+            'public-route': {
+                title: 'Public Route Table',
+                description: 'Routes traffic from public subnets to Internet Gateway for external connectivity.'
+            },
+            'private-route': {
+                title: 'Private Route Table',
+                description: 'Routes private subnet traffic through NAT Gateway for outbound internet access only.'
+            },
+            'cloudwatch': {
+                title: 'CloudWatch',
+                description: 'Monitoring and logging service. Collects metrics, logs, and creates dashboards for security visibility.'
+            },
+            'cloudtrail': {
+                title: 'CloudTrail',
+                description: 'API logging service that records all AWS API calls for audit trails and compliance monitoring.'
+            },
+            'guardduty': {
+                title: 'GuardDuty',
+                description: 'Intelligent threat detection service using machine learning to identify malicious activity and security threats.'
+            },
+            'securityhub': {
+                title: 'Security Hub',
+                description: 'Centralized security findings dashboard that aggregates alerts from multiple AWS security services.'
+            }
+        };
+
+        // Add click handlers after page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create info display area
+            const infoDisplay = document.createElement('div');
+            infoDisplay.id = 'component-info';
+            infoDisplay.style.cssText = `
+                background: white;
+                border: 2px solid #667eea;
+                border-radius: 8px;
+                padding: 1rem;
+                margin-top: 1rem;
+                display: none;
+            `;
+            document.querySelector('.topology-diagram').appendChild(infoDisplay);
+
+            // Add click handlers to components
+            document.querySelectorAll('.component').forEach(component => {
+                component.addEventListener('click', function() {
+                    const classes = this.className.split(' ');
+                    let infoKey = null;
+                    
+                    // Map component classes to info keys
+                    if (classes.includes('internet')) infoKey = 'internet';
+                    else if (classes.includes('gateway')) infoKey = 'gateway';
+                    else if (classes.includes('subnet') && classes.includes('public-zone')) infoKey = 'public-subnet';
+                    else if (classes.includes('subnet') && classes.includes('private-zone')) infoKey = 'private-subnet';
+                    else if (classes.includes('web-server')) infoKey = 'web-server';
+                    else if (classes.includes('app-server')) infoKey = 'app-server';
+                    else if (classes.includes('db-server')) infoKey = 'db-server';
+                    else if (classes.includes('nacl') && this.textContent.includes('Public')) infoKey = 'public-nacl';
+                    else if (classes.includes('nacl') && this.textContent.includes('Private')) infoKey = 'private-nacl';
+                    else if (classes.includes('route-table') && this.textContent.includes('Public')) infoKey = 'public-route';
+                    else if (classes.includes('route-table') && this.textContent.includes('Private')) infoKey = 'private-route';
+                    else if (this.textContent.includes('CloudWatch')) infoKey = 'cloudwatch';
+                    else if (this.textContent.includes('CloudTrail')) infoKey = 'cloudtrail';
+                    else if (this.textContent.includes('GuardDuty')) infoKey = 'guardduty';
+                    else if (this.textContent.includes('Security Hub')) infoKey = 'securityhub';
+                    
+                    if (infoKey && componentInfo[infoKey]) {
+                        const info = componentInfo[infoKey];
+                        infoDisplay.innerHTML = `
+                            <h3 style="color: #667eea; margin-bottom: 0.5rem;">${info.title}</h3>
+                            <p style="margin: 0;">${info.description}</p>
+                        `;
+                        infoDisplay.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="container">
+        <div class="header">
+            <h1>Quantum Shield Team</h1>
+            <p>Advanced AWS Cyber Range Project Contributors</p>
+        </div>
+        
+        <div class="project-info">
+            <h2>Project Overview</h2>
+            <p>A sophisticated cloud-native cybersecurity training range built with Infrastructure as Code principles. This project demonstrates enterprise-grade threat detection, network security, and incident response capabilities using AWS services.</p>
+            
+            <div class="tech-stack">
+                <span class="tech-tag">AWS</span>
+                <span class="tech-tag">Terraform</span>
+                <span class="tech-tag">GuardDuty</span>
+                <span class="tech-tag">Security Hub</span>
+                <span class="tech-tag">EC2</span>
+                <span class="tech-tag">VPC</span>
+                <span class="tech-tag">CloudWatch</span>
+                <span class="tech-tag">Infrastructure as Code</span>
+            </div>
+        </div>
+        
+        <div class="project-info">
+            <h2>Interactive Network Topology</h2>
+            <p>Click on components below to explore the multi-tier AWS architecture we built:</p>
+            
+            <div class="topology-diagram">
+                <div class="internet-section">
+                    <div class="component internet">The Internet</div>
+                    <div class="arrow">↓</div>
+                    <div class="component gateway">Internet Gateway</div>
+                </div>
+                
+                <div class="vpc-container">
+                    <div class="vpc-header">VPC (10.0.0.0/16) - Availability Zone: us-east-1</div>
+                    
+                    <div class="zones-container">
+                        <div class="public-zone">
+                            <div class="zone-title">Public Zone</div>
+                            <div class="component subnet">Public Subnets<br>10.0.1.0/24 & 10.0.2.0/24</div>
+                            <div class="component server web-server">Web Server (EC2)</div>
+                            <div class="component nacl">Public NACL</div>
+                            <div class="component route-table">Public Route Table</div>
+                        </div>
+                        
+                        <div class="private-zone">
+                            <div class="zone-title">Private Zone</div>
+                            <div class="component subnet">Private Subnets<br>10.0.3.0/24 & 10.0.4.0/24</div>
+                            <div class="component server app-server">App Server (EC2)</div>
+                            <div class="component server db-server">RDS Database</div>
+                            <div class="component nacl">Private NACL</div>
+                            <div class="component route-table">Private Route Table</div>
+                        </div>
+                    </div>
+                    
+                    <div class="security-section">
+                        <div class="security-title">Security & Monitoring</div>
+                        <div class="security-components">
+                            <div class="component security">CloudWatch</div>
+                            <div class="component security">CloudTrail</div>
+                            <div class="component security">GuardDuty</div>
+                            <div class="component security">Security Hub</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="role-title">Lead Cloud Architect & Project Lead</div>
+                <div class="member-name">Shannon Kelly</div>
+                <div class="github-profile">
+                    <a href="https://github.com/shannon-kelly" target="_blank">GitHub Profile</a>
+                </div>
+                <ul class="contributions">
+                    <li>AWS design and architecture (VPC, subnets, routing)</li>
+                    <li>Three-tiered VPC model with proper segmentation</li>
+                    <li>Security best practices (least privilege IAM)</li>
+                    <li>Project coordination and milestone management</li>
+                    <li>Network topology design and documentation</li>
+                </ul>
+            </div>
+            
+            <div class="team-member">
+                <div class="role-title">Infrastructure Engineer & Terraform Specialist</div>
+                <div class="member-name">Fausto Rosado</div>
+                <div class="github-profile">
+                    <a href="https://github.com/FaustoRosado" target="_blank">GitHub Profile</a>
+                </div>
+                <ul class="contributions">
+                    <li>Terraform project structure and deployment lifecycle</li>
+                    <li>Infrastructure automation and state management</li>
+                    <li>EC2 instances (Kali, Juice Shop, Windows server)</li>
+                    <li>IAM roles and policies configuration</li>
+                    <li>Cross-platform scripting and documentation</li>
+                </ul>
+            </div>
+            
+            <div class="team-member">
+                <div class="role-title">Red Team Engineer & Offensive Security</div>
+                <div class="member-name">Zeinab Ali</div>
+                <div class="github-profile">
+                    <a href="https://github.com/zeinab-ali" target="_blank">GitHub Profile</a>
+                </div>
+                <ul class="contributions">
+                    <li>Penetration testing methodology and execution</li>
+                    <li>Attack simulation and exploitation techniques</li>
+                    <li>MITRE ATT&CK framework implementation</li>
+                    <li>Offensive security tool integration</li>
+                    <li>Red team playbook development</li>
+                </ul>
+            </div>
+            
+            <div class="team-member">
+                <div class="role-title">Blue Team Engineer & Security Monitoring</div>
+                <div class="member-name">Latrisha Dodson</div>
+                <div class="github-profile">
+                    <a href="https://github.com/latrisha-dodson" target="_blank">GitHub Profile</a>
+                </div>
+                <ul class="contributions">
+                    <li>GuardDuty configuration and monitoring</li>
+                    <li>Security Hub integration and compliance</li>
+                    <li>CloudWatch dashboards and alerting</li>
+                    <li>Incident response procedures</li>
+                    <li>Threat detection and analysis</li>
+                </ul>
+            </div>
+            
+            <div class="team-member">
+                <div class="role-title">Documentation & Knowledge Management</div>
+                <div class="member-name">Javier Acosta</div>
+                <div class="github-profile">
+                    <a href="https://github.com/javier-acosta" target="_blank">GitHub Profile</a>
+                </div>
+                <ul class="contributions">
+                    <li>Comprehensive project documentation</li>
+                    <li>Lab procedures and runbooks</li>
+                    <li>Training materials and guides</li>
+                    <li>Knowledge transfer and onboarding</li>
+                    <li>Best practices documentation</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="project-info">
+            <h2>Project Achievements</h2>
+            <ul class="contributions">
+                <li>Platform-specific optimization (Mac Bash, Windows PowerShell, Linux)</li>
+                <li>24-hour temporary credential management system</li>
+                <li>Cross-account IAM role assumption security</li>
+                <li>Complete Infrastructure as Code implementation</li>
+                <li>Real-world purple team exercise framework</li>
+                <li>Enterprise-grade security monitoring and alerting</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <a href="https://github.com/FaustoRosado/aws-lab" class="github-link" target="_blank">
+                View Project on GitHub
+            </a>
+            <p>Built with dedication by the Quantum Shield team for cybersecurity education and training.</p>
+        </div>
+    </div>
+</body>
+</html>
