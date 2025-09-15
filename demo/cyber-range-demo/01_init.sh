@@ -4,14 +4,14 @@ echo "[Init] Using AWS profile: ${AWS_PROFILE:-not set}  Region: ${AWS_REGION:-n
 echo "[Init] Moving into Terraform directory..."
 
 # Find terraform directory from current location
-if [ -d "terraform" ]; then
+if [ -d "p2w12-quantum-shield/terraform" ]; then
+    cd p2w12-quantum-shield/terraform
+elif [ -d "../../p2w12-quantum-shield/terraform" ]; then
+    cd "../../p2w12-quantum-shield/terraform"
+elif [ -d "terraform" ]; then
     cd terraform
-elif [ -d "../../terraform" ]; then
-    cd "../../terraform"
-elif [ -d "../terraform" ]; then
-    cd "../terraform"
 else
-    echo "Error: Cannot find terraform directory"
+    echo "Error: Cannot find terraform directory (looking for p2w12-quantum-shield/terraform or terraform)"
     exit 1
 fi
 
