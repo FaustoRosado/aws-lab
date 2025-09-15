@@ -412,3 +412,5 @@ private-discussions/
 # private-data/
 # Demo instruction files (exclude master guide only)
 master_demo_guide.md
+# Team acknowledgment website (exclude from git)
+team-acknowledgment/
